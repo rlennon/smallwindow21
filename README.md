@@ -29,7 +29,8 @@ Ruth G. Lennon
 
 ### Rockstars
 Damien Gallagher
-Michael Conaghan        
+Michael Conaghan
+Ronan Clancy
 
 ## Project Deadline
 
