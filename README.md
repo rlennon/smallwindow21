@@ -55,7 +55,7 @@ Refer to BB for deadlines
 
 ## Useful Links
 
-    Project Slack: 
+    Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
     GitHub: 
     
 
