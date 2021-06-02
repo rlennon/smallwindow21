@@ -32,7 +32,8 @@ Damien Gallagher
 Michael Conaghan
 Ronan Clancy
 Sharon Greene
-Sunoj Jose        
+Sunoj Jose
+John Richard
 
 ## Project Deadline
 
