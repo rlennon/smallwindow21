@@ -131,7 +131,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Please add and update items within Jira prior to the sprint planning session.
     Sprint retro will occur second Friday at 8pm GMT+1.
     The order that people present their sprint retro updates will be based on <sample: alphabetical> order of those present at the meeting.
-    Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Srum Master is rotated per team menber every week.
+    Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Scrum Master is rotated per team member every week.
     Backlog refinement will happen every Wednesday at <?>
     Task estimation will be done using <fill in>. 
     Come prepared to meetings.
@@ -179,6 +179,6 @@ GitworkFlows, Main > develop > feature
   
 ### Estimating Story Points
 
-The teams team's velocity is calculated by the number of story points we atchieve in the previous spring 
+The teams team's velocity is calculated by the number of story points we achieve in the previous spring 
 
 The teams current story point velocity is "N/A".
