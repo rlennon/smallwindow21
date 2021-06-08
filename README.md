@@ -18,8 +18,17 @@ Repo for Small Window Assignment
 
 ## Preamble
 
-This is the online repository for the <fill in assignment name> assignment. 
-<fill in executive summary here>
+This is the online repository for the DevOps Project Management Assignment 2021. 
+
+The customer would like an on-line system to take in staff details for analysis. SmallWindow is a
+engineering and tech company. The product that they wish to market is BusIntelligence. The system
+must take details for new staff and to provide easy to use analysis features. For example, they may
+wish to have a review all staff which have CompTIA and have DevSecOps training as this may indicate
+future projects that may be exploited. Keep the analysis simple. The analysis system should be clean
+and simple. The system needs to take into account the usual details and present simplified graphics.
+It must be possible to upload files or images. The administrator should be able to access detailed
+information and edit as appropriate. Once the client enters details it should not be able to be changed
+by the client.
 
 
 Our product will be delivered using an Agile methodology that embraces the DevOps culture. Please note that our culture embraces change and these documents are treated as living, breathing artefacts that will be continuously updated.
@@ -115,15 +124,15 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Meetings
 
-    Stand-ups will occur on <date, time and timezone>.
+    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1.
     The order that people give their updates will be based on alphabetical order of those present at the meeting.
     Updates will be in the form: What I've done, Implediments, What I plan to do
-    Sprint planning will occur every other <day & time>.
+    Sprint planning will occur every other second Friday.
     Please add and update items within Jira prior to the sprint planning session.
-    Sprint retro will occur <frequency, date & time>.
+    Sprint retro will occur second Friday at 8pm GMT+1.
     The order that people present their sprint retro updates will be based on <sample: alphabetical> order of those present at the meeting.
-    Points raised in the sprint retro will be noted and posted on the slack channel by the <who: example Scrum Master>.
-    Backlog refinement?
+    Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Srum Master is rotated per team menber every week.
+    Backlog refinement will happen every Wednesday at <?>
     Task estimation will be done using <fill in>. 
     Come prepared to meetings.
     Be on time for Stand Ups and meetings.
@@ -134,9 +143,9 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Communication
 
-    <Slack, Teams, Email -pick one tool> is the preferred method of communication.
+    Slack is the preferred method of communication.
     Communication in this order: <as above - tools and order of preference>
-    If a demonstration is required use <tool>, record the session and upload to the Slack channel.
+    If a demonstration is required use Zoom, record the session and upload to the Slack channel.
     No Slack communications between "<Time and Timezone>".
     Raise a problem as soon as you see it.
     Respect each other and understand differences in knowledge.
@@ -160,16 +169,16 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ## Other
 
-    Sprints will start <day, time & timezone>.
+    Sprints will start every Second Friday at 9pm GMT+1.
     The Scrum Master role rotates each week, the schedule is available on the on the process section
-    <tool> will be used for task management and planning.
-    Each member of the team will work <realistic number of hours> per week, unless they are on vacation.
+    Jira will be used for task management and planning.
+    Each member of the team will work 8 per week, unless they are on vacation.
 
 ### Branching Strategy
-<decide on one here>
+GitworkFlows, Main > develop > feature
   
 ### Estimating Story Points
 
-The teams team's velocity is calculated by <specify how>
+The teams team's velocity is calculated by the number of story points we atchieve in the previous spring 
 
-The teams current story point velocity is "<Choose the number!>".
+The teams current story point velocity is "N/A".
