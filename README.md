@@ -57,6 +57,7 @@ Refer to BB for deadlines
 
     Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
     GitHub: https://github.com/rlennon/smallwindow21
+    Jira: https://studentjira.lyit.ie/projects/SMLWIN21/
     
 
 For more information visit our other sections
