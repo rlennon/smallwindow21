@@ -96,7 +96,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Changing / ambiguous requirements
     Talk of the company being bought out has raised concerns
     Lack of rights for toolsets chosen has hindered progress and ability to deliver
-        Risk Register Template is loaded here.
+        <p>Risk Register Template is loaded here.
         https://studentjira.lyit.ie/projects/SMLWIN21/issues/SMLWIN21-11?filter=allopenissues
 
 ## Tenants of Design
