@@ -97,6 +97,8 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Changing / ambiguous requirements
     Talk of the company being bought out has raised concerns
     Lack of rights for toolsets chosen has hindered progress and ability to deliver
+        <p>Risk Register Template is loaded here.
+        https://studentjira.lyit.ie/projects/SMLWIN21/issues/SMLWIN21-11?filter=allopenissues
 
 ## Tenants of Design
 <pick from the sample sections below and add your own>
@@ -147,7 +149,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Slack is the preferred method of communication.
     Communication in this order: Slack
     If a demonstration is required use Zoom, record the session and upload to the Slack channel.
-    No Slack communications between "<Time and Timezone>" TDB.
+    No Slack communications between "<Time and Timezone>" TBD.
     Raise a problem as soon as you see it.
     Respect each other and understand differences in knowledge.
     All team documents are to be created using Markdown language and shared on GitHub.
