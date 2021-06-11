@@ -18,8 +18,17 @@ Repo for Small Window Assignment
 
 ## Preamble
 
-This is the online repository for the <fill in assignment name> assignment. 
-<fill in executive summary here>
+This is the online repository for the DevOps Project Management Assignment 2021. 
+
+The customer would like an on-line system to take in staff details for analysis. SmallWindow is a
+engineering and tech company. The product that they wish to market is BusIntelligence. The system
+must take details for new staff and to provide easy to use analysis features. For example, they may
+wish to have a review all staff which have CompTIA and have DevSecOps training as this may indicate
+future projects that may be exploited. Keep the analysis simple. The analysis system should be clean
+and simple. The system needs to take into account the usual details and present simplified graphics.
+It must be possible to upload files or images. The administrator should be able to access detailed
+information and edit as appropriate. Once the client enters details it should not be able to be changed
+by the client.
 
 
 Our product will be delivered using an Agile methodology that embraces the DevOps culture. Please note that our culture embraces change and these documents are treated as living, breathing artefacts that will be continuously updated.
@@ -28,8 +37,13 @@ Our product will be delivered using an Agile methodology that embraces the DevOp
 Ruth G. Lennon
 
 ### Rockstars
-Damien Gallagher
-Ronan Clancy
+Damien Gallagher,
+Michael Conaghan,
+Ronan Clancy,
+Sharon Greene,
+Sunoj Jose,
+John Richard,
+Robert Tokarz
 
 ## Project Deadline
 
@@ -51,8 +65,9 @@ Refer to BB for deadlines
 
 ## Useful Links
 
-    Project Slack: 
-    GitHub: 
+    Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
+    GitHub: https://github.com/rlennon/smallwindow21
+    Jira: https://studentjira.lyit.ie/projects/SMLWIN21/
     
 
 For more information visit our other sections
@@ -91,10 +106,10 @@ These are the current Risks on the project, re-aligned on a weekly basis
         Secure code: Regex for cleansing and validation, Named queries and database triggers
         performance testing tool to be used
     Documentation / code commenting (javadoc)/seperate branch
-    Datastore for persistance
+    Datastore for persistence
     Testing:
         Unit testing
-        integretation testing
+        integration testing
         UA
     Environments:
         staging and production
@@ -110,16 +125,16 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Meetings
 
-    Stand-ups will occur on <date, time and timezone>.
+    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1 using Autoatedbot.
     The order that people give their updates will be based on alphabetical order of those present at the meeting.
-    Updates will be in the form: What I've done, Implediments, What I plan to do
-    Sprint planning will occur every other <day & time>.
+    Updates will be in the form: What I've done, Impediments, What I plan to do.
+    Sprint planning will occur Fridays at the end of our sprint on Zoom.
     Please add and update items within Jira prior to the sprint planning session.
-    Sprint retro will occur <frequency, date & time>.
-    The order that people present their sprint retro updates will be based on <sample: alphabetical> order of those present at the meeting.
-    Points raised in the sprint retro will be noted and posted on the slack channel by the <who: example Scrum Master>.
-    Backlog refinement?
-    Task estimation will be done using <fill in>. 
+    Sprint retro will at the end of our sprint on Friday at 8pm GMT+1 (timebox retro for 15 minutes, to be organised by the scrum master).
+    The order that people present their sprint retro updates will be based on alphabetical order of those present at the meeting.
+    Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Scrum Master is rotated per team member every week.
+    Backlog refinement will happen on the Friday during our sprint.
+    Task estimation will be done using "planningpoker.com" TBD. 
     Come prepared to meetings.
     Be on time for Stand Ups and meetings.
     Mobile phones on silent.
@@ -129,10 +144,10 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Communication
 
-    <Slack, Teams, Email -pick one tool> is the preferred method of communication.
-    Communication in this order: <as above - tools and order of preference>
-    If a demonstration is required use <tool>, record the session and upload to the Slack channel.
-    No Slack communications between "<Time and Timezone>".
+    Slack is the preferred method of communication.
+    Communication in this order: Slack
+    If a demonstration is required use Zoom, record the session and upload to the Slack channel.
+    No Slack communications between "<Time and Timezone>" TDB.
     Raise a problem as soon as you see it.
     Respect each other and understand differences in knowledge.
     All team documents are to be created using Markdown language and shared on GitHub.
@@ -150,21 +165,21 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Keep JIRA board updated at all times.
     Update the Scrum Board as you progress the story i.e. don’t update at standup.
     Don't be afraid to ask for help.
-    Don't be afraid to give constructive critism, as long as it is constructive.
+    Don't be afraid to give constructive criticism, as long as it is constructive.
     Solve roadblocks within the team. If the impediment can’t be solved within the team then give it to the Scrum Master.
 
 ## Other
 
-    Sprints will start <day, time & timezone>.
+    Sprints will start every Second Friday at 9pm GMT+1.
     The Scrum Master role rotates each week, the schedule is available on the on the process section
-    <tool> will be used for task management and planning.
-    Each member of the team will work <realistic number of hours> per week, unless they are on vacation.
+    Jira will be used for task management and planning.
+    Each member of the team will work 8 per week, unless they are on vacation.
 
 ### Branching Strategy
-<decide on one here>
+GitworkFlows, Main > develop > feature
   
 ### Estimating Story Points
 
-The teams team's velocity is calculated by <specify how>
+The teams team's velocity is calculated by the number of story points we achieve in the previous spring 
 
-The teams current story point velocity is "<Choose the number!>".
+The teams current story point velocity is "N/A".
