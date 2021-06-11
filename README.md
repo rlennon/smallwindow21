@@ -127,7 +127,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Meetings
 
-    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1 using Autoatedbot.
+    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1 using Automated bot.
     The order that people give their updates will be based on alphabetical order of those present at the meeting.
     Updates will be in the form: What I've done, Impediments, What I plan to do.
     Sprint planning will occur Fridays at the end of our sprint on Zoom.
