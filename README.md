@@ -180,6 +180,6 @@ GitworkFlows, Main > develop > feature
   
 ### Estimating Story Points
 
-The teams team's velocity is calculated by the number of story points we achieve in the previous spring 
+The teams team's velocity is calculated by the number of story points we achieve on average in the previous sprints.
 
 The teams current story point velocity is "N/A".
