@@ -37,13 +37,13 @@ Our product will be delivered using an Agile methodology that embraces the DevOp
 Ruth G. Lennon
 
 ### Rockstars
-Damien Gallagher,
-Michael Conaghan,
-Ronan Clancy,
-Sharon Greene,
-Sunoj Jose,
-John Richard,
-Robert Tokarz
+* Damien Gallagher,
+* Michael Conaghan,
+* Ronan Clancy,
+* Sharon Greene,
+* Sunoj Jose,
+* John Richard,
+* Robert Tokarz
 
 ## Project Deadline
 
