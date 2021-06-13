@@ -18,8 +18,6 @@ Repo for Small Window Assignment
     + [Branching Strategy](#branching-strategy)
     + [Estimating Story Points](#estimating-story-points)
 
-<a name="preamble"/>
-
 ## Preamble
 
 This is the online repository for the DevOps Project Management Assignment 2021. 
