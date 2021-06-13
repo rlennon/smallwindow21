@@ -3,18 +3,22 @@ Repo for Small Window Assignment
 
 ## Table of Contents
 
-        Table of Contents
-        Preamble
-            Product Owner
-            Rockstars
-        Project Deadline
-        Project Specification
-        Considerations
-        Useful Links
-            For more information visit our other sections
-        Risk Register
-        Tenants of Design
-        Social Contract
+  * [Preamble](#preamble)
+    + [Product Owner](#product-owner)
+    + [Rockstars](#rockstars)
+  * [Project Deadline](#project-deadline)
+  * [Project Specification](#project-specification)
+  * [Useful Links](#useful-links)
+  * [Risk Register](#risk-register)
+  * [Tenants of Design](#tenants-of-design)
+  * [Social Contract](#social-contract)
+    + [Meetings](#meetings)
+    + [Communication](#communication)
+  * [Other](#other)
+    + [Branching Strategy](#branching-strategy)
+    + [Estimating Story Points](#estimating-story-points)
+
+<a name="preamble"/>
 
 ## Preamble
 
