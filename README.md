@@ -95,6 +95,7 @@ For more information visit our other sections
 
 These are the current Risks on the project, re-aligned on a weekly basis
 <pick from the sample sections below and add your own>
+    
     Infrastructure proving to be a real problem, may block being able to release software
     Team is finding itself to be running short on time due to other work and study commitments
     No PO feedback on software
@@ -107,6 +108,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ## Tenants of Design
 <pick from the sample sections below and add your own>
+    
     Dedication to clean, secure, performant and self documented code
         code Frameworks used
         code coverage tool used
