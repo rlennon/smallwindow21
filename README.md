@@ -9,6 +9,7 @@ Repo for Small Window Assignment
   * [Project Deadline](#project-deadline)
   * [Project Specification](#project-specification)
   * [Useful Links](#useful-links)
+    + [More Information](#more-information)
   * [Risk Register](#risk-register)
   * [Tenants of Design](#tenants-of-design)
   * [Social Contract](#social-contract)
@@ -70,7 +71,8 @@ Refer to BB for deadlines
 * Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
 * GitHub: https://github.com/rlennon/smallwindow21
 * Jira: https://studentjira.lyit.ie/projects/SMLWIN21/
-    
+   
+### More Information
 
 For more information visit our other sections
 <pick from the sample sections below and add your own>
