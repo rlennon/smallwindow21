@@ -3,18 +3,21 @@ Repo for Small Window Assignment
 
 ## Table of Contents
 
-        Table of Contents
-        Preamble
-            Product Owner
-            Rockstars
-        Project Deadline
-        Project Specification
-        Considerations
-        Useful Links
-            For more information visit our other sections
-        Risk Register
-        Tenants of Design
-        Social Contract
+  * [Preamble](#preamble)
+    + [Product Owner](#product-owner)
+    + [Rockstars](#rockstars)
+  * [Project Deadline](#project-deadline)
+  * [Project Specification](#project-specification)
+  * [Useful Links](#useful-links)
+    + [More Information](#more-information)
+  * [Risk Register](#risk-register)
+  * [Tenants of Design](#tenants-of-design)
+  * [Social Contract](#social-contract)
+    + [Meetings](#meetings)
+    + [Communication](#communication)
+  * [Other](#other)
+    + [Branching Strategy](#branching-strategy)
+    + [Estimating Story Points](#estimating-story-points)
 
 ## Preamble
 
@@ -37,12 +40,13 @@ Our product will be delivered using an Agile methodology that embraces the DevOp
 Ruth G. Lennon
 
 ### Rockstars
-Damien Gallagher
-Michael Conaghan
-Ronan Clancy
-Sharon Greene
-Sunoj Jose
-John Richard
+* Damien Gallagher
+* Michael Conaghan
+* Ronan Clancy
+* Sharon Greene
+* Sunoj Jose
+* John Richard
+* Robert Tokarz
 
 ## Project Deadline
 
@@ -64,31 +68,34 @@ Refer to BB for deadlines
 
 ## Useful Links
 
-    Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
-    GitHub: https://github.com/rlennon/smallwindow21
-    Jira: https://studentjira.lyit.ie/projects/SMLWIN21/
-    
+* Project Slack: https://app.slack.com/client/T84LE6L6R/C023LTYQFFY
+* GitHub: https://github.com/rlennon/smallwindow21
+* Jira: https://studentjira.lyit.ie/projects/SMLWIN21/
+   
+### More Information
 
 For more information visit our other sections
 <pick from the sample sections below and add your own>
-Section 	Description
-Process 	Describes the companies process
-Project Log 	Log of project activities
-Costings 	Overview of the project cost
-Architecture 	Outlines the architecture
-Environments 	Overview of the environment set-up
-DR Plan 	Disaster Recovery Plan and procedures
-Requirements 	Overview of the requirements for the project
-SLAs 	Service level agreements
-Risk Management 	How we manage risk
-Security 	Overview of security
-Project Log 	Team log for the project
 
+| Section  | Description |
+| --- | --- |
+| Process | Describes the companies process  |
+| Project Log  | Log of project activities  |
+| Costings  | Overview of the project cost  |
+| Architecture  | Outlines the architecture  |
+| Environments  | Overview of the environment set-up  |
+| DR Plan  | Disaster Recovery Plan and procedures  |
+| Requirements  | Overview of the requirements for the project  |
+| SLAs  | Service level agreements  |
+| Risk Management  | How we manage risk  |
+| Security  | Overview of security  |
+| Project Log  | Team log for the project  |
   
 ## Risk Register
 
 These are the current Risks on the project, re-aligned on a weekly basis
 <pick from the sample sections below and add your own>
+    
     Infrastructure proving to be a real problem, may block being able to release software
     Team is finding itself to be running short on time due to other work and study commitments
     No PO feedback on software
@@ -101,16 +108,17 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ## Tenants of Design
 <pick from the sample sections below and add your own>
+    
     Dedication to clean, secure, performant and self documented code
         code Frameworks used
         code coverage tool used
         Secure code: Regex for cleansing and validation, Named queries and database triggers
         performance testing tool to be used
     Documentation / code commenting (javadoc)/seperate branch
-    Datastore for persistance
+    Datastore for persistence
     Testing:
         Unit testing
-        integretation testing
+        integration testing
         UA
     Environments:
         staging and production
@@ -126,16 +134,16 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Meetings
 
-    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1.
+    Stand-ups will occur on Every Wednesday during class and Mondays at 8pm GMT+1 using Automated bot.
     The order that people give their updates will be based on alphabetical order of those present at the meeting.
-    Updates will be in the form: What I've done, Implediments, What I plan to do
-    Sprint planning will occur every other second Friday.
+    Updates will be in the form: What I've done, Impediments, What I plan to do.
+    Sprint planning will occur Mondays at the end of our sprint on Zoom.
     Please add and update items within Jira prior to the sprint planning session.
-    Sprint retro will occur second Friday at 8pm GMT+1.
-    The order that people present their sprint retro updates will be based on <sample: alphabetical> order of those present at the meeting.
+    Sprint retro will at the end of our sprint on Monday at 8pm GMT+1 (timebox retro for 15 minutes, to be organised by the scrum master).
+    The order that people present their sprint retro updates will be based on alphabetical order of those present at the meeting.
     Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Scrum Master is rotated per team member every week.
-    Backlog refinement will happen every Wednesday at <?>
-    Task estimation will be done using <fill in>. 
+    Backlog refinement will happen on the Monday during our sprint.
+    Task estimation will be done using "planningpoker.com" TBD. 
     Come prepared to meetings.
     Be on time for Stand Ups and meetings.
     Mobile phones on silent.
@@ -146,9 +154,9 @@ These are the current Risks on the project, re-aligned on a weekly basis
 ### Communication
 
     Slack is the preferred method of communication.
-    Communication in this order: <as above - tools and order of preference>
+    Communication in this order: Slack
     If a demonstration is required use Zoom, record the session and upload to the Slack channel.
-    No Slack communications between "<Time and Timezone>".
+    No Slack communications between "<Time and Timezone>" TBD.
     Raise a problem as soon as you see it.
     Respect each other and understand differences in knowledge.
     All team documents are to be created using Markdown language and shared on GitHub.
@@ -166,12 +174,12 @@ These are the current Risks on the project, re-aligned on a weekly basis
     Keep JIRA board updated at all times.
     Update the Scrum Board as you progress the story i.e. don’t update at standup.
     Don't be afraid to ask for help.
-    Don't be afraid to give constructive critism, as long as it is constructive.
+    Don't be afraid to give constructive criticism, as long as it is constructive.
     Solve roadblocks within the team. If the impediment can’t be solved within the team then give it to the Scrum Master.
 
 ## Other
 
-    Sprints will start every Second Friday at 9pm GMT+1.
+    Sprints will start every Second Monday at 9pm GMT+1.
     The Scrum Master role rotates each week, the schedule is available on the on the process section
     Jira will be used for task management and planning.
     Each member of the team will work 8 per week, unless they are on vacation.
@@ -181,6 +189,6 @@ GitworkFlows, Main > develop > feature
   
 ### Estimating Story Points
 
-The teams team's velocity is calculated by the number of story points we achieve in the previous spring 
+The teams team's velocity is calculated by the number of story points we achieve on average in the previous sprints.
 
 The teams current story point velocity is "N/A".
