@@ -127,15 +127,15 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ### Meetings
 
-    Stand-ups will occur on Every Wednesday during class and Fridays at 8pm GMT+1 using Automated bot.
+    Stand-ups will occur on Every Wednesday during class and Mondays at 8pm GMT+1 using Automated bot.
     The order that people give their updates will be based on alphabetical order of those present at the meeting.
     Updates will be in the form: What I've done, Impediments, What I plan to do.
-    Sprint planning will occur Fridays at the end of our sprint on Zoom.
+    Sprint planning will occur Mondays at the end of our sprint on Zoom.
     Please add and update items within Jira prior to the sprint planning session.
-    Sprint retro will at the end of our sprint on Friday at 8pm GMT+1 (timebox retro for 15 minutes, to be organised by the scrum master).
+    Sprint retro will at the end of our sprint on Monday at 8pm GMT+1 (timebox retro for 15 minutes, to be organised by the scrum master).
     The order that people present their sprint retro updates will be based on alphabetical order of those present at the meeting.
     Points raised in the sprint retro will be noted and posted on the slack channel by the Scrum Master. The Scrum Master is rotated per team member every week.
-    Backlog refinement will happen on the Friday during our sprint.
+    Backlog refinement will happen on the Monday during our sprint.
     Task estimation will be done using "planningpoker.com" TBD. 
     Come prepared to meetings.
     Be on time for Stand Ups and meetings.
@@ -172,7 +172,7 @@ These are the current Risks on the project, re-aligned on a weekly basis
 
 ## Other
 
-    Sprints will start every Second Friday at 9pm GMT+1.
+    Sprints will start every Second Monday at 9pm GMT+1.
     The Scrum Master role rotates each week, the schedule is available on the on the process section
     Jira will be used for task management and planning.
     Each member of the team will work 8 per week, unless they are on vacation.
