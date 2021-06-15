@@ -28,7 +28,7 @@ Repo for Small Window Assignment
   - [Packaging as war](#packaging-as-war)
 - [Testing](#testing)
   - [Client tests](#client-tests)
-  - [Other tests](#other tests)
+  - [Other tests](#other-tests)
   - [Code quality](#code-quality)
 - [Using Docker to simplify development](#using-docker-to-simplify-development)
 - [Continuous Integration](#continuous-integration)
