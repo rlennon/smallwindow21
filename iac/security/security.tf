@@ -5,6 +5,14 @@ variable "vpc_id" {
   type = string
 }
 
+
+variable "eb_profile_name" {
+    type = string
+}
+variable "eb_role_name" {
+    type = string
+}
+
 resource "aws_security_group" "general_sg" {
   name = "General Security Group"
   description = "HTTP egress to anywhere"
@@ -16,19 +24,6 @@ resource "aws_security_group" "general_sg" {
   }
 }
 
-
-resource "aws_security_group" "bastion_sg" {
-  name = "Bastion Security Group"
-  # bastion is exposed to outside of the network
-  # eg. mail, dns, web, ftp
-  description = "SSH ingress to Bastion and SSH egress to App"
-  vpc_id      = var.vpc_id
-
-  tags = {
-    proj = var.project_name
-    Name = "Bastion Security Group"
-  }
-}
 
 resource "aws_security_group" "app_sg" {
   name = "App Security Group"
@@ -60,15 +55,6 @@ resource "aws_security_group_rule" "out_http" {
   security_group_id = aws_security_group.general_sg.id
 }
 
-resource "aws_security_group_rule" "out_ssh_bastion" {
-  type                     = "egress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.bastion_sg.id
-  source_security_group_id = aws_security_group.app_sg.id
-}
-
 resource "aws_security_group_rule" "out_http_app" {
   type              = "egress"
   description       = "Allow TCP internet traffic egress from app layer"
@@ -77,25 +63,6 @@ resource "aws_security_group_rule" "out_http_app" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.app_sg.id
-}
-
-resource "aws_security_group_rule" "in_ssh_bastion_from_anywhere" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.bastion_sg.id
-}
-
-resource "aws_security_group_rule" "in_ssh_app_from_bastion" {
-  type                     = "ingress"
-  description              = "Allow SSH from a Bastion Security Group"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.app_sg.id
-  source_security_group_id = aws_security_group.bastion_sg.id
 }
 
 resource "aws_security_group_rule" "out_database_from_app" {
@@ -118,16 +85,44 @@ resource "aws_security_group_rule" "in_database_from_app" {
   source_security_group_id = aws_security_group.app_sg.id
 }
 
+resource "aws_iam_instance_profile" "eb_profile" {
+  name = var.eb_profile_name
+  role = aws_iam_role.eb_role.name
+}
+
+resource "aws_iam_role" "eb_role" {
+  name = var.eb_role_name
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "sts:AssumeRole",
+            "Principal": {
+               "Service": "ec2.amazonaws.com"
+            },
+            "Effect": "Allow",
+            "Sid": ""
+        }
+    ]
+}
+EOF
+}
+
 
 output "general_sg_id" {
   value = aws_security_group.general_sg.id
 }
-output "bastion_sg_id" {
-  value = aws_security_group.bastion_sg.id
-}
+
 output "app_sg_id" {
   value = aws_security_group.app_sg.id
 }
 output "dbase_sg_id" {
   value = aws_security_group.dbase_sg.id
+}
+
+output "eb_instance_profile_id" {
+    value = aws_iam_instance_profile.eb_profile.id
 }

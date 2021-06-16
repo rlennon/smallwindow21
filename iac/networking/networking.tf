@@ -7,7 +7,10 @@ variable "owner_name" {
 variable "project_name" {
     type = string
 }
-variable "availability_zone" {
+variable "availability_zone_1" {
+    type = string
+}
+variable "availability_zone_2" {
     type = string
 }
 variable "public_subnet_base_name" {
@@ -31,7 +34,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "192.168.1.0/24"
-  availability_zone       = var.availability_zone
+  availability_zone       = var.availability_zone_1
   map_public_ip_on_launch = true
 
   tags = {
@@ -40,32 +43,44 @@ resource "aws_subnet" "public_subnet" {
     proj  = var.project_name
   }
 }
-
-resource "aws_subnet" "private_subnet_dbase" {
+resource "aws_subnet" "private_subnet_app" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "192.168.2.0/24"
-  availability_zone       = var.availability_zone
+  availability_zone       = var.availability_zone_1
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} Private Dbase Subnet"
+    Name  = "${var.private_subnet_base_name} Private App Subnet"
     Owner = var.owner_name
     proj  = var.project_name
   }
 }
 
-resource "aws_subnet" "private_subnet_mgmt" {
+resource "aws_subnet" "private_subnet_dbase_1" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "192.168.3.0/24"
-  availability_zone       = var.availability_zone
+  availability_zone       = var.availability_zone_1
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} Private Mgmt Subnet"
+    Name  = "${var.private_subnet_base_name} Private Dbase Subnet 1"
     Owner = var.owner_name
     proj  = var.project_name
   }
 }
+resource "aws_subnet" "private_subnet_dbase_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "192.168.4.0/24"
+  availability_zone       = var.availability_zone_2
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name  = "${var.private_subnet_base_name} Private Dbase Subnet 2"
+    Owner = var.owner_name
+    proj  = var.project_name
+  }
+}
+
 
 resource "aws_internet_gateway" "inet_gateway" {
   vpc_id = aws_vpc.main.id
@@ -135,14 +150,17 @@ resource "aws_route_table" "private_routing_table" {
   }
 }
 
-#
-resource "aws_route_table_association" "private_routing_table_assoc_dbase" {
-  subnet_id      = aws_subnet.private_subnet_dbase.id
+
+resource "aws_route_table_association" "private_routing_table_assoc_app" {
+  subnet_id      = aws_subnet.private_subnet_app.id
   route_table_id = aws_route_table.private_routing_table.id
 }
-
-resource "aws_route_table_association" "private_routing_table_assoc_mgmt" {
-  subnet_id      = aws_subnet.private_subnet_mgmt.id
+resource "aws_route_table_association" "private_routing_table_assoc_dbase_1" {
+  subnet_id      = aws_subnet.private_subnet_dbase_1.id
+  route_table_id = aws_route_table.private_routing_table.id
+}
+resource "aws_route_table_association" "private_routing_table_assoc_dbase_2" {
+  subnet_id      = aws_subnet.private_subnet_dbase_2.id
   route_table_id = aws_route_table.private_routing_table.id
 }
 
@@ -154,9 +172,13 @@ output "vpc_id" {
 output "public_subnet_id" {
     value = aws_subnet.public_subnet.id
 }
-output "private_subnet_dbase_id" {
-    value = aws_subnet.private_subnet_dbase.id
+output "private_subnet_app_id" {
+    value = aws_subnet.private_subnet_app.id
 }
-output "private_subnet_mgmt_id" {
-    value = aws_subnet.private_subnet_mgmt.id
+output "private_subnet_dbase_1_id" {
+    value = aws_subnet.private_subnet_dbase_1.id
+}
+
+output "private_subnet_dbase_2_id" {
+    value = aws_subnet.private_subnet_dbase_2.id
 }
