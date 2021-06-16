@@ -1,23 +1,23 @@
 variable "base_resource_name" {
-    type = string
+  type = string
 }
 variable "owner_name" {
-    type = string
+  type = string
 }
 variable "project_name" {
-    type = string
+  type = string
 }
 variable "availability_zone_1" {
-    type = string
+  type = string
 }
 variable "availability_zone_2" {
-    type = string
+  type = string
 }
 variable "public_subnet_base_name" {
-    type = string
+  type = string
 }
 variable "private_subnet_base_name" {
-    type = string
+  type = string
 }
 
 resource "aws_vpc" "main" {
@@ -166,19 +166,19 @@ resource "aws_route_table_association" "private_routing_table_assoc_dbase_2" {
 
 
 output "vpc_id" {
-    value = aws_vpc.main.id
+  value = aws_vpc.main.id
 }
 
 output "public_subnet_id" {
-    value = aws_subnet.public_subnet.id
+  value = aws_subnet.public_subnet.id
 }
 output "private_subnet_app_id" {
-    value = aws_subnet.private_subnet_app.id
+  value = aws_subnet.private_subnet_app.id
 }
 output "private_subnet_dbase_1_id" {
-    value = aws_subnet.private_subnet_dbase_1.id
+  value = aws_subnet.private_subnet_dbase_1.id
 }
 
 output "private_subnet_dbase_2_id" {
-    value = aws_subnet.private_subnet_dbase_2.id
+  value = aws_subnet.private_subnet_dbase_2.id
 }

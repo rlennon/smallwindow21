@@ -36,7 +36,39 @@ variable "dbase_instance_name" {
   type        = string
   default     = "SmallWindow21DB"
 }
-
+variable "dbase_username" {
+  description = "Value of the database username"
+  type        = string
+}
+variable "dbase_password" {
+  description = "Value of the database password"
+  type        = string
+}
+variable "dbase_subnet_group_name" {
+  description = "Value of the database subnet group name"
+  type        = string
+  default     = "smallwindow21-dbsubnet-group"
+}
+variable "dbase_instance_type" {
+  description = "Value for the database instance type"
+  type        = string
+  default     = "db.t3.micro"
+}
+variable "dbase_engine" {
+  description = "Value for the database engine"
+  type        = string
+  default     = "postgresql"
+}
+variable "dbase_engine_version" {
+  description = "Value for the database engine version"
+  type        = string
+  default     = "13.2-R1"
+}
+variable "dbase_allocated_storage" {
+  description = "Value for the database allocated storage"
+  type        = number
+  default     = 10
+}
 variable "base_resource_name" {
   description = "Tag name for infrastructure"
   type        = string

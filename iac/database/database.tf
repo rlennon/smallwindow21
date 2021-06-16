@@ -8,9 +8,26 @@ variable "project_name" {
 variable "dbase_instance_name" {
   type = string
 }
-
-variable "instance_type" {
+variable "dbase_username" {
   type = string
+}
+variable "dbase_password" {
+  type = string
+}
+variable "dbase_subnet_group_name" {
+  type = string
+}
+variable "dbase_instance_type" {
+  type = string
+}
+variable "dbase_engine" {
+  type = string
+}
+variable "dbase_engine_version" {
+  type = string
+}
+variable "dbase_allocated_storage" {
+  type = number
 }
 variable "general_sg_id" {
   type = string
@@ -22,9 +39,7 @@ variable "app_sg_id" {
 variable "dbase_sg_id" {
   type = string
 }
-variable "public_subnet_id" {
-  type = string
-}
+
 variable "private_subnet_dbase_1_id" {
   type = string
 }
@@ -32,24 +47,23 @@ variable "private_subnet_dbase_2_id" {
   type = string
 }
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "db_subnet_group"
+  name       = var.dbase_subnet_group_name
   subnet_ids = [var.private_subnet_dbase_1_id, var.private_subnet_dbase_2_id]
 
   tags = {
-    Name = "My DB subnet group"
+    Name = var.dbase_subnet_group_name
   }
 }
 
 resource "aws_db_instance" "db_instance" {
-  allocated_storage    = 10
-  engine               = "postgresql"
-  engine_version       = "13.2-R1"
-  instance_class       = "db.t3.micro"
+  allocated_storage    = var.dbase_allocated_storage
+  engine               = var.dbase_engine
+  engine_version       = var.dbase_engine_version
+  instance_class       = var.dbase_instance_type
   name                 = var.dbase_instance_name
-  username             = "foo"
-  password             = "foobarbaz"
-  skip_final_snapshot  = true
-  db_subnet_group_name = "My DB subnet group"
+  username             = var.dbase_username
+  password             = var.dbase_password
+  db_subnet_group_name = var.dbase_subnet_group_name
   security_group_names = [var.general_sg_id, var.app_sg_id, var.dbase_sg_id]
 
   tags = {

@@ -7,14 +7,14 @@ variable "vpc_id" {
 
 
 variable "eb_profile_name" {
-    type = string
+  type = string
 }
 variable "eb_role_name" {
-    type = string
+  type = string
 }
 
 resource "aws_security_group" "general_sg" {
-  name = "General Security Group"
+  name        = "General Security Group"
   description = "HTTP egress to anywhere"
   vpc_id      = var.vpc_id
 
@@ -26,7 +26,7 @@ resource "aws_security_group" "general_sg" {
 
 
 resource "aws_security_group" "app_sg" {
-  name = "App Security Group"
+  name        = "App Security Group"
   description = "SSH ingress from Bastion and all TCP traffic ingress from ALB Security Group"
   vpc_id      = var.vpc_id
   tags = {
@@ -36,7 +36,7 @@ resource "aws_security_group" "app_sg" {
 }
 
 resource "aws_security_group" "dbase_sg" {
-  name = "Database Security Group"
+  name        = "Database Security Group"
   description = "Allow traffic from app instance to database on port 3306"
   vpc_id      = var.vpc_id
   tags = {
@@ -124,5 +124,5 @@ output "dbase_sg_id" {
 }
 
 output "eb_instance_profile_id" {
-    value = aws_iam_instance_profile.eb_profile.id
+  value = aws_iam_instance_profile.eb_profile.id
 }

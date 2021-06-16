@@ -9,7 +9,7 @@ variable "app_name" {
   type = string
 }
 variable "app_environment_name" {
-    type = string
+  type = string
 }
 variable "instance_type" {
   type = string
@@ -25,7 +25,7 @@ variable "dbase_sg_id" {
   type = string
 }
 variable "vpc_id" {
-    type = string
+  type = string
 }
 variable "public_subnet_id" {
   type = string
@@ -34,7 +34,7 @@ variable "private_subnet_app_id" {
   type = string
 }
 variable "eb_instance_profile_id" {
-    type = string
+  type = string
 }
 
 resource "aws_elastic_beanstalk_application" "app_instance" {
@@ -46,19 +46,19 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   name                = var.app_environment_name
   application         = aws_elastic_beanstalk_application.app_instance.name
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.16.8 running Docker 19.03.13-ce"
+  tier                = "WebServer"
 
-
- setting {
+  setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
     value     = "${var.general_sg_id}, ${var.app_sg_id}"
   }
- setting {
+  setting {
     namespace = "aws:ec2:vpc"
     name      = "VPCId"
     value     = var.vpc_id
   }
-   setting {
+  setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
     value     = var.private_subnet_app_id
@@ -69,30 +69,27 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     value     = var.public_subnet_id
   }
   setting {
-      namespace = "aws:elbv2:loadbalancer"
-      name = "SecurityGroups"
-      value = var.general_sg_id
-  }
-setting {
-      namespace = "aws:ec2:instances"
-      name = "InstanceTypes"
-      value = var.instance_type
+    namespace = "aws:elbv2:loadbalancer"
+    name      = "SecurityGroups"
+    value     = var.general_sg_id
   }
   setting {
-      namespace = "aws:autoscaling:launchconfiguration"
-      name = "IamInstanceProfile"
-      value = var.eb_instance_profile_id
+    namespace = "aws:ec2:instances"
+    name      = "InstanceTypes"
+    value     = var.instance_type
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = var.eb_instance_profile_id
   }
   tags = {
     Name  = var.app_name
     Owner = var.owner_name
     proj  = var.project_name
-   }
+  }
 }
 
-/*output "app_instance_public_ip" {
-  value = aws_instance.app_instance.public_ip
+output "elasticbeanstalk_app_endpoint" {
+  value = aws_elastic_beanstalk_environment.app_instance_environment.endpoint_url
 }
-output "app_instance_private_ip" {
-  value = aws_instance.app_instance.private_ip
-}*/

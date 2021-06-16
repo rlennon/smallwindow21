@@ -11,8 +11,8 @@ module "networking" {
   base_resource_name       = var.base_resource_name
   owner_name               = var.owner_name
   project_name             = var.project_name
-  availability_zone_1        = var.availability_zone_1
-  availability_zone_2        = var.availability_zone_2
+  availability_zone_1      = var.availability_zone_1
+  availability_zone_2      = var.availability_zone_2
   public_subnet_base_name  = var.private_subnet
   private_subnet_base_name = var.private_subnet
 }
@@ -38,11 +38,16 @@ module "database" {
   owner_name                = var.owner_name
   project_name              = var.project_name
   dbase_instance_name       = var.dbase_instance_name
-  instance_type             = var.instance_type
+  dbase_username            = var.dbase_username
+  dbase_password            = var.dbase_password
+  dbase_subnet_group_name   = var.dbase_subnet_group_name
+  dbase_instance_type       = var.dbase_instance_type
+  dbase_engine              = var.dbase_engine
+  dbase_engine_version      = var.dbase_engine_version
+  dbase_allocated_storage   = var.dbase_allocated_storage
   general_sg_id             = module.security.general_sg_id
   app_sg_id                 = module.security.app_sg_id
   dbase_sg_id               = module.security.dbase_sg_id
-  public_subnet_id          = module.networking.public_subnet_id
   private_subnet_dbase_1_id = module.networking.private_subnet_dbase_1_id
   private_subnet_dbase_2_id = module.networking.private_subnet_dbase_2_id
 }
