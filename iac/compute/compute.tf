@@ -153,6 +153,9 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   }
 }
 
-output "elasticbeanstalk_app_endpoint" {
+output "elasticbeanstalk_app_cname" {
+  value = aws_elastic_beanstalk_environment.app_instance_environment.cname
+}
+output "elasticbeanstalk_app_loadbalancer_endpoint" {
   value = aws_elastic_beanstalk_environment.app_instance_environment.endpoint_url
 }

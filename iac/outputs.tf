@@ -1,5 +1,8 @@
-output "elasticbeanstalk_app_endpoint" {
-  value = module.compute.elasticbeanstalk_app_endpoint
+output "elasticbeanstalk_app_cname" {
+  value = module.compute.elasticbeanstalk_app_cname
+}
+output "elasticbeanstalk_app_loadbalancer_endpoint" {
+  value = module.compute.elasticbeanstalk_app_loadbalancer_endpoint
 }
 
 output "dbase_instance_address" {
