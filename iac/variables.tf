@@ -56,12 +56,14 @@ variable "dbase_instance_type" {
 variable "dbase_engine" {
   description = "Value for the database engine"
   type        = string
-  default     = "postgres"
+  // default     = "postgres"
+  default = "mysql"
 }
 variable "dbase_engine_version" {
   description = "Value for the database engine version"
   type        = string
-  default     = "13.2"
+  //default     = "13.2"
+  default = "8.0"
 }
 variable "dbase_allocated_storage" {
   description = "Value for the database allocated storage"
@@ -112,4 +114,21 @@ variable "eb_role_name" {
   description = "The name of the role to use for elastic beanstalk"
   type        = string
   default     = "SmallWindow21-Role"
+}
+
+variable "storage_bucket_prefix" {
+  description = "The prefix to use for the storage s3 bucket"
+  type        = string
+  default     = "smallwindow21"
+}
+
+variable "asg_min_size" {
+  description = "The minimum number of instances in the auto scaling group"
+  type        = number
+  default     = 1
+}
+variable "asg_max_size" {
+  description = "The maximum number of instances in the auto scaling group"
+  type        = number
+  default     = 1
 }

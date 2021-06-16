@@ -69,9 +69,9 @@ resource "aws_db_instance" "db_instance" {
   vpc_security_group_ids = [var.general_sg_id, var.app_sg_id, var.dbase_sg_id]
 
   tags = {
-    Name  = var.dbase_instance_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.dbase_instance_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
   depends_on = [aws_db_subnet_group.db_subnet_group]
 }

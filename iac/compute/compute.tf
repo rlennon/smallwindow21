@@ -45,6 +45,21 @@ variable "db_endpoint" {
 variable "db_port" {
   type = number
 }
+variable "db_username" {
+  type = string
+}
+variable "db_password" {
+  type = string
+}
+variable "storage_bucket_name" {
+  type = string
+}
+variable "asg_min_size" {
+  type = number
+}
+variable "asg_max_size" {
+  type = number
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -106,10 +121,35 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     name      = "db_port"
     value     = var.db_port
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_username"
+    value     = var.db_username
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_password"
+    value     = var.db_password
+  }
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MinSize"
+    value     = var.asg_min_size
+  }
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
+    value     = var.asg_max_size
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "storage_bucket_name"
+    value     = var.storage_bucket_name
+  }
+
   tags = {
-    Name  = var.app_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 

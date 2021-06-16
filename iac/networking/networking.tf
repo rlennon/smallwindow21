@@ -25,9 +25,9 @@ resource "aws_vpc" "main" {
   cidr_block = "192.168.0.0/16"
 
   tags = {
-    Name  = "${var.base_resource_name} VPC"
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = "${var.base_resource_name} VPC"
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -38,9 +38,9 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "${var.public_subnet_base_name} Public Subnet"
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = "${var.public_subnet_base_name} Public Subnet"
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 resource "aws_subnet" "private_subnet_app" {
@@ -50,9 +50,9 @@ resource "aws_subnet" "private_subnet_app" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} - App"
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = "${var.private_subnet_base_name} - App"
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -63,9 +63,9 @@ resource "aws_subnet" "private_subnet_dbase_1" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} - Dbase 1"
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = "${var.private_subnet_base_name} - Dbase 1"
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 resource "aws_subnet" "private_subnet_dbase_2" {
@@ -75,9 +75,9 @@ resource "aws_subnet" "private_subnet_dbase_2" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} - Dbase 2"
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = "${var.private_subnet_base_name} - Dbase 2"
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -86,9 +86,9 @@ resource "aws_internet_gateway" "inet_gateway" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name  = var.base_resource_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.base_resource_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -101,9 +101,9 @@ resource "aws_route_table" "public_routing_table" {
   }
 
   tags = {
-    Name  = var.base_resource_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.base_resource_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -116,9 +116,9 @@ resource "aws_eip" "nat_elastic_ip" {
   vpc = true
 
   tags = {
-    Name  = var.base_resource_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.base_resource_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -128,9 +128,9 @@ resource "aws_nat_gateway" "nat_gateway" {
   subnet_id     = aws_subnet.public_subnet.id
 
   tags = {
-    Name  = var.base_resource_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.base_resource_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 
@@ -144,9 +144,9 @@ resource "aws_route_table" "private_routing_table" {
   }
 
   tags = {
-    Name  = var.base_resource_name
-    Owner = var.owner_name
-    proj  = var.project_name
+    Name    = var.base_resource_name
+    Owner   = var.owner_name
+    project = var.project_name
   }
 }
 

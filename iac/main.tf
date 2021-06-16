@@ -36,6 +36,14 @@ module "database" {
   private_subnet_dbase_2_id = module.networking.private_subnet_dbase_2_id
 }
 
+module "storage" {
+  source                = "./storage"
+  owner_name            = var.owner_name
+  project_name          = var.project_name
+  storage_bucket_prefix = var.storage_bucket_prefix
+  region                = var.region
+}
+
 module "compute" {
   source                 = "./compute"
   owner_name             = var.owner_name
@@ -53,5 +61,15 @@ module "compute" {
   db_address             = module.database.dbase_instance_address
   db_endpoint            = module.database.dbase_instance_endpoint
   db_port                = module.database.dbase_instance_port
-  depends_on             = [module.database.dbase_instance_address, module.database.dbase_instance_endpoint, module.database.dbase_instance_port]
+  db_username            = var.dbase_username
+  db_password            = var.dbase_password
+  storage_bucket_name    = module.storage.storage_bucket_name
+  asg_min_size           = var.asg_min_size
+  asg_max_size           = var.asg_max_size
+  depends_on = [
+    module.database.dbase_instance_address,
+    module.database.dbase_instance_endpoint,
+    module.database.dbase_instance_port,
+    module.storage.storage_bucket_name
+  ]
 }

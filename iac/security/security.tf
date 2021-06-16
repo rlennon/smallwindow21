@@ -18,8 +18,8 @@ resource "aws_security_group" "general_sg" {
   vpc_id      = var.vpc_id
 
   tags = {
-    proj = var.project_name
-    Name = "General Security Group"
+    project = var.project_name
+    Name    = "General Security Group"
   }
 }
 
@@ -29,8 +29,8 @@ resource "aws_security_group" "app_sg" {
   description = "SSH ingress from Bastion and all TCP traffic ingress from ALB Security Group"
   vpc_id      = var.vpc_id
   tags = {
-    proj = var.project_name
-    Name = "App Security Group"
+    project = var.project_name
+    Name    = "App Security Group"
   }
 }
 
@@ -39,8 +39,8 @@ resource "aws_security_group" "dbase_sg" {
   description = "Allow traffic from app instance to database on port 3306"
   vpc_id      = var.vpc_id
   tags = {
-    proj = var.project_name
-    Name = "Database Security Group"
+    project = var.project_name
+    Name    = "Database Security Group"
   }
 }
 
