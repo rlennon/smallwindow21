@@ -64,6 +64,11 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     value     = var.private_subnet_app_id
   }
   setting {
+    namespace = "aws:ec2:vpc"
+    name      = "ELBSubnets"
+    value     = var.public_subnet_id
+  }
+  setting {
       namespace = "aws:elbv2:loadbalancer"
       name = "SecurityGroups"
       value = var.general_sg_id
