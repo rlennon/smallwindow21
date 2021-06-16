@@ -1,5 +1,5 @@
 # Setup terraform
-cd iac
+cd terraform
 terraform init
 
 # Apply Configuration
