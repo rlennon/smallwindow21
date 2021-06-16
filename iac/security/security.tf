@@ -5,7 +5,6 @@ variable "vpc_id" {
   type = string
 }
 
-
 variable "eb_profile_name" {
   type = string
 }

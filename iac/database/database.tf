@@ -56,24 +56,33 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 }
 
 resource "aws_db_instance" "db_instance" {
-  allocated_storage    = var.dbase_allocated_storage
-  engine               = var.dbase_engine
-  engine_version       = var.dbase_engine_version
-  instance_class       = var.dbase_instance_type
-  name                 = var.dbase_instance_name
-  username             = var.dbase_username
-  password             = var.dbase_password
-  db_subnet_group_name = var.dbase_subnet_group_name
-  security_group_names = [var.general_sg_id, var.app_sg_id, var.dbase_sg_id]
+  identifier             = var.dbase_instance_name
+  allocated_storage      = var.dbase_allocated_storage
+  engine                 = var.dbase_engine
+  engine_version         = var.dbase_engine_version
+  instance_class         = var.dbase_instance_type
+  name                   = var.dbase_instance_name
+  username               = var.dbase_username
+  password               = var.dbase_password
+  skip_final_snapshot    = true
+  db_subnet_group_name   = var.dbase_subnet_group_name
+  vpc_security_group_ids = [var.general_sg_id, var.app_sg_id, var.dbase_sg_id]
 
   tags = {
     Name  = var.dbase_instance_name
     Owner = var.owner_name
     proj  = var.project_name
   }
+  depends_on = [aws_db_subnet_group.db_subnet_group]
 }
 
 
-/*output "dbase_instance_private_ip" {
-  value = aws_instance.dbase_instance.private_ip
-}*/
+output "dbase_instance_address" {
+  value = aws_db_instance.db_instance.address
+}
+output "dbase_instance_endpoint" {
+  value = aws_db_instance.db_instance.endpoint
+}
+output "dbase_instance_port" {
+  value = aws_db_instance.db_instance.port
+}

@@ -19,7 +19,6 @@ variable "project_name" {
   default     = "Small Window 21"
 }
 
-
 variable "app_name" {
   description = "Name of the elastic beanstalk application"
   type        = string
@@ -34,7 +33,7 @@ variable "app_environment_name" {
 variable "dbase_instance_name" {
   description = "Value of the Name tag for the EC2 DBase instance"
   type        = string
-  default     = "SmallWindow21DB"
+  default     = "smallwindow21db"
 }
 variable "dbase_username" {
   description = "Value of the database username"
@@ -57,12 +56,12 @@ variable "dbase_instance_type" {
 variable "dbase_engine" {
   description = "Value for the database engine"
   type        = string
-  default     = "postgresql"
+  default     = "postgres"
 }
 variable "dbase_engine_version" {
   description = "Value for the database engine version"
   type        = string
-  default     = "13.2-R1"
+  default     = "13.2"
 }
 variable "dbase_allocated_storage" {
   description = "Value for the database allocated storage"
@@ -75,12 +74,16 @@ variable "base_resource_name" {
   default     = "Small Window 21"
 }
 
-variable "private_subnet" {
-  description = "Private subnet infrastructure"
+variable "public_subnet_base_name" {
+  description = "Public subnet base name"
+  type        = string
+  default     = "Public Subnet - Small Window 21"
+}
+variable "private_subnet_base_name" {
+  description = "Private subnet base name"
   type        = string
   default     = "Private Subnet - Small Window 21"
 }
-
 variable "owner_name" {
   description = "Owner of the Infrastructure"
   type        = string

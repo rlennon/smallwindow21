@@ -50,7 +50,7 @@ resource "aws_subnet" "private_subnet_app" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} Private App Subnet"
+    Name  = "${var.private_subnet_base_name} - App"
     Owner = var.owner_name
     proj  = var.project_name
   }
@@ -63,7 +63,7 @@ resource "aws_subnet" "private_subnet_dbase_1" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} Private Dbase Subnet 1"
+    Name  = "${var.private_subnet_base_name} - Dbase 1"
     Owner = var.owner_name
     proj  = var.project_name
   }
@@ -75,7 +75,7 @@ resource "aws_subnet" "private_subnet_dbase_2" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "${var.private_subnet_base_name} Private Dbase Subnet 2"
+    Name  = "${var.private_subnet_base_name} - Dbase 2"
     Owner = var.owner_name
     proj  = var.project_name
   }

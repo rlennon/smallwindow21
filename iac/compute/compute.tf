@@ -36,7 +36,15 @@ variable "private_subnet_app_id" {
 variable "eb_instance_profile_id" {
   type = string
 }
-
+variable "db_address" {
+  type = string
+}
+variable "db_endpoint" {
+  type = string
+}
+variable "db_port" {
+  type = number
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -82,6 +90,21 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = var.eb_instance_profile_id
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_address"
+    value     = var.db_address
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_endpoint"
+    value     = var.db_endpoint
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_port"
+    value     = var.db_port
   }
   tags = {
     Name  = var.app_name
