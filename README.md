@@ -222,6 +222,7 @@ After installing Node, you should be able to run the following command to instal
 You will only need to run this command when dependencies change in [package.json](package.json).
 
 ```
+cd app
 npm install
 ```
 
@@ -231,6 +232,7 @@ Run the following commands in two separate terminals to create a blissful develo
 auto-refreshes when files change on your hard drive.
 
 ```
+cd app
 ./mvnw
 npm start
 ```
@@ -358,6 +360,7 @@ For more information, refer to the [Running tests page][].
 Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
 
 ```
+cd app
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
@@ -386,12 +389,14 @@ You can use Docker to improve your JHipster development experience. A number of 
 For example, to start a mysql database in a docker container, run:
 
 ```
+cd app
 docker-compose -f src/main/docker/mysql.yml up -d
 ```
 
 To stop it and remove the container, run:
 
 ```
+cd app
 docker-compose -f src/main/docker/mysql.yml down
 ```
 
@@ -405,6 +410,7 @@ To achieve this, first build a docker image of your app by running:
 Then run:
 
 ```
+cd app
 docker-compose -f src/main/docker/app.yml up -d
 ```
 
