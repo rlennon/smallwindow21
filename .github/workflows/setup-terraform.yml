@@ -1,310 +1,76 @@
-name: 'Setup Terraform'
+name: "Terraform"
 
 on:
   push:
     branches:
-    - setup-terraform
+      - main
   pull_request:
 
-defaults:
-  run:
-    shell: bash
-
 jobs:
-  terraform-versions:
-    name: 'Terraform Versions' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        terraform-versions: [0.11.14, latest]
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Setup Terraform - ${{ matrix['terraform-versions'] }}
-      uses: ./
-      with:
-        terraform_version: ${{ matrix['terraform-versions'] }}
-    
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      if: ${{ matrix['terraform-versions'] != 'latest' }}
-      run: terraform version | grep ${{ matrix['terraform-versions']}}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          # terraform_version: 0.13.0:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      if: ${{ matrix['terraform-versions'] == 'latest' }}
-      run: terraform version | grep 'Terraform v'
-  
-  terraform-versions-no-wrapper:
-    name: 'Terraform Versions No Wrapper' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        terraform-versions: [0.11.14, latest]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-  
-    - name: Setup Terraform (no wrapper) - ${{ matrix['terraform-versions'] }}
-      uses: ./
-      with:
-        terraform_version: ${{ matrix['terraform-versions'] }}
-        terraform_wrapper: false
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
 
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      if: ${{ matrix['terraform-versions'] != 'latest' }}
-      run: terraform version | grep ${{ matrix['terraform-versions']}}
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      if: ${{ matrix['terraform-versions'] == 'latest' }}
-      run: terraform version | grep 'Terraform v'
-  
-  terraform-versions-constraints:
-    name: 'Terraform Versions Constraints' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        terraform-versions: [~0.12, 0.12.x, <0.13.0]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color
+        continue-on-error: true
 
-    - name: Setup Terraform - ${{ matrix['terraform-versions'] }}
-      uses: ./
-      with:
-        terraform_version: ${{ matrix['terraform-versions'] }}
+      - uses: actions/github-script@0.9.0
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      run: terraform version | grep 'Terraform v0\.12'
-  
-  terraform-versions-constraints-no-wrapper:
-    name: 'Terraform Versions Constraints No Wrapper' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        terraform-versions: [~0.12, 0.12.x, <0.13.0]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-  
-    - name: Setup Terraform (no wrapper) - ${{ matrix['terraform-versions'] }}
-      uses: ./
-      with:
-        terraform_version: ${{ matrix['terraform-versions'] }}
-        terraform_wrapper: false
+            <details><summary>Show Plan</summary>
 
-    - name: Validate Teraform Version - ${{ matrix['terraform-versions'] }}
-      run: terraform version | grep 'Terraform v0\.12'
-  
-  terraform-credentials-cloud:
-    name: 'Terraform Cloud Credentials' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    env:
-      TF_CLOUD_API_TOKEN: 'XXXXXXXXXXXXXX.atlasv1.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-    - name: Setup Terraform
-      uses: ./
-      with:
-        cli_config_credentials_token: ${{ env.TF_CLOUD_API_TOKEN }}
-    
-    - name: Validate Terraform Credentials (Windows) 
-      if: runner.os == 'Windows'
-      run: |
-        cat ${APPDATA}/terraform.rc | grep 'credentials "app.terraform.io"'
-        cat ${APPDATA}/terraform.rc | grep 'token = "${{ env.TF_CLOUD_API_TOKEN }}"'
+            </details>
 
-    - name: Validate Teraform Credentials (Linux & macOS)
-      if: runner.os != 'Windows'
-      run: |
-        cat ${HOME}/.terraformrc | grep 'credentials "app.terraform.io"'
-        cat ${HOME}/.terraformrc | grep 'token = "${{ env.TF_CLOUD_API_TOKEN }}"'
-  
-  terraform-credentials-enterprise:
-    name: 'Terraform Enterprise Credentials' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    env:
-      TF_CLOUD_API_TOKEN: 'XXXXXXXXXXXXXX.atlasv1.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-    - name: Setup Terraform
-      uses: ./
-      with:
-        cli_config_credentials_hostname: 'terraform.example.com'
-        cli_config_credentials_token: ${{ env.TF_CLOUD_API_TOKEN }}
-    
-    - name: Validate Terraform Credentials (Windows) 
-      if: runner.os == 'Windows'
-      run: |
-        cat ${APPDATA}/terraform.rc | grep 'credentials "terraform.example.com"'
-        cat ${APPDATA}/terraform.rc | grep 'token = "${{ env.TF_CLOUD_API_TOKEN }}"'
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
 
-    - name: Validate Teraform Credentials (Linux & macOS)
-      if: runner.os != 'Windows'
-      run: |
-        cat ${HOME}/.terraformrc | grep 'credentials "terraform.example.com"'
-        cat ${HOME}/.terraformrc | grep 'token = "${{ env.TF_CLOUD_API_TOKEN }}"'
-  
-  terraform-credentials-none:
-    name: 'Terraform No Credentials' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
 
-    - name: Setup Terraform
-      uses: ./
-    
-    - name: Validate Terraform Credentials (Windows) 
-      if: runner.os == 'Windows'
-      run: |
-        [[ -f ${APPDATA}/terraform.rc ]] || exit 0
-    
-    - name: Validate Teraform Credentials (Linux & macOS)
-      if: runner.os != 'Windows'
-      run: |
-        [[ -f ${HOME}/.terraformrc ]] || exit 0
-  
-  terraform-arguments:
-    name: 'Terraform Arguments' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: ./
-    
-    - name: Check No Arguments
-      run: terraform || exit 0
-    
-    - name: Check Single Argument
-      run: terraform help || exit 0
-    
-    - name: Check Single Argument Hyphen
-      run: terraform -help
-    
-    - name: Check Single Argument Double Hyphen
-      run: terraform --help
-    
-    - name: Check Single Argument Subcommand
-      run: terraform fmt -check
-
-    - name: Check Multiple Arguments Subcommand
-      run: terraform fmt -check -list=true -no-color
-  
-  terraform-arguments-no-wrapper:
-    name: 'Terraform Arguments No Wrapper' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: ./
-      with:
-        terraform_wrapper: false
-    
-    - name: Check No Arguments
-      run: terraform || exit 0
-    
-    - name: Check Single Argument
-      run: terraform help || exit 0
-    
-    - name: Check Single Argument Hyphen
-      run: terraform -help
-    
-    - name: Check Single Argument Double Hyphen
-      run: terraform --help
-    
-    - name: Check Single Argument Subcommand
-      run: terraform fmt -check
-
-    - name: Check Multiple Arguments Subcommand
-      run: terraform fmt -check -list=true -no-color
-  
-  terraform-run-local:
-    name: 'Terraform Run Local' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    defaults:
-      run:
-        working-directory: ./.github/workflows/data/local
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: ./
-    
-    - name: Terraform Init 
-      shell: bash
-      run: terraform init
-    
-    - name: Terraform Format 
-      shell: bash
-      run: terraform fmt -check
-    
-    - name: Terraform Plan 
-      id: plan
-      shell: bash
-      run: terraform plan 
-
-    - name: Print Terraform Plan 
-      shell: bash
-      run: echo "${{ steps.plan.outputs.stdout }}"
-  
-  terraform-run-local-no-wrapper:
-    name: 'Terraform Run Local No Wrapper' 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    defaults:
-      run:
-        working-directory: ./.github/workflows/data/local
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup Terraform
-      uses: ./
-      with:
-        terraform_wrapper: false
-    
-    - name: Terraform Init 
-      shell: bash
-      run: terraform init
-    
-    - name: Terraform Format 
-      shell: bash
-      run: terraform fmt -check
-    
-    - name: Terraform Plan 
-      id: plan
-      shell: bash
-      run: terraform plan 
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
