@@ -38,10 +38,18 @@ variable "dbase_instance_name" {
 variable "dbase_username" {
   description = "Value of the database username"
   type        = string
+  default     = "smallwindow21"
 }
+
+resource "random_string" "db_password" {
+  length  = 16
+  special = true
+}
+
 variable "dbase_password" {
   description = "Value of the database password"
   type        = string
+  default     = random_string.db_password
 }
 variable "dbase_subnet_group_name" {
   description = "Value of the database subnet group name"
