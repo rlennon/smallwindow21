@@ -6,15 +6,15 @@ on:
       - setup-terraform
   pull_request:
 
-defaults:
-  run:
-    shell: bash
-    working-directory: ../../terraform
 
 jobs:
   terraform:
     name: "Terraform"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ../../terraform
     steps:
       - name: Checkout
         uses: actions/checkout@v2
