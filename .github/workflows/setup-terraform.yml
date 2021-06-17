@@ -3,7 +3,7 @@ name: 'Setup Terraform'
 on:
   push:
     branches:
-    - master
+    - setup-terraform
   pull_request:
 
 defaults:
