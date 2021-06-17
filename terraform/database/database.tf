@@ -44,8 +44,8 @@ variable "private_subnet_dbase_2_id" {
 }
 
 resource "random_string" "db_password" {
-  length           = 16
-  special          = false
+  length  = 16
+  special = false
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
