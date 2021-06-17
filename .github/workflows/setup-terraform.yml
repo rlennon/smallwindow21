@@ -2,10 +2,9 @@ name: "Terraform"
 
 on:
   push:
-    branches:
-      - setup-terraform
+    branches: [ setup-terraform, main ]
   pull_request:
-
+    branches: [ setup-terraform, main ]
 
 jobs:
   terraform:
@@ -36,6 +35,13 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
 
       - name: Terraform Plan
         id: plan
