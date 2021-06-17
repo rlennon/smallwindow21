@@ -18,7 +18,7 @@ terraform {
 
 provider "aws" {
   #profile = var.aws_profile
-  region  = var.region
+  region = var.region
   # remember that if you change the region you will also need to change the ami
 }
 
