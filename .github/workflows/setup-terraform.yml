@@ -2,9 +2,9 @@ name: "Terraform"
 
 on:
   push:
-    branches: [ setup-terraform, main ]
+    branches: [ main ]
   pull_request:
-    branches: [ setup-terraform, main ]
+    branches: [ main ]
 
 jobs:
   terraform:
@@ -20,9 +20,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        #with:
+        with:
           # terraform_version: 0.13.0:
-          #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
         id: fmt
@@ -36,16 +36,9 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-
       - name: Terraform Plan
         id: plan
-        #if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: terraform plan -no-color  -var="dbase_username=smallwindow21" -var="dbase_password=password"
         continue-on-error: true
 
@@ -83,5 +76,5 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -var="dbase_username=smallwindow21" -var="dbase_password=password"
