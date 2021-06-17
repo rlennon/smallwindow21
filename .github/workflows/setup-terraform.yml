@@ -27,8 +27,8 @@ jobs:
 
       - name: Show Working Directory
         run: |
-              pwd &
-              ls -latr
+          pwd &&
+          ls -latr
 
       - name: Terraform Format
         id: fmt
