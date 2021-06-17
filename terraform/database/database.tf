@@ -90,5 +90,5 @@ output "dbase_instance_port" {
 }
 
 output "dbase_password" {
-  value = random_string.db_password
+  value = random_string.db_password.result
 }
