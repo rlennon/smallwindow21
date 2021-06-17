@@ -6,6 +6,11 @@ on:
       - setup-terraform
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+    working-directory: ../../terraform
+
 jobs:
   terraform:
     name: "Terraform"
@@ -16,9 +21,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
+        #with:
           # terraform_version: 0.13.0:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
         id: fmt
