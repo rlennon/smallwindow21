@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ../../terraform
+        working-directory: ./terraform
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,11 +24,6 @@ jobs:
         #with:
           # terraform_version: 0.13.0:
           #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-      - name: Show Working Directory
-        run: |
-          pwd &&
-          ls -latr
 
       - name: Terraform Format
         id: fmt
