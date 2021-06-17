@@ -65,7 +65,7 @@ resource "aws_db_instance" "db_instance" {
   instance_class         = var.dbase_instance_type
   name                   = var.dbase_instance_name
   username               = var.dbase_username
-  password               = random_string.db_password
+  password               = random_string.db_password.result
   skip_final_snapshot    = true
   db_subnet_group_name   = var.dbase_subnet_group_name
   vpc_security_group_ids = [var.general_sg_id, var.app_sg_id, var.dbase_sg_id]
