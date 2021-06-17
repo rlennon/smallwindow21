@@ -41,11 +41,6 @@ variable "dbase_username" {
   default     = "smallwindow21"
 }
 
-variable "dbase_password" {
-  description = "Value of the database password"
-  type        = string
-  default     = "password"
-}
 variable "dbase_subnet_group_name" {
   description = "Value of the database subnet group name"
   type        = string

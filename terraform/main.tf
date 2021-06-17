@@ -23,7 +23,6 @@ module "database" {
   project_name              = var.project_name
   dbase_instance_name       = var.dbase_instance_name
   dbase_username            = var.dbase_username
-  dbase_password            = var.dbase_password
   dbase_subnet_group_name   = var.dbase_subnet_group_name
   dbase_instance_type       = var.dbase_instance_type
   dbase_engine              = var.dbase_engine
@@ -62,7 +61,7 @@ module "compute" {
   db_endpoint            = module.database.dbase_instance_endpoint
   db_port                = module.database.dbase_instance_port
   db_username            = var.dbase_username
-  db_password            = var.dbase_password
+  db_password            = module.database.dbase_password
   storage_bucket_name    = module.storage.storage_bucket_name
   asg_min_size           = var.asg_min_size
   asg_max_size           = var.asg_max_size
@@ -70,6 +69,7 @@ module "compute" {
     module.database.dbase_instance_address,
     module.database.dbase_instance_endpoint,
     module.database.dbase_instance_port,
-    module.storage.storage_bucket_name
+    module.storage.storage_bucket_name,
+    module.database.dbase_password
   ]
 }
