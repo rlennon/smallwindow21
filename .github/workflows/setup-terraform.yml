@@ -76,7 +76,8 @@ jobs:
 
   terraform-apply:
     name: "Terraform Apply"
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    timeout-minutes: 60  
     defaults:
       run:
         shell: bash
