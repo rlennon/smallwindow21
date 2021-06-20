@@ -102,7 +102,6 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
-        
   trigger-aws-infrastructure-created:
     name: "Trigger AWS Infrastructure Created"
     runs-on: ubuntu-latest
