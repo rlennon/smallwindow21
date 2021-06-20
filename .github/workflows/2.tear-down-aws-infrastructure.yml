@@ -1,13 +1,12 @@
-name: "Terraform Destroy"
+name: "Tear Down AWS Infrastructure"
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
+  repository_dispatch:
+    types: [aws-infrastructure-created]
 
 jobs:
   terraform-destroy:
-    name: "Terraform Destroy"
+    name: "Perform Terraform Destroy"
     runs-on: ubuntu-latest 
     timeout-minutes: 1440     
     defaults:
