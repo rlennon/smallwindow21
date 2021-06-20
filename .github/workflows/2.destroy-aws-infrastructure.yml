@@ -2,7 +2,7 @@ name: "Destroy AWS Infrastructure"
 
 on:
   repository_dispatch:
-    types: [aws-infrastructure-created]
+    types: [ destroy-aws-infrastructure ]
 
 jobs:
   terraform-destroy:

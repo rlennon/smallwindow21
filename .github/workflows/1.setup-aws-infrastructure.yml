@@ -112,6 +112,6 @@ jobs:
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
-          event-type: aws-infrastructure-created
+          event-type: destroy-aws-infrastructure
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'      
 
