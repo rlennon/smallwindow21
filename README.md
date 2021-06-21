@@ -53,7 +53,7 @@ Ruth G. Lennon
 Refer to BB for deadlines
   
 ## Project Specification
-<team must agree specifications here - below are samples for discussion purposes>    
+<!-- <team must agree specifications here - below are samples for discussion purposes>     -->
     Clean and simple design
     User access levels (client, administrator)
     Includes at least one self developed api and one webservice
