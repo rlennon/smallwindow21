@@ -1,0 +1,32 @@
+name: "Destroy AWS Infrastructure"
+
+on:
+  repository_dispatch:
+    types: [ destroy-aws-infrastructure ]
+
+jobs:
+  terraform-destroy:
+    name: "Perform Terraform Destroy"
+    runs-on: ubuntu-latest 
+    timeout-minutes: 1440     
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    environment:
+      name: SmallWindow21
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

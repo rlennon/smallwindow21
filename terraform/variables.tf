@@ -27,7 +27,7 @@ variable "app_name" {
 variable "app_environment_name" {
   description = "Name of the application environment"
   type        = string
-  default     = "develop"
+  default     = "smallwindow21-dev"
 }
 
 variable "dbase_instance_name" {
@@ -38,11 +38,9 @@ variable "dbase_instance_name" {
 variable "dbase_username" {
   description = "Value of the database username"
   type        = string
+  default     = "smallwindow21"
 }
-variable "dbase_password" {
-  description = "Value of the database password"
-  type        = string
-}
+
 variable "dbase_subnet_group_name" {
   description = "Value of the database subnet group name"
   type        = string
