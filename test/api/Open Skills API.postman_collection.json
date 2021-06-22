@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "38499002-1526-40a6-9bf6-7248b2160bf8",
-		"name": "Open Skills API",
+		"name": "Example API - Open Skills API ",
 		"description": "A complete and standard data store for canonical and emerging skills, knowledge, abilities, tools, technolgies, and how they relate to jobs.\n\nContact Support:\n Name: Work Data Initiative",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
