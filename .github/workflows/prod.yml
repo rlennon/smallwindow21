@@ -137,7 +137,7 @@ jobs:
           environment_name: smallwindow21-dev
           version_label: ${{github.SHA}}
           region: eu-west-1
-          deployment_package: target/smallwindow-21-0.0.1-SNAPSHOT.jar
+          deployment_package: smallwindow-21-0.0.1-SNAPSHOT.jar
 
   terraform-destroy:
     name: "Perform Terraform Destroy"
