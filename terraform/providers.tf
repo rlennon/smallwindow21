@@ -16,7 +16,6 @@ terraform {
   }
 }
 
-data "aws_caller_identity" "current" {}
 provider "aws" {
   #profile = var.aws_profile
   region = var.region
