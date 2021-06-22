@@ -1,4 +1,4 @@
-name: "Setup AWS Infrastructure"
+name: "SmallWindow21 Production Deploy"
 
 on:
   push:
