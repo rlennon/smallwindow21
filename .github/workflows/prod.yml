@@ -136,19 +136,19 @@ jobs:
     name: Deploy to elastic beanstalk
     runs-on: ubuntu-latest
     steps:
-        uses: actions/download-artifact@v1
-        with:
-          name: Package
-          path: target/
-      - name: Generate Deployment Package
-        run: zip -r deploy.zip target/githubactionsspike-0.0.1-SNAPSHOT.jar Dockerfile
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v16
-        with:
-          aws_access_key: {{secrets.AWS_ACCESS_KEY_ID}}
-          aws_secret_key: {{secrets.AWS_SECRET_ACCESS_KEY}}
-          application_name: smallwindow21
-          environment_name: smallwindow21-dev
-          version_label: ${{github.SHA}}
-          region: eu-west-1
-          deployment_package: deploy.zip
+      uses: actions/download-artifact@v1
+      with:
+        name: Package
+        path: target/
+    - name: Generate Deployment Package
+      run: zip -r deploy.zip target/githubactionsspike-0.0.1-SNAPSHOT.jar Dockerfile
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v16
+      with:
+        aws_access_key: {{secrets.AWS_ACCESS_KEY_ID}}
+        aws_secret_key: {{secrets.AWS_SECRET_ACCESS_KEY}}
+        application_name: smallwindow21
+        environment_name: smallwindow21-dev
+        version_label: ${{github.SHA}}
+        region: eu-west-1
+        deployment_package: deploy.zip
