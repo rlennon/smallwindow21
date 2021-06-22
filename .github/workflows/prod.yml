@@ -14,12 +14,13 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 15
-      - run: mvn -B clean install --file app/pom.xml
-      - run: mkdir staging && cp app/target/*.jar staging
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Package
-          path: app/target/
+      - run: mkdir test
+      #- run: mvn -B clean install --file app/pom.xml
+      #- run: mkdir staging && cp app/target/*.jar staging
+      #- uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Package
+      #    path: app/target/
 
   terraform-setup:
     name: "Perform Terraform Setup"
