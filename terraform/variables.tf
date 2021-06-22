@@ -27,7 +27,7 @@ variable "app_name" {
 variable "app_environment_name" {
   description = "Name of the application environment"
   type        = string
-  default     = "develop"
+  default     = "smallwindow21-dev"
 }
 
 variable "dbase_instance_name" {
