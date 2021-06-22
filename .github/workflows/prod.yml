@@ -139,7 +139,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Package
-        path: target
+        path: target/
     - name: Generate Deployment Package
       run: zip -r deploy.zip target/githubactionsspike-0.0.1-SNAPSHOT.jar Dockerfile
     - name: Deploy to EB
