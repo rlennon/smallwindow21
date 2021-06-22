@@ -68,7 +68,7 @@ resource "aws_elastic_beanstalk_application" "app_instance" {
 resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   name                = var.app_environment_name
   application         = aws_elastic_beanstalk_application.app_instance.name
-  solution_stack_name = "64bit Amazon Linux 2018.03 v2.16.8 running Docker 19.03.13-ce"
+  solution_stack_name = "64bit Amazon Linux 2 v3.2.1 running Corretto 11"
   tier                = "WebServer"
 
   setting {
