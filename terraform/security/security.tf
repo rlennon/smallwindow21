@@ -92,7 +92,7 @@ resource "aws_iam_instance_profile" "eb_profile" {
 resource "aws_iam_role" "eb_role" {
   name = var.eb_role_name
   path = "/"
-
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier", "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"]
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
