@@ -153,6 +153,11 @@ variable "eb_log_retention_days" {
   type        = number
   default     = 3
 }
+variable "eb_health_endpoint" {
+  description = "The healthcheck endpoint to use for the elastic beanstalk application"
+  type        = string
+  default     = "/"
+}
 variable "storage_bucket_prefix" {
   description = "The prefix to use for the storage s3 bucket"
   type        = string

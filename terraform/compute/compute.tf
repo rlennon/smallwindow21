@@ -84,6 +84,9 @@ variable "eb_max_count_versions" {
 variable "eb_delete_source_from_s3" {
   type = bool
 }
+variable "eb_health_endpoint" {
+  type = string
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -141,6 +144,11 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = var.eb_instance_profile_id
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = var.eb_health_endpoint
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
