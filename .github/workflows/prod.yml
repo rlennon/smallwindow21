@@ -109,6 +109,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
 
       - name: Terraform Init
         id: init
@@ -117,6 +118,11 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
+
+      - name: Get Elastic Beanstalk Endpoint
+        run: |
+           elasticbeanstalk_app_loadbalancer_endpoint=$(terraform output elasticbeanstalk_app_loadbalancer_endpoint)
+           echo $elasticbeanstalk_app_loadbalancer_endpoint
 
   deploy:
     name: "Deploy to elastic beanstalk"

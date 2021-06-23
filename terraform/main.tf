@@ -22,6 +22,7 @@ module "database" {
   owner_name                = var.owner_name
   project_name              = var.project_name
   dbase_instance_name       = var.dbase_instance_name
+  dbase_db_name             = var.dbase_db_name
   dbase_username            = var.dbase_username
   dbase_subnet_group_name   = var.dbase_subnet_group_name
   dbase_instance_type       = var.dbase_instance_type
@@ -57,9 +58,11 @@ module "compute" {
   public_subnet_id       = module.networking.public_subnet_id
   private_subnet_app_id  = module.networking.private_subnet_app_id
   eb_instance_profile_id = module.security.eb_instance_profile_id
+  eb_server_port         = var.eb_server_port
   db_address             = module.database.dbase_instance_address
   db_endpoint            = module.database.dbase_instance_endpoint
   db_port                = module.database.dbase_instance_port
+  db_name                = module.database.dbase_db_name
   db_username            = var.dbase_username
   db_password            = module.database.dbase_password
   storage_bucket_name    = module.storage.storage_bucket_name

@@ -42,6 +42,9 @@ variable "db_address" {
 variable "db_endpoint" {
   type = string
 }
+variable "db_name" {
+  type = string
+}
 variable "db_port" {
   type = number
 }
@@ -49,6 +52,9 @@ variable "db_username" {
   type = string
 }
 variable "db_password" {
+  type = string
+}
+variable "eb_server_port" {
   type = string
 }
 variable "storage_bucket_name" {
@@ -65,10 +71,16 @@ resource "aws_elastic_beanstalk_application" "app_instance" {
   description = var.app_name
 }
 
+data "aws_elastic_beanstalk_solution_stack" "java" {
+  most_recent = true
+
+  name_regex = "^64bit Amazon Linux (.*) running Corretto (.*)$"
+}
+
 resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   name                = var.app_environment_name
   application         = aws_elastic_beanstalk_application.app_instance.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.2.1 running Corretto 11"
+  solution_stack_name = data.aws_elastic_beanstalk_solution_stack.java.name
   tier                = "WebServer"
 
   setting {
@@ -118,18 +130,33 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "db_name"
+    value     = var.db_name
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "db_port"
     value     = var.db_port
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "db_username"
+    name      = "SPRING_DATASOURCE_URL"
+    value     = "jdbc:mysql://${var.db_endpoint}/${var.db_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SPRING_DATASOURCE_USERNAME"
     value     = var.db_username
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "db_password"
+    name      = "SPRING_DATASOURCE_PASSWORD"
     value     = var.db_password
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SERVER_PORT"
+    value     = var.eb_server_port
   }
   setting {
     namespace = "aws:autoscaling:asg"

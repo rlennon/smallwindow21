@@ -31,9 +31,14 @@ variable "app_environment_name" {
 }
 
 variable "dbase_instance_name" {
-  description = "Value of the Name tag for the EC2 DBase instance"
+  description = "Value of the Identifier tag for the EC2 DBase instance"
   type        = string
   default     = "smallwindow21db"
+}
+variable "dbase_db_name" {
+  description = "Value of the Name tag for the EC2 DBase instance. Name of default database that is created"
+  type        = string
+  default     = "smallwindow21"
 }
 variable "dbase_username" {
   description = "Value of the database username"
@@ -113,7 +118,11 @@ variable "eb_role_name" {
   type        = string
   default     = "SmallWindow21-Role"
 }
-
+variable "eb_server_port" {
+  description = "The port that elastic beanstalk will talk to the application on"
+  type        = number
+  default     = 5000
+}
 variable "storage_bucket_prefix" {
   description = "The prefix to use for the storage s3 bucket"
   type        = string
