@@ -11,6 +11,9 @@ variable "eb_profile_name" {
 variable "eb_role_name" {
   type = string
 }
+variable "eb_service_role_name" {
+  type = string
+}
 variable "storage_bucket_name" {
   type = string
 }
@@ -135,6 +138,28 @@ resource "aws_iam_policy" "smallwindow21_s3_policy" {
   })
 }
 
+
+resource "aws_iam_role" "eb_service_role" {
+  name                = var.eb_service_role_name
+  path                = "/"
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSElasticBeanstalkEnhancedHealth", "arn:aws:iam::aws:policy/AWSElasticBeanstalkService"]
+  assume_role_policy  = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "sts:AssumeRole",
+            "Principal": {
+               "Service": "elasticbeanstalk.amazonaws.com"
+            },
+            "Effect": "Allow",
+            "Sid": ""
+        }
+    ]
+}
+EOF
+}
+
 output "general_sg_id" {
   value = aws_security_group.general_sg.id
 }
@@ -149,3 +174,8 @@ output "dbase_sg_id" {
 output "eb_instance_profile_id" {
   value = aws_iam_instance_profile.eb_profile.id
 }
+
+output "eb_service_role_arn" {
+  value = aws_iam_role.eb_service_role.arn
+}
+ 

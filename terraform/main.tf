@@ -1,11 +1,12 @@
 module "security" {
-  source              = "./security"
-  project_name        = var.project_name
-  vpc_id              = module.networking.vpc_id
-  eb_profile_name     = var.eb_profile_name
-  eb_role_name        = var.eb_role_name
-  storage_bucket_name = module.storage.storage_bucket_name
-  depends_on          = [module.storage.storage_bucket_name]
+  source               = "./security"
+  project_name         = var.project_name
+  vpc_id               = module.networking.vpc_id
+  eb_profile_name      = var.eb_profile_name
+  eb_role_name         = var.eb_role_name
+  eb_service_role_name = var.eb_service_role_name
+  storage_bucket_name  = module.storage.storage_bucket_name
+  depends_on           = [module.storage.storage_bucket_name]
 }
 
 module "networking" {
@@ -73,11 +74,15 @@ module "compute" {
   eb_stream_logs              = var.eb_stream_logs
   eb_delete_logs_on_terminate = var.eb_delete_logs_on_terminate
   eb_log_retention_days       = var.eb_log_retention_days
+  eb_service_role_arn         = module.security.eb_service_role_arn
+  eb_max_count_versions       = var.eb_max_count_versions
+  eb_delete_source_from_s3    = var.eb_delete_source_from_s3
   depends_on = [
     module.database.dbase_instance_address,
     module.database.dbase_instance_endpoint,
     module.database.dbase_instance_port,
     module.storage.storage_bucket_name,
-    module.database.dbase_password
+    module.database.dbase_password,
+    module.security.eb_service_role_arn
   ]
 }

@@ -75,9 +75,24 @@ variable "eb_delete_logs_on_terminate" {
 variable "eb_log_retention_days" {
   type = number
 }
+variable "eb_service_role_arn" {
+  type = string
+}
+variable "eb_max_count_versions" {
+  type = number
+}
+variable "eb_delete_source_from_s3" {
+  type = bool
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
+
+  appversion_lifecycle {
+    service_role          = var.eb_service_role_arn
+    max_count             = var.eb_max_count_versions
+    delete_source_from_s3 = var.eb_delete_source_from_s3
+  }
 }
 
 data "aws_elastic_beanstalk_solution_stack" "java" {

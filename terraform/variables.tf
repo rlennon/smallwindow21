@@ -116,7 +116,22 @@ variable "eb_profile_name" {
 variable "eb_role_name" {
   description = "The name of the role to use for elastic beanstalk"
   type        = string
-  default     = "SmallWindow21-Role"
+  default     = "SmallWindow21-EBRole"
+}
+variable "eb_service_role_name" {
+  description = "The name of the servicerole to use for elastic beanstalk"
+  type        = string
+  default     = "SmallWindow21-ServiceRole"
+}
+variable "eb_max_count_versions" {
+  description = "The max number of versions to keep in elastic beanstalk"
+  type        = number
+  default     = 5
+}
+variable "eb_delete_source_from_s3" {
+  description = "Whether to delete the version source from S3 or not"
+  type        = bool
+  default     = true
 }
 variable "eb_server_port" {
   description = "The port that elastic beanstalk will talk to the application on"
