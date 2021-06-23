@@ -121,8 +121,8 @@ jobs:
 
       - name: Get Elastic Beanstalk Endpoint
         run: |
-           elasticbeanstalk_app_loadbalancer_endpoint=$(terraform output elasticbeanstalk_app_loadbalancer_endpoint)
-           echo $elasticbeanstalk_app_loadbalancer_endpoint
+           elasticbeanstalk_app_cname =$(terraform output elasticbeanstalk_app_cname)
+           echo $elasticbeanstalk_app_cname 
 
   deploy:
     name: "Deploy to elastic beanstalk"
