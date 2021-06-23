@@ -80,7 +80,7 @@ data "aws_elastic_beanstalk_solution_stack" "java" {
 resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
   name                = var.app_environment_name
   application         = aws_elastic_beanstalk_application.app_instance.name
-  solution_stack_name = aws_elastic_beanstalk_solution_stack.java.name
+  solution_stack_name = data.aws_elastic_beanstalk_solution_stack.java.name
   tier                = "WebServer"
 
   setting {
