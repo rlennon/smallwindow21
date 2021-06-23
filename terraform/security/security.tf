@@ -142,7 +142,7 @@ resource "aws_iam_policy" "smallwindow21_s3_policy" {
 resource "aws_iam_role" "eb_service_role" {
   name                = var.eb_service_role_name
   path                = "/"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSElasticBeanstalkEnhancedHealth", "arn:aws:iam::aws:policy/AWSElasticBeanstalkService"]
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth", "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkService"]
   assume_role_policy  = <<EOF
 {
     "Version": "2012-10-17",
