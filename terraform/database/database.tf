@@ -96,5 +96,5 @@ output "dbase_password" {
   value = random_string.db_password.result
 }
 output "dbase_db_name" {
-    value = aws_db_instance.db_instance.name
+  value = aws_db_instance.db_instance.name
 }
