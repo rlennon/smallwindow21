@@ -45,29 +45,32 @@ module "storage" {
 }
 
 module "compute" {
-  source                 = "./compute"
-  owner_name             = var.owner_name
-  project_name           = var.project_name
-  app_name               = var.app_name
-  app_environment_name   = var.app_environment_name
-  instance_type          = var.instance_type
-  general_sg_id          = module.security.general_sg_id
-  app_sg_id              = module.security.app_sg_id
-  dbase_sg_id            = module.security.dbase_sg_id
-  vpc_id                 = module.networking.vpc_id
-  public_subnet_id       = module.networking.public_subnet_id
-  private_subnet_app_id  = module.networking.private_subnet_app_id
-  eb_instance_profile_id = module.security.eb_instance_profile_id
-  eb_server_port         = var.eb_server_port
-  db_address             = module.database.dbase_instance_address
-  db_endpoint            = module.database.dbase_instance_endpoint
-  db_port                = module.database.dbase_instance_port
-  db_name                = module.database.dbase_db_name
-  db_username            = var.dbase_username
-  db_password            = module.database.dbase_password
-  storage_bucket_name    = module.storage.storage_bucket_name
-  asg_min_size           = var.asg_min_size
-  asg_max_size           = var.asg_max_size
+  source                      = "./compute"
+  owner_name                  = var.owner_name
+  project_name                = var.project_name
+  app_name                    = var.app_name
+  app_environment_name        = var.app_environment_name
+  instance_type               = var.instance_type
+  general_sg_id               = module.security.general_sg_id
+  app_sg_id                   = module.security.app_sg_id
+  dbase_sg_id                 = module.security.dbase_sg_id
+  vpc_id                      = module.networking.vpc_id
+  public_subnet_id            = module.networking.public_subnet_id
+  private_subnet_app_id       = module.networking.private_subnet_app_id
+  eb_instance_profile_id      = module.security.eb_instance_profile_id
+  eb_server_port              = var.eb_server_port
+  db_address                  = module.database.dbase_instance_address
+  db_endpoint                 = module.database.dbase_instance_endpoint
+  db_port                     = module.database.dbase_instance_port
+  db_name                     = module.database.dbase_db_name
+  db_username                 = var.dbase_username
+  db_password                 = module.database.dbase_password
+  storage_bucket_name         = module.storage.storage_bucket_name
+  asg_min_size                = var.asg_min_size
+  asg_max_size                = var.asg_max_size
+  eb_stream_logs              = var.eb_stream_logs
+  eb_delete_logs_on_terminate = var.eb_delete_logs_on_terminate
+  eb_log_retention_days       = var.eb_log_retention_days
   depends_on = [
     module.database.dbase_instance_address,
     module.database.dbase_instance_endpoint,
