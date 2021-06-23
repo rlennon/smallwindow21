@@ -8,6 +8,9 @@ variable "project_name" {
 variable "dbase_instance_name" {
   type = string
 }
+variable "dbase_db_name" {
+  type = string
+}
 variable "dbase_username" {
   type = string
 }
@@ -63,7 +66,7 @@ resource "aws_db_instance" "db_instance" {
   engine                 = var.dbase_engine
   engine_version         = var.dbase_engine_version
   instance_class         = var.dbase_instance_type
-  name                   = var.dbase_instance_name
+  name                   = var.dbase_db_name
   username               = var.dbase_username
   password               = random_string.db_password.result
   skip_final_snapshot    = true
@@ -74,6 +77,7 @@ resource "aws_db_instance" "db_instance" {
     Name    = var.dbase_instance_name
     Owner   = var.owner_name
     project = var.project_name
+    DBName  = var.dbase_db_name
   }
   depends_on = [aws_db_subnet_group.db_subnet_group]
 }
@@ -88,7 +92,9 @@ output "dbase_instance_endpoint" {
 output "dbase_instance_port" {
   value = aws_db_instance.db_instance.port
 }
-
 output "dbase_password" {
   value = random_string.db_password.result
+}
+output "dbase_db_name" {
+    value = aws_db_instance.db_instance.name
 }
