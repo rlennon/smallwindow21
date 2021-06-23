@@ -90,7 +90,7 @@ resource "aws_iam_instance_profile" "eb_profile" {
   name = var.eb_profile_name
   role = aws_iam_role.eb_role.name
 }
-
+ 
 resource "aws_iam_role" "eb_role" {
   name                = var.eb_role_name
   path                = "/"
