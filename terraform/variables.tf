@@ -123,6 +123,21 @@ variable "eb_server_port" {
   type        = number
   default     = 5000
 }
+variable "eb_stream_logs" {
+  description = "The option to stream logs to cloudwatch from elastic beanstalk or not"
+  type        = bool
+  default     = true
+}
+variable "eb_delete_logs_on_terminate" {
+  description = "The option to delete logs when terminating an elastic beanstalk environment"
+  type        = bool
+  default     = true
+}
+variable "eb_log_retention_days" {
+  description = "The option to set the retention in days for logs"
+  type        = number
+  default     = 3
+}
 variable "storage_bucket_prefix" {
   description = "The prefix to use for the storage s3 bucket"
   type        = string

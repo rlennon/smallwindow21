@@ -66,6 +66,15 @@ variable "asg_min_size" {
 variable "asg_max_size" {
   type = number
 }
+variable "eb_stream_logs" {
+  type = bool
+}
+variable "eb_delete_logs_on_terminate" {
+  type = bool
+}
+variable "eb_log_retention_days" {
+  type = number
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -173,7 +182,21 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     name      = "storage_bucket_name"
     value     = var.storage_bucket_name
   }
-
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "StreamLogs"
+    value     = var.eb_stream_logs
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "DeleteOnTerminate"
+    value     = var.eb_delete_logs_on_terminate
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "RetentionInDays"
+    value     = var.eb_log_retention_days
+  }
   tags = {
     Owner   = var.owner_name
     project = var.project_name
