@@ -7,6 +7,7 @@ on:
 jobs:
 
   build-application:
+    name: "Build Application"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -118,11 +119,10 @@ jobs:
         run: terraform apply -auto-approve
 
   deploy:
-    name: Deploy to elastic beanstalk
+    name: "Deploy to elastic beanstalk"
     runs-on: ubuntu-latest
     needs: terraform-apply
     steps:
-
       - uses: actions/download-artifact@v2
         with:
           name: Package
