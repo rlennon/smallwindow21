@@ -1,9 +1,11 @@
 module "security" {
-  source          = "./security"
-  project_name    = var.project_name
-  vpc_id          = module.networking.vpc_id
-  eb_profile_name = var.eb_profile_name
-  eb_role_name    = var.eb_role_name
+  source              = "./security"
+  project_name        = var.project_name
+  vpc_id              = module.networking.vpc_id
+  eb_profile_name     = var.eb_profile_name
+  eb_role_name        = var.eb_role_name
+  storage_bucket_name = module.storage.storage_bucket_name
+  depends_on          = [module.storage.storage_bucket_name]
 }
 
 module "networking" {

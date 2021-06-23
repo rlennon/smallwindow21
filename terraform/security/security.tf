@@ -11,7 +11,9 @@ variable "eb_profile_name" {
 variable "eb_role_name" {
   type = string
 }
-
+variable "storage_bucket_name" {
+  type = string
+}
 resource "aws_security_group" "general_sg" {
   name        = "General Security Group"
   description = "HTTP egress to anywhere"
@@ -90,10 +92,10 @@ resource "aws_iam_instance_profile" "eb_profile" {
 }
 
 resource "aws_iam_role" "eb_role" {
-  name = var.eb_role_name
-  path = "/"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier", "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"]
-  assume_role_policy = <<EOF
+  name                = var.eb_role_name
+  path                = "/"
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier", "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier", aws_iam_policy.smallwindow21_s3_policy.arn]
+  assume_role_policy  = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -110,6 +112,28 @@ resource "aws_iam_role" "eb_role" {
 EOF
 }
 
+resource "aws_iam_policy" "smallwindow21_s3_policy" {
+  name = "smallwindow21_s3_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:PutObjectAcl",
+          "s3:GetObject",
+          "s3:GetObjectAcl",
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:ListBucket"
+        ]
+        Effect   = "Allow"
+        Resource = ["arn:aws:s3:::${var.storage_bucket_name}", "arn:aws:s3:::${var.storage_bucket_name}/*"]
+      },
+    ]
+  })
+}
 
 output "general_sg_id" {
   value = aws_security_group.general_sg.id
