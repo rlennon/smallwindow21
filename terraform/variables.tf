@@ -116,12 +116,47 @@ variable "eb_profile_name" {
 variable "eb_role_name" {
   description = "The name of the role to use for elastic beanstalk"
   type        = string
-  default     = "SmallWindow21-Role"
+  default     = "SmallWindow21-EBRole"
+}
+variable "eb_service_role_name" {
+  description = "The name of the servicerole to use for elastic beanstalk"
+  type        = string
+  default     = "SmallWindow21-ServiceRole"
+}
+variable "eb_max_count_versions" {
+  description = "The max number of versions to keep in elastic beanstalk"
+  type        = number
+  default     = 5
+}
+variable "eb_delete_source_from_s3" {
+  description = "Whether to delete the version source from S3 or not"
+  type        = bool
+  default     = true
 }
 variable "eb_server_port" {
   description = "The port that elastic beanstalk will talk to the application on"
   type        = number
   default     = 5000
+}
+variable "eb_stream_logs" {
+  description = "The option to stream logs to cloudwatch from elastic beanstalk or not"
+  type        = bool
+  default     = true
+}
+variable "eb_delete_logs_on_terminate" {
+  description = "The option to delete logs when terminating an elastic beanstalk environment"
+  type        = bool
+  default     = true
+}
+variable "eb_log_retention_days" {
+  description = "The option to set the retention in days for logs"
+  type        = number
+  default     = 3
+}
+variable "eb_health_endpoint" {
+  description = "The healthcheck endpoint to use for the elastic beanstalk application"
+  type        = string
+  default     = "/"
 }
 variable "storage_bucket_prefix" {
   description = "The prefix to use for the storage s3 bucket"

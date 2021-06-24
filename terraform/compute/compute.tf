@@ -66,9 +66,36 @@ variable "asg_min_size" {
 variable "asg_max_size" {
   type = number
 }
+variable "eb_stream_logs" {
+  type = bool
+}
+variable "eb_delete_logs_on_terminate" {
+  type = bool
+}
+variable "eb_log_retention_days" {
+  type = number
+}
+variable "eb_service_role_arn" {
+  type = string
+}
+variable "eb_max_count_versions" {
+  type = number
+}
+variable "eb_delete_source_from_s3" {
+  type = bool
+}
+variable "eb_health_endpoint" {
+  type = string
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
+
+  appversion_lifecycle {
+    service_role          = var.eb_service_role_arn
+    max_count             = var.eb_max_count_versions
+    delete_source_from_s3 = var.eb_delete_source_from_s3
+  }
 }
 
 data "aws_elastic_beanstalk_solution_stack" "java" {
@@ -117,6 +144,11 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = var.eb_instance_profile_id
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = var.eb_health_endpoint
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
@@ -173,7 +205,21 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     name      = "storage_bucket_name"
     value     = var.storage_bucket_name
   }
-
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "StreamLogs"
+    value     = var.eb_stream_logs
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "DeleteOnTerminate"
+    value     = var.eb_delete_logs_on_terminate
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name      = "RetentionInDays"
+    value     = var.eb_log_retention_days
+  }
   tags = {
     Owner   = var.owner_name
     project = var.project_name
