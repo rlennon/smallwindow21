@@ -173,12 +173,6 @@ variable "eb_log_retention_days" {
   default     = 3
 }
 
-variable "eb_health_endpoint" {
-  description = "The healthcheck endpoint to use for the elastic beanstalk application"
-  type        = string
-  default     = "/"
-}
-
 variable "eb_wait_for_ready_timeout" {
   description = "The maximum duration that Terraform should wait for an Elastic Beanstalk Environment to be in a ready state before timing out."
   type        = string

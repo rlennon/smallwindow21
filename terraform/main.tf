@@ -77,7 +77,6 @@ module "compute" {
   eb_service_role_arn         = module.security.eb_service_role_arn
   eb_max_count_versions       = var.eb_max_count_versions
   eb_delete_source_from_s3    = var.eb_delete_source_from_s3
-  eb_health_endpoint          = var.eb_health_endpoint
   wait_for_ready_timeout      = var.eb_wait_for_ready_timeout
   depends_on = [
     module.database.dbase_instance_address,

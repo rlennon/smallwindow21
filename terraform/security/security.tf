@@ -1,6 +1,7 @@
 variable "project_name" {
   type = string
 }
+
 variable "vpc_id" {
   type = string
 }
@@ -8,15 +9,19 @@ variable "vpc_id" {
 variable "eb_profile_name" {
   type = string
 }
+
 variable "eb_role_name" {
   type = string
 }
+
 variable "eb_service_role_name" {
   type = string
 }
+
 variable "storage_bucket_name" {
   type = string
 }
+
 resource "aws_security_group" "general_sg" {
   name        = "General Security Group"
   description = "HTTP egress to anywhere"
@@ -167,6 +172,7 @@ output "general_sg_id" {
 output "app_sg_id" {
   value = aws_security_group.app_sg.id
 }
+
 output "dbase_sg_id" {
   value = aws_security_group.dbase_sg.id
 }

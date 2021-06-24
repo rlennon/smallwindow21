@@ -1,6 +1,7 @@
 variable "owner_name" {
   type = string
 }
+
 variable "project_name" {
   type = string
 }
@@ -8,12 +9,15 @@ variable "project_name" {
 variable "app_name" {
   type = string
 }
+
 variable "app_environment_name" {
   type = string
 }
+
 variable "instance_type" {
   type = string
 }
+
 variable "general_sg_id" {
   type = string
 }
@@ -21,75 +25,95 @@ variable "general_sg_id" {
 variable "app_sg_id" {
   type = string
 }
+
 variable "dbase_sg_id" {
   type = string
 }
+
 variable "vpc_id" {
   type = string
 }
+
 variable "public_subnet_id" {
   type = string
 }
+
 variable "private_subnet_app_id" {
   type = string
 }
+
 variable "eb_instance_profile_id" {
   type = string
 }
+
 variable "db_address" {
   type = string
 }
+
 variable "db_endpoint" {
   type = string
 }
+
 variable "db_name" {
   type = string
 }
+
 variable "db_port" {
   type = number
 }
+
 variable "db_username" {
   type = string
 }
+
 variable "db_password" {
   type = string
 }
+
 variable "eb_server_port" {
   type = string
 }
+
 variable "storage_bucket_name" {
   type = string
 }
+
 variable "asg_min_size" {
   type = number
 }
+
 variable "asg_max_size" {
   type = number
 }
+
 variable "eb_stream_logs" {
   type = bool
 }
+
 variable "eb_delete_logs_on_terminate" {
   type = bool
 }
+
 variable "eb_log_retention_days" {
   type = number
 }
+
 variable "eb_service_role_arn" {
   type = string
 }
+
 variable "eb_max_count_versions" {
   type = number
 }
+
 variable "eb_delete_source_from_s3" {
   type = bool
 }
-variable "eb_health_endpoint" {
-  type = string
-}
+
 variable "wait_for_ready_timeout" {
   type = string
 }
+
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -148,11 +172,6 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     name      = "IamInstanceProfile"
     value     = var.eb_instance_profile_id
   }
-  //setting {
-  //  namespace = "aws:elasticbeanstalk:application"
-  //  name      = "Application Healthcheck URL"
-  //  value     = var.eb_health_endpoint
-  //}
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "db_address"
@@ -232,6 +251,7 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
 output "elasticbeanstalk_app_cname" {
   value = aws_elastic_beanstalk_environment.app_instance_environment.cname
 }
+
 output "elasticbeanstalk_app_loadbalancer_endpoint" {
   value = aws_elastic_beanstalk_environment.app_instance_environment.endpoint_url
 }
