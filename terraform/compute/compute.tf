@@ -87,6 +87,9 @@ variable "eb_delete_source_from_s3" {
 variable "eb_health_endpoint" {
   type = string
 }
+variable "wait_for_ready_timeout" {
+  type = string
+}
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -105,11 +108,11 @@ data "aws_elastic_beanstalk_solution_stack" "java" {
 }
 
 resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
-  name                = var.app_environment_name
-  application         = aws_elastic_beanstalk_application.app_instance.name
-  solution_stack_name = data.aws_elastic_beanstalk_solution_stack.java.name
-  tier                = "WebServer"
-
+  name                   = var.app_environment_name
+  application            = aws_elastic_beanstalk_application.app_instance.name
+  solution_stack_name    = data.aws_elastic_beanstalk_solution_stack.java.name
+  tier                   = "WebServer"
+  wait_for_ready_timeout = var.wait_for_ready_timeout
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
@@ -145,11 +148,11 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     name      = "IamInstanceProfile"
     value     = var.eb_instance_profile_id
   }
-  setting {
-    namespace = "aws:elasticbeanstalk:application"
-    name      = "Application Healthcheck URL"
-    value     = var.eb_health_endpoint
-  }
+  //setting {
+  //  namespace = "aws:elasticbeanstalk:application"
+  //  name      = "Application Healthcheck URL"
+  //  value     = var.eb_health_endpoint
+  //}
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "db_address"

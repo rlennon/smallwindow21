@@ -179,6 +179,11 @@ variable "eb_health_endpoint" {
   default     = "/"
 }
 
+variable "eb_wait_for_ready_timeout" {
+  description = "The maximum duration that Terraform should wait for an Elastic Beanstalk Environment to be in a ready state before timing out."
+  type        = number
+  default     = 60
+}
 variable "storage_bucket_prefix" {
   description = "The prefix to use for the storage s3 bucket"
   type        = string
