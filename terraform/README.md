@@ -3,10 +3,10 @@ cd terraform
 terraform init
 
 # Apply Configuration
-terraform apply -auto-approve -var="aws_profile=lyit" -var="dbase_username=smallwindow21" -var="dbase_password=password"
-
+terraform apply -auto-approve -var="aws_profile=lyit"
+ 
 # Destroy Configuration
-terraform destroy -auto-approve -var="aws_profile=lyit" -var="dbase_username=smallwindow21" -var="dbase_password=password"
+terraform destroy -auto-approve -var="aws_profile=lyit" 
 
 # format terraform
 terraform fmt -recursive
