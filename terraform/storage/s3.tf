@@ -5,12 +5,15 @@ variable "storage_bucket_prefix" {
 variable "owner_name" {
   type = string
 }
+
 variable "project_name" {
   type = string
 }
+
 variable "region" {
   type = string
 }
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "storage_bucket" {

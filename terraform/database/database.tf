@@ -1,6 +1,7 @@
 variable "owner_name" {
   type = string
 }
+
 variable "project_name" {
   type = string
 }
@@ -8,24 +9,35 @@ variable "project_name" {
 variable "dbase_instance_name" {
   type = string
 }
+
+variable "dbase_db_name" {
+  type = string
+}
+
 variable "dbase_username" {
   type = string
 }
+
 variable "dbase_subnet_group_name" {
   type = string
 }
+
 variable "dbase_instance_type" {
   type = string
 }
+
 variable "dbase_engine" {
   type = string
 }
+
 variable "dbase_engine_version" {
   type = string
 }
+
 variable "dbase_allocated_storage" {
   type = number
 }
+
 variable "general_sg_id" {
   type = string
 }
@@ -33,12 +45,15 @@ variable "general_sg_id" {
 variable "app_sg_id" {
   type = string
 }
+
 variable "dbase_sg_id" {
   type = string
 }
+
 variable "private_subnet_dbase_1_id" {
   type = string
 }
+
 variable "private_subnet_dbase_2_id" {
   type = string
 }
@@ -63,7 +78,7 @@ resource "aws_db_instance" "db_instance" {
   engine                 = var.dbase_engine
   engine_version         = var.dbase_engine_version
   instance_class         = var.dbase_instance_type
-  name                   = var.dbase_instance_name
+  name                   = var.dbase_db_name
   username               = var.dbase_username
   password               = random_string.db_password.result
   skip_final_snapshot    = true
@@ -74,6 +89,7 @@ resource "aws_db_instance" "db_instance" {
     Name    = var.dbase_instance_name
     Owner   = var.owner_name
     project = var.project_name
+    DBName  = var.dbase_db_name
   }
   depends_on = [aws_db_subnet_group.db_subnet_group]
 }
@@ -82,13 +98,19 @@ resource "aws_db_instance" "db_instance" {
 output "dbase_instance_address" {
   value = aws_db_instance.db_instance.address
 }
+
 output "dbase_instance_endpoint" {
   value = aws_db_instance.db_instance.endpoint
 }
+
 output "dbase_instance_port" {
   value = aws_db_instance.db_instance.port
 }
 
 output "dbase_password" {
   value = random_string.db_password.result
+}
+
+output "dbase_db_name" {
+  value = aws_db_instance.db_instance.name
 }
