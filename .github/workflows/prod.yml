@@ -5,7 +5,6 @@ on:
     branches: [ main ]
 
 jobs:
-
   build-application:
     name: "Build Application"
     runs-on: ubuntu-latest
@@ -14,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - run: mvn -B clean install --file app/pom.xml
+      - run: mvn -Pprod,api-docs clean verify --file app/pom.xml
       - run: mkdir staging && cp app/target/smallwindow-21-0.0.1-SNAPSHOT.jar staging
       - uses: actions/upload-artifact@v2
         with:
