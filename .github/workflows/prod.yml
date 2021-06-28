@@ -2,7 +2,7 @@ name: "SmallWindow21 Production Deploy"
 
 on:
   push:
-    branches: [ main, upate-build-command ]
+    branches: [ main ]
 
 jobs:
 
@@ -116,7 +116,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-      #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
       - name: Get Elastic Beanstalk Endpoint
