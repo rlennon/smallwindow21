@@ -13,8 +13,8 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 aws:
-  region: us-east-1
-  storage_bucket_name: amplify-angularamplify-dev-165931-deployment
+  region: eu-west-1
+  storage_bucket_name: test-bucket
 logging:
   level:
     ROOT: DEBUG
