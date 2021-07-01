@@ -114,6 +114,10 @@ variable "wait_for_ready_timeout" {
   type = string
 }
 
+variable "aws_region" {
+  type = string
+}
+
 resource "aws_elastic_beanstalk_application" "app_instance" {
   name        = var.app_name
   description = var.app_name
@@ -213,6 +217,16 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     value     = var.eb_server_port
   }
   setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "aws.storage_bucket_name"
+    value     = var.storage_bucket_name
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "aws.region"
+    value     = var.aws_region
+  }
+  setting {
     namespace = "aws:autoscaling:asg"
     name      = "MinSize"
     value     = var.asg_min_size
@@ -221,11 +235,6 @@ resource "aws_elastic_beanstalk_environment" "app_instance_environment" {
     namespace = "aws:autoscaling:asg"
     name      = "MaxSize"
     value     = var.asg_max_size
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "storage_bucket_name"
-    value     = var.storage_bucket_name
   }
   setting {
     namespace = "aws:elasticbeanstalk:cloudwatch:logs"
