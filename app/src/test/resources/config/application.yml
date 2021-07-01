@@ -14,7 +14,7 @@
 # ===================================================================
 aws:
   region: eu-west-1
-  storage_bucket_name: test-bucket
+  storageBucketName: test-bucket
 
 spring:
   profiles:

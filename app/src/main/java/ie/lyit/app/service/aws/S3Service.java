@@ -24,7 +24,7 @@ public class S3Service {
 
     private final S3Client s3Client;
 
-    @Value("${aws.storage_bucket_name}")
+    @Value("${aws.storageBucketName}")
     private String storageBucketName;
 
     public S3Service(S3Client s3Client) {
