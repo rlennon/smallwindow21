@@ -58,13 +58,8 @@ public class S3Service {
                 log.error("Failed to upload the file {} to the bucket {}", key, storageBucketName);
                 return false;
             }
-        } catch (RuntimeException e) {
-            log.error(
-                "A RuntimeException occurred trying to upload the file {} to the bucket {}. Exception: {}",
-                key,
-                storageBucketName,
-                e
-            );
+        } catch (S3Exception e) {
+            log.error("An S3Exception occurred trying to upload the file {} to the bucket {}. Exception: {}", key, storageBucketName, e);
             return false;
         }
 
@@ -94,9 +89,9 @@ public class S3Service {
                 return response;
             }
             response = responseInputStream.readAllBytes();
-        } catch (IOException e) {
+        } catch (S3Exception | IOException e) {
             log.error(
-                "An IOException occurred trying to download the file {} from the bucket {}. Exception: {}",
+                "An S3Exception/IOException occurred trying to download the file {} from the bucket {}. Exception: {}",
                 key,
                 storageBucketName,
                 e
@@ -128,13 +123,8 @@ public class S3Service {
                 log.error("Failed to delete the file {} from the bucket {}", key, storageBucketName);
                 return false;
             }
-        } catch (RuntimeException e) {
-            log.error(
-                "A RuntimeException occurred trying to delete the file {} from the bucket {}. Exception: {}",
-                key,
-                storageBucketName,
-                e
-            );
+        } catch (S3Exception e) {
+            log.error("An S3Exception occurred trying to delete the file {} from the bucket {}. Exception: {}", key, storageBucketName, e);
             return false;
         }
 

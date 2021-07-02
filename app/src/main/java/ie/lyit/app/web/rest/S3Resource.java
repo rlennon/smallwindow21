@@ -41,7 +41,7 @@ public class S3Resource {
     // See https://spring.io/guides/gs/uploading-files/
     @GetMapping("/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<byte[]> serveFile(@PathVariable String filename) {
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) {
         byte[] file = s3Service.downloadFile(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"").body(file);
     }
