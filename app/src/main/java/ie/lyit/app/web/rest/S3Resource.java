@@ -35,6 +35,7 @@ public class S3Resource {
 
     /**
      * Method to download a file and serve it
+     *
      * @param filename
      * @return
      */
@@ -48,6 +49,7 @@ public class S3Resource {
 
     /**
      * Method to upload a file
+     *
      * @param file to upload
      * @return
      */
@@ -63,6 +65,7 @@ public class S3Resource {
 
     /**
      * Method to delete a file
+     *
      * @param filename
      * @return
      */

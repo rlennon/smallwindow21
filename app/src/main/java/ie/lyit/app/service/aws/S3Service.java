@@ -33,8 +33,9 @@ public class S3Service {
 
     /**
      * Method to upload a file to AWS S3
+     *
      * @param contents - the file contents in byte array format
-     * @param key the key for the file to upload
+     * @param key      the key for the file to upload
      * @return
      */
     public boolean uploadFile(byte[] contents, String key) {
@@ -68,6 +69,7 @@ public class S3Service {
 
     /**
      * Method to download a file from AWS S3
+     *
      * @param key the key for the file to download
      * @return
      */
@@ -104,6 +106,7 @@ public class S3Service {
 
     /**
      * Method to delete a file from AWS S3
+     *
      * @param key the key for the file to delete
      * @return
      */
