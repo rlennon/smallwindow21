@@ -78,6 +78,7 @@ module "compute" {
   eb_max_count_versions       = var.eb_max_count_versions
   eb_delete_source_from_s3    = var.eb_delete_source_from_s3
   wait_for_ready_timeout      = var.eb_wait_for_ready_timeout
+  aws_region                  = var.region
   depends_on = [
     module.database.dbase_instance_address,
     module.database.dbase_instance_endpoint,
