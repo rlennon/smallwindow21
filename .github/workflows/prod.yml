@@ -14,7 +14,7 @@ jobs:
         with:
           java-version: 11
       - name: Cache Maven repo
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         id: mvncache
         with:
           path: ~/.m2
