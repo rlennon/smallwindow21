@@ -12,7 +12,9 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
+aws:
+  region: eu-west-1
+  storageBucketName: test-bucket
 logging:
   level:
     ROOT: DEBUG
