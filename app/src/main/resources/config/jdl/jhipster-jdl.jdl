@@ -1,0 +1,42 @@
+/**
+ * The Employee entity.
+ */
+entity Employee {
+	/**
+	* The firstname attribute.
+	*/
+	firstName String,
+	lastName String,
+	email String required,
+    s3ImageKey String
+}
+
+entity Skill {
+	title String,
+    description String
+}
+
+entity Category {
+	categoryName String required
+}
+
+entity File {
+	s3FileKey String
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+    Employee{file(s3FileKey)} to File{employee(email)}
+}
+
+relationship ManyToMany {
+	Skill{category(categoryName)} to Category{skill},
+    Skill{employee(email)} to Employee{skill},
+}
+
+// Set pagination options
+paginate File, Employee with infinite-scroll
+paginate Skill with pagination
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Skill

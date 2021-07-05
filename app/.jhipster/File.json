@@ -1,0 +1,28 @@
+{
+  "name": "File",
+  "fields": [
+    {
+      "fieldName": "s3FileKey",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "file",
+      "relationshipName": "employee",
+      "otherEntityField": "email"
+    }
+  ],
+  "entityTableName": "file",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210704135837"
+}
