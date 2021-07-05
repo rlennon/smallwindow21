@@ -41,6 +41,8 @@
     "jwtSecretKey": "OWU3NjYxN2M1NWQzZTYzYTE0MTMyODkyNzQ4ODgxYmQ2NjRjMzBiZmNlNDAxNWFkNDNkZTk0OGYzZTQ5NDI2NjMyMmE1NmNiOTY5MzY4NmU2NmQ2NWUxMzM2ODcxNGJmODAzNTc4NGMwNmQ0YmY2YWRlZTE5MzUwMWZlNGI2OTY=",
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en", "fr"]
+    "languages": ["en", "fr"],
+    "entities": ["Employee", "Skill", "Category", "File"],
+    "lastLiquibaseTimestamp": 1625407117000
   }
 }
