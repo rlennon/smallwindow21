@@ -14,15 +14,24 @@ jobs:
         with:
           java-version: 11
 # cache action
+#       - uses: actions/cache@v2
+#         id: cache
+#         with:
+#           path: |
+#             ~/.m2
+#             ~/.npm
+#           key: ${{ runner.os }}-mvn-${{ hashFiles('**/pom.xml', '**/package-lock.json') }}
+#           restore-keys: ${{ runner.os }}-mvn-
+#         if: steps.cache.outputs.cache-hit != 'true' 
+# #############
       - uses: actions/cache@v2
-        id: cache
+        id: mvncache
         with:
-          path: |
-            ~/.m2
-            ~/.npm
-          key: ${{ runner.os }}-mvn-${{ hashFiles('**/pom.xml', '**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-mvn-
-        if: steps.cache.outputs.cache-hit != 'true' 
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+        if: steps.mvncache.outputs.cache-hit != 'true' 
+      # ##  
       - run: mvn -Pprod,api-docs clean verify --file app/pom.xml
       - run: mkdir staging && cp app/target/smallwindow-21-0.0.1-SNAPSHOT.jar staging
       - uses: actions/upload-artifact@v2
