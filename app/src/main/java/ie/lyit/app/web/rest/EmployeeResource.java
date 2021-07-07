@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Employee;
 import ie.lyit.app.repository.EmployeeRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -77,6 +79,7 @@ public class EmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/employees/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Employee> updateEmployee(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Employee employee
@@ -190,6 +193,7 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/employees/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeRepository.deleteById(id);

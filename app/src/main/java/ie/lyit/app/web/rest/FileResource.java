@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.FileRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.FileService;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -77,6 +79,7 @@ public class FileResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/files/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<File> updateFile(@PathVariable(value = "id", required = false) final Long id, @RequestBody File file)
         throws URISyntaxException {
         log.debug("REST request to update File : {}, {}", id, file);
@@ -166,6 +169,7 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/files/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
         log.debug("REST request to delete File : {}", id);
         fileService.delete(id);

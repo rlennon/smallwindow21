@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Skill;
 import ie.lyit.app.repository.SkillRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -75,6 +77,7 @@ public class SkillResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/skills/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) final Long id, @RequestBody Skill skill)
         throws URISyntaxException {
         log.debug("REST request to update Skill : {}, {}", id, skill);
@@ -187,6 +190,7 @@ public class SkillResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/skills/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
         log.debug("REST request to delete Skill : {}", id);
         skillRepository.deleteById(id);
