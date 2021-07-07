@@ -10,6 +10,9 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +57,7 @@ public class EmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/employees")
+    @ApiOperation(value = "Create a new employee", notes = "Allows you to create a new employee on the system")
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) throws URISyntaxException {
         log.debug("REST request to save Employee : {}", employee);
         if (employee.getId() != null) {
@@ -77,8 +81,9 @@ public class EmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/employees/{id}")
+    @ApiOperation(value = "Update existing employee", notes = "Allows you to update an existing employee on the system")
     public ResponseEntity<Employee> updateEmployee(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the employee to update") Long id,
         @Valid @RequestBody Employee employee
     ) throws URISyntaxException {
         log.debug("REST request to update Employee : {}, {}", id, employee);
@@ -112,8 +117,9 @@ public class EmployeeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/employees/{id}", consumes = "application/merge-patch+json")
+    @ApiOperation(value = "Partially Update existing employee", notes = "Allows you to partially update an existing employee on the system")
     public ResponseEntity<Employee> partialUpdateEmployee(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the employee to update") Long id,
         @NotNull @RequestBody Employee employee
     ) throws URISyntaxException {
         log.debug("REST request to partial update Employee partially : {}, {}", id, employee);
@@ -163,6 +169,7 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
+    @ApiOperation(value = "Retrieve all employees", notes = "Allows you to retrieve all employees on the system")
     public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
         log.debug("REST request to get a page of Employees");
         Page<Employee> page = employeeRepository.findAll(pageable);
@@ -177,7 +184,8 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the employee, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
+    @ApiOperation(value = "Retrieve an employee", notes = "Allows you to retrieve an employee on the system based on id")
+    public ResponseEntity<Employee> getEmployee(@PathVariable @ApiParam(value = "Id of the employee to retrieve") Long id) {
         log.debug("REST request to get Employee : {}", id);
         Optional<Employee> employee = employeeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(employee);
@@ -190,7 +198,8 @@ public class EmployeeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/employees/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+    @ApiOperation(value = "Delete an employee", notes = "Allows you to delete a employee on the system based on id")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeRepository.deleteById(id);
         return ResponseEntity
