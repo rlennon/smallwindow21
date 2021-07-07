@@ -11,6 +11,9 @@ import ie.lyit.app.service.dto.UserDTO;
 import ie.lyit.app.web.rest.errors.*;
 import ie.lyit.app.web.rest.vm.KeyAndPasswordVM;
 import ie.lyit.app.web.rest.vm.ManagedUserVM;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -58,6 +61,7 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Register a new user", notes = "Allows you to register a user on the system")
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
@@ -73,7 +77,8 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @GetMapping("/activate")
-    public void activateAccount(@RequestParam(value = "key") String key) {
+    @ApiOperation(value = "Activate user account", notes = "Allows a user to activate their account")
+    public void activateAccount(@RequestParam(value = "key") @ApiParam(value = "Key to activate the account") String key) {
         Optional<User> user = userService.activateRegistration(key);
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
@@ -87,6 +92,7 @@ public class AccountResource {
      * @return the login if the user is authenticated.
      */
     @GetMapping("/authenticate")
+    @ApiOperation(value = "Is Logged In User Authenticated", notes = "Checks whether a user is authenticated to use the system or not")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
@@ -99,6 +105,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
     @GetMapping("/account")
+    @ApiOperation(value = "Get Logged In User Account", notes = "Retrieve the account for the logged in user")
     public AdminUserDTO getAccount() {
         return userService
             .getUserWithAuthorities()
@@ -114,6 +121,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
+    @ApiOperation(value = "Save Account", notes = "Create a new user account on the system")
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
@@ -142,6 +150,7 @@ public class AccountResource {
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the new password is incorrect.
      */
     @PostMapping(path = "/account/change-password")
+    @ApiOperation(value = "Change User Password", notes = "Allow the user to change their password")
     public void changePassword(@RequestBody PasswordChangeDTO passwordChangeDto) {
         if (isPasswordLengthInvalid(passwordChangeDto.getNewPassword())) {
             throw new InvalidPasswordException();
@@ -155,6 +164,7 @@ public class AccountResource {
      * @param mail the mail of the user.
      */
     @PostMapping(path = "/account/reset-password/init")
+    @ApiOperation(value = "Request Password Reset", notes = "Allow the user to request a password reset")
     public void requestPasswordReset(@RequestBody String mail) {
         Optional<User> user = userService.requestPasswordReset(mail);
         if (user.isPresent()) {
@@ -174,6 +184,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the password could not be reset.
      */
     @PostMapping(path = "/account/reset-password/finish")
+    @ApiOperation(value = "Finish Password Reset", notes = "rest request to complete the password reset")
     public void finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (isPasswordLengthInvalid(keyAndPassword.getNewPassword())) {
             throw new InvalidPasswordException();
