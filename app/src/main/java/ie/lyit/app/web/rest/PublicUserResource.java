@@ -4,6 +4,8 @@ import ie.lyit.app.service.UserService;
 import ie.lyit.app.service.dto.UserDTO;
 import java.util.*;
 import java.util.Collections;
+
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -39,6 +41,7 @@ public class PublicUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
     @GetMapping("/users")
+    @ApiOperation(value = "Retrieve all public users", notes = "Allows you to retrieve all public users on the system")
     public ResponseEntity<List<UserDTO>> getAllPublicUsers(Pageable pageable) {
         log.debug("REST request to get all public User names");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -59,6 +62,7 @@ public class PublicUserResource {
      * @return a string list of all roles.
      */
     @GetMapping("/authorities")
+    @ApiOperation(value = "Retrieve all authorities", notes = "Allows you to retrieve all authorities on the system")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }

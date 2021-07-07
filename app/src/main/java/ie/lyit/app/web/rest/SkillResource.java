@@ -8,6 +8,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +55,7 @@ public class SkillResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/skills")
+    @ApiOperation(value = "Create a new skill", notes = "Allows you to create a new skill on the system")
     public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) throws URISyntaxException {
         log.debug("REST request to save Skill : {}", skill);
         if (skill.getId() != null) {
@@ -75,7 +79,8 @@ public class SkillResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/skills/{id}")
-    public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) final Long id, @RequestBody Skill skill)
+    @ApiOperation(value = "Update existing skill", notes = "Allows you to update an existing skill on the system")
+    public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id, @RequestBody Skill skill)
         throws URISyntaxException {
         log.debug("REST request to update Skill : {}, {}", id, skill);
         if (skill.getId() == null) {
@@ -108,7 +113,8 @@ public class SkillResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/skills/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<Skill> partialUpdateSkill(@PathVariable(value = "id", required = false) final Long id, @RequestBody Skill skill)
+    @ApiOperation(value = "Partially Update existing skill", notes = "Allows you to partially update an existing skill on the system")
+    public ResponseEntity<Skill> partialUpdateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id, @RequestBody Skill skill)
         throws URISyntaxException {
         log.debug("REST request to partial update Skill partially : {}, {}", id, skill);
         if (skill.getId() == null) {
@@ -152,6 +158,7 @@ public class SkillResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of skills in body.
      */
     @GetMapping("/skills")
+    @ApiOperation(value = "Retrieve all skills", notes = "Allows you to retrieve all skills on the system")
     public ResponseEntity<List<Skill>> getAllSkills(
         Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
@@ -174,7 +181,8 @@ public class SkillResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the skill, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/skills/{id}")
-    public ResponseEntity<Skill> getSkill(@PathVariable Long id) {
+    @ApiOperation(value = "Retrieve a skill", notes = "Allows you to retrieve a skill on the system based on id")
+    public ResponseEntity<Skill> getSkill(@PathVariable @ApiParam(value = "Id of the skill to retrieve") Long id) {
         log.debug("REST request to get Skill : {}", id);
         Optional<Skill> skill = skillRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(skill);
@@ -187,7 +195,8 @@ public class SkillResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/skills/{id}")
-    public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
+    @ApiOperation(value = "Delete a skill", notes = "Allows you to delete a skill on the system based on id")
+    public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
         log.debug("REST request to delete Skill : {}", id);
         skillRepository.deleteById(id);
         return ResponseEntity

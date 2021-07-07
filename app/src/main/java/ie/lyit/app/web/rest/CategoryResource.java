@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +53,7 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/categories")
+    @ApiOperation(value = "Create a new category", notes = "Allows you to create a new category on the system")
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) throws URISyntaxException {
         log.debug("REST request to save Category : {}", category);
         if (category.getId() != null) {
@@ -73,8 +77,9 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/categories/{id}")
+    @ApiOperation(value = "Update existing category", notes = "Allows you to update an existing category on the system")
     public ResponseEntity<Category> updateCategory(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false)  @ApiParam(value = "Id of the category to update") Long id,
         @Valid @RequestBody Category category
     ) throws URISyntaxException {
         log.debug("REST request to update Category : {}, {}", id, category);
@@ -108,8 +113,9 @@ public class CategoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/categories/{id}", consumes = "application/merge-patch+json")
+    @ApiOperation(value = "Partially Update existing category", notes = "Allows you to partially update an existing category on the system")
     public ResponseEntity<Category> partialUpdateCategory(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the category to update") final Long id,
         @NotNull @RequestBody Category category
     ) throws URISyntaxException {
         log.debug("REST request to partial update Category partially : {}, {}", id, category);
@@ -138,6 +144,7 @@ public class CategoryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */
     @GetMapping("/categories")
+    @ApiOperation(value = "Retrieve all categories", notes = "Allows you to retrieve all categories on the system")
     public List<Category> getAllCategories() {
         log.debug("REST request to get all Categories");
         return categoryService.findAll();
@@ -150,7 +157,8 @@ public class CategoryResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the category, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/categories/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable Long id) {
+    @ApiOperation(value = "Retrieve a category", notes = "Allows you to retrieve a category on the system based on id")
+    public ResponseEntity<Category> getCategory(@PathVariable  @ApiParam(value = "Id of the category to retrieve") Long id) {
         log.debug("REST request to get Category : {}", id);
         Optional<Category> category = categoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(category);
@@ -163,7 +171,8 @@ public class CategoryResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    @ApiOperation(value = "Delete a category", notes = "Allows you to delete a category on the system based on id")
+    public ResponseEntity<Void> deleteCategory(@PathVariable @ApiParam(value = "Id of the category to delete") Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryService.delete(id);
         return ResponseEntity
