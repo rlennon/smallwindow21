@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Skill;
 import ie.lyit.app.repository.SkillRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -80,7 +82,8 @@ public class SkillResource {
      */
     @PutMapping("/skills/{id}")
     @ApiOperation(value = "Update existing skill", notes = "Allows you to update an existing skill on the system")
-    public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id, @RequestBody Skill skill)
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+	public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id, @RequestBody Skill skill)
         throws URISyntaxException {
         log.debug("REST request to update Skill : {}, {}", id, skill);
         if (skill.getId() == null) {
@@ -196,7 +199,8 @@ public class SkillResource {
      */
     @DeleteMapping("/skills/{id}")
     @ApiOperation(value = "Delete a skill", notes = "Allows you to delete a skill on the system based on id")
-    public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+	public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
         log.debug("REST request to delete Skill : {}", id);
         skillRepository.deleteById(id);
         return ResponseEntity

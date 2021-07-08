@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Category;
 import ie.lyit.app.repository.CategoryRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.CategoryService;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -78,6 +80,7 @@ public class CategoryResource {
      */
     @PutMapping("/categories/{id}")
     @ApiOperation(value = "Update existing category", notes = "Allows you to update an existing category on the system")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Category> updateCategory(
         @PathVariable(value = "id", required = false)  @ApiParam(value = "Id of the category to update") Long id,
         @Valid @RequestBody Category category
@@ -172,6 +175,7 @@ public class CategoryResource {
      */
     @DeleteMapping("/categories/{id}")
     @ApiOperation(value = "Delete a category", notes = "Allows you to delete a category on the system based on id")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteCategory(@PathVariable @ApiParam(value = "Id of the category to delete") Long id) {
         log.debug("REST request to delete Category : {}", id);
         categoryService.delete(id);
