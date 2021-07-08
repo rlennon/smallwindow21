@@ -57,7 +57,7 @@ public class S3Resource {
      * @param file to upload
      * @return
      */
-    @PostMapping("/{filename:.+}")
+    @PostMapping("/file/{filename:.+}")
     @ApiOperation(value = "Upload a file", notes = "Allows you to upload a file to S3")
     public boolean handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable @ApiParam(value = "Name of the file to upload") String filename) {
         try {
@@ -67,7 +67,17 @@ public class S3Resource {
             return false;
         }
     }
-
+    /**
+     * Method to upload a base 64 string
+     *
+     * @param base64 string to upload
+     * @return
+     */
+    @PostMapping("/base64/{filename:.+}")
+    @ApiOperation(value = "Upload a base64 string", notes = "Allows you to upload a base64 string to S3")
+    public boolean handleBase64StringUpload(@RequestBody String base64, @PathVariable @ApiParam(value = "Name of the file to upload") String filename) {
+        return s3Service.uploadBase64String(base64, filename);
+    }
     /**
      * Method to delete a file
      *

@@ -14,7 +14,8 @@ import { EmployeeService } from '../service/employee.service';
 })
 export class EmployeeUpdateComponent implements OnInit {
   isSaving = false;
-
+  employeeId = '';
+  
   editForm = this.fb.group({
     id: [],
     firstName: [],
@@ -27,6 +28,7 @@ export class EmployeeUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
+      this.employeeId = employee.id
       this.updateForm(employee);
     });
   }
@@ -44,6 +46,8 @@ export class EmployeeUpdateComponent implements OnInit {
       this.subscribeToSaveResponse(this.employeeService.create(employee));
     }
   }
+
+
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployee>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
@@ -84,4 +88,5 @@ export class EmployeeUpdateComponent implements OnInit {
       s3ImageKey: this.editForm.get(['s3ImageKey'])!.value,
     };
   }
+  
 }

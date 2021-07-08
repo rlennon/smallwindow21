@@ -110,6 +110,85 @@ public class S3ServiceTest {
 
         Mockito.verify(mockS3Client, Mockito.times(1)).putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class));
     }
+    @Test
+    public void testUploadBase64String_ContentsIsNull() {
+        String contents = null;
+        String fileKey = "fileKey";
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUploadBase64String_ContentsIsEmpty() {
+        String contents = "";
+        String fileKey = "fileKey";
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUploadBase64String_FileKeyIsNull() {
+        String contents = "contents";
+        String fileKey = null;
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUploadBase64String_FileKeyIsEmpty() {
+        String contents = "contents";
+        String fileKey = "";
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testUploadBase64String_PutObjectResponseIsNull() {
+        String contents = "contents";
+        String fileKey = "fileKey";
+
+        PutObjectResponse putObjectResponse = null;
+        Mockito
+            .when(mockS3Client.putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class)))
+            .thenReturn(putObjectResponse);
+
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+
+        Mockito.verify(mockS3Client, Mockito.times(1)).putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class));
+    }
+
+    @Test
+    public void testUploadBase64String_S3Exception() {
+        String contents = "contents";
+        String fileKey = "fileKey";
+
+        PutObjectResponse putObjectResponse = null;
+        Mockito
+            .when(mockS3Client.putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class)))
+            .thenThrow(S3Exception.builder().build());
+
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertFalse(result);
+
+        Mockito.verify(mockS3Client, Mockito.times(1)).putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class));
+    }
+
+    @Test
+    public void testUploadBase64String_Success() {
+        String contents = "contents";
+        String fileKey = "fileKey";
+
+        PutObjectResponse putObjectResponse = PutObjectResponse.builder().build();
+        Mockito
+            .when(mockS3Client.putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class)))
+            .thenReturn(putObjectResponse);
+
+        boolean result = s3Service.uploadBase64String(contents, fileKey);
+        assertTrue(result);
+
+        Mockito.verify(mockS3Client, Mockito.times(1)).putObject(Mockito.isA(PutObjectRequest.class), Mockito.isA(RequestBody.class));
+    }
 
     @Test
     public void testDownloadFile_FileKeyIsNull() {
