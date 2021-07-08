@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Employee;
 import ie.lyit.app.repository.EmployeeRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -82,6 +84,7 @@ public class EmployeeResource {
      */
     @PutMapping("/employees/{id}")
     @ApiOperation(value = "Update existing employee", notes = "Allows you to update an existing employee on the system")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Employee> updateEmployee(
         @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the employee to update") Long id,
         @Valid @RequestBody Employee employee
@@ -199,6 +202,7 @@ public class EmployeeResource {
      */
     @DeleteMapping("/employees/{id}")
     @ApiOperation(value = "Delete an employee", notes = "Allows you to delete a employee on the system based on id")
+	@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeRepository.deleteById(id);
