@@ -36,7 +36,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/employee', employee.id, 'edit']" class="btn btn-primary">
+      <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button" [routerLink]="['/employee', employee.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>
