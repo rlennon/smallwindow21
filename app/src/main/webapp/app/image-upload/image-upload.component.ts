@@ -1,32 +1,31 @@
-import { Component, Input } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'jhi-image-upload',
   templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.scss']
+  styleUrls: ['./image-upload.component.scss'],
 })
 export class ImageUploadComponent {
   imageChangedEvent: any = '';
   croppedImage: any = '';
 
-  @Input()
-  employeeId: any = '';
+  @Output() newCroppedImageEvent = new EventEmitter<string>();
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
   imageCropped(event: ImageCroppedEvent): void {
-    alert(this.employeeId)
     this.croppedImage = event.base64;
+    this.newCroppedImageEvent.emit(this.croppedImage);
   }
   imageLoaded(): void {
-      /* show cropper */
+    /* show cropper */
   }
   cropperReady(): void {
-      /* cropper ready */
+    /* cropper ready */
   }
   loadImageFailed(): void {
-      /* show message */
+    /* show message */
   }
 }
