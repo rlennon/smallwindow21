@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
@@ -10,15 +10,14 @@ export class ImageUploadComponent {
   imageChangedEvent: any = '';
   croppedImage: any = '';
 
-  @Input()
-  employeeId: any = '';
+  @Output() newCroppedImageEvent = new EventEmitter<string>();
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
   }
   imageCropped(event: ImageCroppedEvent): void {
-    alert(this.employeeId);
     this.croppedImage = event.base64;
+    this.newCroppedImageEvent.emit(this.croppedImage);
   }
   imageLoaded(): void {
     /* show cropper */

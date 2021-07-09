@@ -3,7 +3,11 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.domain.Employee;
 import ie.lyit.app.repository.EmployeeRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.aws.S3Service;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -11,9 +15,6 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,9 +47,11 @@ public class EmployeeResource {
     private String applicationName;
 
     private final EmployeeRepository employeeRepository;
+    private final S3Service s3Service;
 
-    public EmployeeResource(EmployeeRepository employeeRepository) {
+    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service) {
         this.employeeRepository = employeeRepository;
+        this.s3Service = s3Service;
     }
 
     /**
@@ -202,7 +205,7 @@ public class EmployeeResource {
      */
     @DeleteMapping("/employees/{id}")
     @ApiOperation(value = "Delete an employee", notes = "Allows you to delete a employee on the system based on id")
-	@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeRepository.deleteById(id);
@@ -210,5 +213,20 @@ public class EmployeeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * Method to upload a file
+     *
+     * @param base64 string to upload
+     * @return
+     */
+    @PostMapping("/employees/profileImage/{filename:.+}")
+    @ApiOperation(value = "Upload the users profile image", notes = "Allows you to upload a users profile image to S3")
+    public boolean handleFileUpload(
+        @RequestBody String base64,
+        @PathVariable @ApiParam(value = "Name of the profile image") String filename
+    ) {
+        return s3Service.uploadBase64String(base64, filename);
     }
 }

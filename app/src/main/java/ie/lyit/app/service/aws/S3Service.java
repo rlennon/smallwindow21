@@ -1,6 +1,8 @@
 package ie.lyit.app.service.aws;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import org.apache.commons.compress.utils.ByteUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -71,7 +73,18 @@ public class S3Service {
             log.error("Key passed in is null or empty");
             return false;
         }
-        RequestBody requestBody = RequestBody.fromString(contents);
+        // requestBody = RequestBody.fromString(contents);
+        String newContents = contents.replace("data:image/png;base64,", "");
+        log.info("contents:{}" + contents);
+        log.info("newContents:{}" + newContents);
+        log.info("newContents:{}" + newContents.length());
+        String diff = contents.replace(newContents, "");
+        log.info("diff:{}" + diff);
+
+        byte[] fileContents = Base64.getEncoder().encode(newContents.getBytes());
+
+        RequestBody requestBody = RequestBody.fromBytes(newContents.getBytes());
+
         return uploadToS3(requestBody, key);
     }
 
