@@ -14,6 +14,7 @@ import { EmployeeService } from '../service/employee.service';
 })
 export class EmployeeUpdateComponent implements OnInit {
   isSaving = false;
+  employeeId = '';
 
   editForm = this.fb.group({
     id: [],
@@ -27,6 +28,7 @@ export class EmployeeUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
+      this.employeeId = employee.id;
       this.updateForm(employee);
     });
   }
