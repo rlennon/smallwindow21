@@ -251,14 +251,7 @@ public class EmployeeResource {
     @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
     public ResponseEntity<String> downloadFile(@PathVariable @ApiParam(value = "Name of the profile image to download") String filename) {
         byte[] file = s3Service.downloadFile(filename);
-        String a = Base64.getEncoder().encodeToString(file);
-        log.info("resp:{}", a);
-        //ByteArrayResource byteArrayResource = new ByteArrayResource(file);
-        return ResponseEntity
-            .ok()
-            //.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-            //.contentLength(file.length)
-            //.contentType(MediaType.IMAGE_PNG)
-            .body(a);
+        String base64Image = Base64.getEncoder().encodeToString(file);
+        return ResponseEntity.ok().body(base64Image);
     }
 }

@@ -6,7 +6,7 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div *ngIf="showImage || isImageAvailable()">
+        <div *ngIf="showImage">
           <img src="{{ 'data:image/jpg;base64,' + imageToShow }}" />
         </div>
 

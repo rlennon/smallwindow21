@@ -35,6 +35,7 @@ export class EmployeeUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ employee }) => {
       this.updateForm(employee);
       this.imageReadyToLoad = true;
+      this.getProfileImage();
     });
   }
 
@@ -60,29 +61,19 @@ export class EmployeeUpdateComponent implements OnInit {
     this.croppedImage = croppedImage;
     this.imageAvailable = true;
   }
-  isImageAvailable(): boolean {
-    const employee = this.createFromForm();
 
-    if (this.imageReadyToLoad && !this.imageLoaded && employee.s3ImageKey!.endsWith('.png')) {
-      this.getProfileImage();
-      return true;
-    } else {
-      return false;
-    }
-  }
   getProfileImage(): any {
     if (this.imageReadyToLoad && !this.imageLoaded) {
       this.imageLoaded = true;
       const employee = this.createFromForm();
-      this.subscribeToFetchEmployeeImageResponse(this.employeeService.getImage(employee.s3ImageKey!));
+      if (employee.s3ImageKey!.endsWith('.png')) {
+        this.subscribeToFetchEmployeeImageResponse(this.employeeService.getImage(employee.s3ImageKey!));
+      }
     }
   }
 
   protected subscribeToFetchEmployeeImageResponse(result: Observable<string>): void {
-    result.subscribe(
-      res => this.onFetchEmployeeImageSuccess(res),
-      err => this.onFetchEmployeeImageError(err)
-    );
+    result.subscribe(res => this.onFetchEmployeeImageSuccess(res));
   }
   protected onFetchEmployeeImageSuccess(res: string): void {
     // this.imageToShow = `data:image/png;base64, ${res}`;
@@ -90,7 +81,7 @@ export class EmployeeUpdateComponent implements OnInit {
     this.showImage = true;
   }
   protected onFetchEmployeeImageError(err: Error): void {
-    alert(JSON.stringify(err.message));
+    // alert(JSON.stringify(err.message));
   }
   protected subscribeToSaveEmployeeResponse(result: Observable<HttpResponse<IEmployee>>): void {
     result.pipe(finalize(() => this.onSaveEmployeeFinalize())).subscribe(
