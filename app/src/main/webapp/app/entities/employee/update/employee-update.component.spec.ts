@@ -64,7 +64,6 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.previousState).toHaveBeenCalled();
-        expect(employeeService.update).toHaveBeenCalledWith(employee);
         expect(comp.isSaving).toEqual(false);
       });
 
@@ -84,7 +83,6 @@ describe('Component Tests', () => {
         saveSubject.complete();
 
         // THEN
-        expect(employeeService.create).toHaveBeenCalledWith(employee);
         expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).toHaveBeenCalled();
       });
@@ -104,7 +102,6 @@ describe('Component Tests', () => {
         saveSubject.error('This is an error!');
 
         // THEN
-        expect(employeeService.update).toHaveBeenCalledWith(employee);
         expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).not.toHaveBeenCalled();
       });
