@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'jhi-image-upload',
+  selector: 'jhi-profile-image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss'],
 })

@@ -254,4 +254,32 @@ public class EmployeeResource {
         String base64Image = Base64.getEncoder().encodeToString(file);
         return ResponseEntity.ok().body(base64Image);
     }
+
+    /**
+     * Method to delete a profile image
+     *
+     * @param employeeId - the id of the employee to delete the profile image for
+     * @return
+     */
+    // See https://spring.io/guides/gs/uploading-files/
+    @DeleteMapping("/employees/profileImage/{id}")
+    @ResponseBody
+    @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
+    public ResponseEntity<Boolean> downloadFile(
+        @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
+    ) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (!employeeOptional.isPresent()) {
+            log.error("No employee found for the id {}", id);
+            return ResponseEntity.badRequest().body(false);
+        }
+        Employee employee = employeeOptional.get();
+        String s3ProfileImage = employee.gets3ImageKey();
+        employee.sets3ImageKey(null);
+
+        employeeRepository.save(employee);
+
+        boolean result = s3Service.deleteFile(s3ProfileImage);
+        return ResponseEntity.ok().body(result);
+    }
 }

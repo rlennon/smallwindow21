@@ -15,12 +15,10 @@ import { EmployeeService } from '../service/employee.service';
 export class EmployeeUpdateComponent implements OnInit {
   isSaving = false;
   s3ImageKey = '';
+  employeeId = '';
   croppedImage!: File;
-  imageReadyToLoad = false;
   imageAvailable = false;
-  imageLoaded = false;
-  imageToShow: any = null;
-  showImage = false;
+
   editForm = this.fb.group({
     id: [],
     firstName: [],
@@ -34,8 +32,8 @@ export class EmployeeUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
       this.updateForm(employee);
-      this.imageReadyToLoad = true;
-      this.getProfileImage();
+      this.s3ImageKey = employee.s3ImageKey;
+      this.employeeId = employee.id;
     });
   }
 
@@ -62,27 +60,6 @@ export class EmployeeUpdateComponent implements OnInit {
     this.imageAvailable = true;
   }
 
-  getProfileImage(): any {
-    if (this.imageReadyToLoad && !this.imageLoaded) {
-      this.imageLoaded = true;
-      const employee = this.createFromForm();
-      if (employee.s3ImageKey!.endsWith('.png')) {
-        this.subscribeToFetchEmployeeImageResponse(this.employeeService.getImage(employee.s3ImageKey!));
-      }
-    }
-  }
-
-  protected subscribeToFetchEmployeeImageResponse(result: Observable<string>): void {
-    result.subscribe(res => this.onFetchEmployeeImageSuccess(res));
-  }
-  protected onFetchEmployeeImageSuccess(res: string): void {
-    // this.imageToShow = `data:image/png;base64, ${res}`;
-    this.imageToShow = res;
-    this.showImage = true;
-  }
-  protected onFetchEmployeeImageError(err: Error): void {
-    // alert(JSON.stringify(err.message));
-  }
   protected subscribeToSaveEmployeeResponse(result: Observable<HttpResponse<IEmployee>>): void {
     result.pipe(finalize(() => this.onSaveEmployeeFinalize())).subscribe(
       () => this.onSaveEmployeeSuccess(),
@@ -142,22 +119,5 @@ export class EmployeeUpdateComponent implements OnInit {
       email: this.editForm.get(['email'])!.value,
       s3ImageKey: this.editForm.get(['s3ImageKey'])!.value,
     };
-  }
-
-  private createImage(image: Blob): void {
-    alert('here 3');
-    if (image.size > 0) {
-      const reader = new FileReader();
-
-      reader.addEventListener(
-        'load',
-        () => {
-          this.imageToShow = reader.result;
-        },
-        false
-      );
-
-      reader.readAsDataURL(image);
-    }
   }
 }

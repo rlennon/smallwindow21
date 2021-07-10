@@ -71,4 +71,8 @@ export class EmployeeService {
   getImage(key: string): Observable<string> {
     return this.http.get(`${this.resourceUrl}/profileImage/${key}`, { responseType: 'text' });
   }
+
+  deleteImage(employeeId: string): Observable<HttpResponse<boolean>> {
+    return this.http.delete<boolean>(`${this.resourceUrl}/profileImage/${employeeId}`, { observe: 'response' });
+  }
 }

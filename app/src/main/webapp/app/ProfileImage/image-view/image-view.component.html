@@ -1,0 +1,9 @@
+<div *ngIf="showImage">
+  <div class="form-group" *ngIf="showHeading">
+    <label class="form-control-label" for="field_id">Profile Image</label>
+  </div>
+  <div class="form-group">
+    <img src="{{ 'data:image/jpg;base64,' + imageToShow }}" />
+  </div>
+  <span *ngIf="showDelete" (click)="deleteImage()"> Delete Image </span>
+</div>
