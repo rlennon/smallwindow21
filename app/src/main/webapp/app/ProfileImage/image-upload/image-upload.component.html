@@ -1,7 +1,7 @@
 <div class="card-body">
   <input type="file" (change)="fileChangeEvent($event)" />
   <div class="row" style="margin-top: 15px">
-    <div class="text-center col-md-8">
+    <div class="text-center image-cropper">
       <image-cropper
         #cropper
         [imageChangedEvent]="imageChangedEvent"

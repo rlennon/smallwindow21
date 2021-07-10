@@ -45,7 +45,9 @@ export class ViewComponent implements OnInit {
   }
 
   deleteImage(): void {
-    this.subscribeToDeleteEmployeeImageResponse(this.employeeService.deleteImage(this.employeeId));
+    if (confirm('Are you sure to delete this image?')) {
+      this.subscribeToDeleteEmployeeImageResponse(this.employeeService.deleteImage(this.employeeId));
+    }
   }
 
   protected subscribeToFetchEmployeeImageResponse(result: Observable<string>): void {
@@ -58,11 +60,9 @@ export class ViewComponent implements OnInit {
   }
 
   protected subscribeToDeleteEmployeeImageResponse(result: Observable<HttpResponse<boolean>>): void {
-    result.subscribe(res => this.onDeleteEmployeeImageSuccess(res.body!));
+    result.subscribe(() => this.onDeleteEmployeeImageSuccess());
   }
-  protected onDeleteEmployeeImageSuccess(res: boolean): void {
-    alert('res:');
-    alert(res);
+  protected onDeleteEmployeeImageSuccess(): void {
     this.showImage = false;
   }
 }

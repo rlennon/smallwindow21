@@ -5,5 +5,8 @@
   <div class="form-group">
     <img src="{{ 'data:image/jpg;base64,' + imageToShow }}" />
   </div>
-  <span *ngIf="showDelete" (click)="deleteImage()"> Delete Image </span>
+  <button type="button" *ngIf="showDelete" (click)="deleteImage()" class="btn btn-danger btn-sm">
+    <fa-icon icon="times"></fa-icon>
+    <span class="d-none d-md-inline">Delete Image</span>
+  </button>
 </div>
