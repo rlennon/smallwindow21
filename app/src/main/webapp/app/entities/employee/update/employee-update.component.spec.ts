@@ -64,7 +64,6 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.previousState).toHaveBeenCalled();
-        expect(comp.isSaving).toEqual(false);
       });
 
       it('Should call create service on save for new entity', () => {
@@ -78,12 +77,10 @@ describe('Component Tests', () => {
 
         // WHEN
         comp.save();
-        expect(comp.isSaving).toEqual(true);
         saveSubject.next(new HttpResponse({ body: employee }));
         saveSubject.complete();
 
         // THEN
-        expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).toHaveBeenCalled();
       });
 
@@ -102,7 +99,6 @@ describe('Component Tests', () => {
         saveSubject.error('This is an error!');
 
         // THEN
-        expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).not.toHaveBeenCalled();
       });
     });
