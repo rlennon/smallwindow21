@@ -9,6 +9,7 @@ import { IEmployee, getEmployeeIdentifier } from '../employee.model';
 
 export type EntityResponseType = HttpResponse<IEmployee>;
 export type EmployeeImageEntityResponseType = HttpResponse<boolean>;
+export type EmployeeImageResponseType = HttpResponse<string>;
 export type EntityArrayResponseType = HttpResponse<IEmployee[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -61,8 +62,15 @@ export class EmployeeService {
     return employeeCollection;
   }
 
-  saveImage(key: string, croppedImage: string): Observable<EmployeeImageEntityResponseType> {
-    alert(croppedImage);
-    return this.http.post<boolean>(`${this.resourceUrl}/profileImage/${key}`, croppedImage, { observe: 'response' });
+  saveImage(key: string, croppedImage: File): Observable<EmployeeImageEntityResponseType> {
+    const formData = new FormData();
+    formData.append('file', croppedImage);
+    return this.http.post<boolean>(`${this.resourceUrl}/profileImage/${key}`, formData, { observe: 'response' });
+  }
+
+  getImage(key: string): Observable<EmployeeImageResponseType> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
+    return this.http.get<string>(`${this.resourceUrl}/profileImage/${key}`, { responseType: 'text' });
   }
 }

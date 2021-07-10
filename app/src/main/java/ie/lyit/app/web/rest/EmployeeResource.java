@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,14 +19,17 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -216,17 +220,45 @@ public class EmployeeResource {
     }
 
     /**
-     * Method to upload a file
+     * Method to upload a profile image
      *
-     * @param base64 string to upload
+     * @param profile image file to upload
      * @return
      */
     @PostMapping("/employees/profileImage/{filename:.+}")
     @ApiOperation(value = "Upload the users profile image", notes = "Allows you to upload a users profile image to S3")
     public boolean handleFileUpload(
-        @RequestBody String base64,
+        @RequestParam("file") MultipartFile file,
         @PathVariable @ApiParam(value = "Name of the profile image") String filename
     ) {
-        return s3Service.uploadBase64String(base64, filename);
+        try {
+            return s3Service.uploadFile(file.getBytes(), filename);
+        } catch (IOException e) {
+            log.error("IOException occurred handling the handle the file upload.");
+            return false;
+        }
+    }
+
+    /**
+     * Method to download a profile image and serve it
+     *
+     * @param filename
+     * @return
+     */
+    // See https://spring.io/guides/gs/uploading-files/
+    @GetMapping("/employees/profileImage/{filename:.+}")
+    @ResponseBody
+    @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
+    public ResponseEntity<String> downloadFile(@PathVariable @ApiParam(value = "Name of the profile image to download") String filename) {
+        byte[] file = s3Service.downloadFile(filename);
+        String a = Base64.getEncoder().encodeToString(file);
+        log.info("resp:{}", a);
+        //ByteArrayResource byteArrayResource = new ByteArrayResource(file);
+        return ResponseEntity
+            .ok()
+            //.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+            //.contentLength(file.length)
+            //.contentType(MediaType.IMAGE_PNG)
+            .body(a);
     }
 }
