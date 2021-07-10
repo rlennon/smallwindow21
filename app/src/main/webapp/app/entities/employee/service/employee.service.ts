@@ -68,9 +68,7 @@ export class EmployeeService {
     return this.http.post<boolean>(`${this.resourceUrl}/profileImage/${key}`, formData, { observe: 'response' });
   }
 
-  getImage(key: string): Observable<EmployeeImageResponseType> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-
-    return this.http.get<string>(`${this.resourceUrl}/profileImage/${key}`, { responseType: 'text' });
+  getImage(key: string): Observable<string> {
+    return this.http.get(`${this.resourceUrl}/profileImage/${key}`, { responseType: 'text' });
   }
 }

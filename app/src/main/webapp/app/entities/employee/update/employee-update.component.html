@@ -6,13 +6,10 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        {{ editForm.get('s3ImageKey')!.value }}
-        <div *ngIf="isImageAvailable()">
-          Showing image 1
-          <img [src]="imageToShow" *ngIf="!imageLoaded" />
-          Showing image 2 imageToShow:{{ imageToShow }}
+        <div *ngIf="showImage || isImageAvailable()">
+          <img src="{{ 'data:image/jpg;base64,' + imageToShow }}" />
         </div>
-        imageToShow:{{ imageToShow }}
+
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
           <label class="form-control-label" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />

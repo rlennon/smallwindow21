@@ -20,6 +20,7 @@ export class EmployeeUpdateComponent implements OnInit {
   imageAvailable = false;
   imageLoaded = false;
   imageToShow: any = null;
+  showImage = false;
   editForm = this.fb.group({
     id: [],
     firstName: [],
@@ -77,15 +78,16 @@ export class EmployeeUpdateComponent implements OnInit {
     }
   }
 
-  protected subscribeToFetchEmployeeImageResponse(result: Observable<HttpResponse<string>>): void {
+  protected subscribeToFetchEmployeeImageResponse(result: Observable<string>): void {
     result.subscribe(
       res => this.onFetchEmployeeImageSuccess(res),
       err => this.onFetchEmployeeImageError(err)
     );
   }
-  protected onFetchEmployeeImageSuccess(res: HttpResponse<string>): void {
-    alert('here 1');
-    this.imageToShow = `data:image/png;base64, ${res.body!}`;
+  protected onFetchEmployeeImageSuccess(res: string): void {
+    // this.imageToShow = `data:image/png;base64, ${res}`;
+    this.imageToShow = res;
+    this.showImage = true;
   }
   protected onFetchEmployeeImageError(err: Error): void {
     alert(JSON.stringify(err.message));
