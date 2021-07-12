@@ -31,7 +31,6 @@ services:
     command: >
       "
         sleep 10;
-
         aws --endpoint-url=http://localstack:4572 s3 mb s3://dg-test123
       "
     networks:
