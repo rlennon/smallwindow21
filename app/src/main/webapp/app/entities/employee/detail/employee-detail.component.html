@@ -14,6 +14,17 @@
         <dd>
           <span>{{ employee.id }}</span>
         </dd>
+        <dt><span>Profile Image</span></dt>
+        <dd>
+          <span
+            ><jhi-profile-image-view
+              [showHeading]="false"
+              [showDelete]="false"
+              [employeeId]="employeeId"
+              [s3ImageKey]="s3ImageKey"
+            ></jhi-profile-image-view
+          ></span>
+        </dd>
         <dt><span ngbTooltip="The firstname attribute.">First Name</span></dt>
         <dd>
           <span>{{ employee.firstName }}</span>
@@ -25,10 +36,6 @@
         <dt><span>Email</span></dt>
         <dd>
           <span>{{ employee.email }}</span>
-        </dd>
-        <dt><span>S 3 Image Key</span></dt>
-        <dd>
-          <span>{{ employee.s3ImageKey }}</span>
         </dd>
       </dl>
 

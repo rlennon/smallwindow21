@@ -9,12 +9,15 @@ import { IEmployee } from '../employee.model';
 })
 export class EmployeeDetailComponent implements OnInit {
   employee: IEmployee | null = null;
-
+  s3ImageKey = '';
+  employeeId = '';
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
       this.employee = employee;
+      this.s3ImageKey = employee.s3ImageKey;
+      this.employeeId = employee.id;
     });
   }
 

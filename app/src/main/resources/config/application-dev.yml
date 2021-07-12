@@ -13,8 +13,8 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 aws:
-  region: eu-west-1
-  storageBucketName: test-bucket
+  region: us-east-1
+  storageBucketName: dg-test123
 logging:
   level:
     ROOT: DEBUG
