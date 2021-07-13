@@ -14,6 +14,10 @@ import { EmployeeService } from '../service/employee.service';
 })
 export class EmployeeUpdateComponent implements OnInit {
   isSaving = false;
+  s3ImageKey = '';
+  employeeId = '';
+  croppedImage!: File;
+  imageAvailable = false;
 
   editForm = this.fb.group({
     id: [],
@@ -28,6 +32,8 @@ export class EmployeeUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ employee }) => {
       this.updateForm(employee);
+      this.s3ImageKey = employee.s3ImageKey;
+      this.employeeId = employee.id;
     });
   }
 
@@ -39,31 +45,61 @@ export class EmployeeUpdateComponent implements OnInit {
     this.isSaving = true;
     const employee = this.createFromForm();
     if (employee.id !== undefined) {
-      this.subscribeToSaveResponse(this.employeeService.update(employee));
+      this.s3ImageKey = `profile_${employee.id}.png`;
+      employee.s3ImageKey = this.s3ImageKey;
+      this.subscribeToSaveEmployeeResponse(this.employeeService.update(employee));
     } else {
-      this.subscribeToSaveResponse(this.employeeService.create(employee));
+      this.s3ImageKey = `profile_${Math.random()}.png`;
+      employee.s3ImageKey = this.s3ImageKey;
+      this.subscribeToSaveEmployeeResponse(this.employeeService.create(employee));
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployee>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+  setCroppedImage(croppedImage: File): void {
+    this.croppedImage = croppedImage;
+    this.imageAvailable = true;
+  }
+
+  protected subscribeToSaveEmployeeResponse(result: Observable<HttpResponse<IEmployee>>): void {
+    result.pipe(finalize(() => this.onSaveEmployeeFinalize())).subscribe(
+      () => this.onSaveEmployeeSuccess(),
+      () => this.onSaveEmployeeError()
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveEmployeeSuccess(): void {
+    if (!this.imageAvailable) {
+      this.previousState();
+    } else {
+      this.subscribeToSaveEmployeeImageResponse(this.employeeService.saveImage(this.s3ImageKey, this.croppedImage));
+    }
   }
 
-  protected onSaveError(): void {
+  protected onSaveEmployeeError(): void {
     // Api for inheritance.
   }
 
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
+  protected onSaveEmployeeFinalize(): void {
+    // this.isSaving = false;
   }
 
+  protected subscribeToSaveEmployeeImageResponse(result: Observable<HttpResponse<boolean>>): void {
+    result.pipe(finalize(() => this.onSaveEmployeeImageFinalize())).subscribe(
+      () => this.onSaveEmployeeImageSuccess(),
+      () => this.onSaveEmployeeImageError()
+    );
+  }
+
+  protected onSaveEmployeeImageFinalize(): void {
+    this.isSaving = false;
+  }
+  protected onSaveEmployeeImageSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveEmployeeImageError(): void {
+    // Api for inheritance.
+  }
   protected updateForm(employee: IEmployee): void {
     this.editForm.patchValue({
       id: employee.id,

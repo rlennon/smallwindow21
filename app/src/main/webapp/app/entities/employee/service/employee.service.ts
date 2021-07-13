@@ -8,6 +8,8 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { IEmployee, getEmployeeIdentifier } from '../employee.model';
 
 export type EntityResponseType = HttpResponse<IEmployee>;
+export type EmployeeImageEntityResponseType = HttpResponse<boolean>;
+export type EmployeeImageResponseType = HttpResponse<string>;
 export type EntityArrayResponseType = HttpResponse<IEmployee[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -58,5 +60,19 @@ export class EmployeeService {
       return [...employeesToAdd, ...employeeCollection];
     }
     return employeeCollection;
+  }
+
+  saveImage(key: string, croppedImage: File): Observable<EmployeeImageEntityResponseType> {
+    const formData = new FormData();
+    formData.append('file', croppedImage);
+    return this.http.post<boolean>(`${this.resourceUrl}/profileImage/${key}`, formData, { observe: 'response' });
+  }
+
+  getImage(key: string): Observable<string> {
+    return this.http.get(`${this.resourceUrl}/profileImage/${key}`, { responseType: 'text' });
+  }
+
+  deleteImage(employeeId: string): Observable<HttpResponse<boolean>> {
+    return this.http.delete<boolean>(`${this.resourceUrl}/profileImage/${employeeId}`, { observe: 'response' });
   }
 }

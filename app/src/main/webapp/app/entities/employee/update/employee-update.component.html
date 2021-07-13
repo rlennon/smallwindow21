@@ -6,6 +6,13 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
+        <jhi-profile-image-view
+          [showHeading]="true"
+          [showDelete]="true"
+          [employeeId]="employeeId"
+          [s3ImageKey]="s3ImageKey"
+        ></jhi-profile-image-view>
+
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
           <label class="form-control-label" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
@@ -28,18 +35,10 @@
             <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required"> This field is required. </small>
           </div>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="field_s3ImageKey">S 3 Image Key</label>
-          <input
-            type="text"
-            class="form-control"
-            name="s3ImageKey"
-            id="field_s3ImageKey"
-            data-cy="s3ImageKey"
-            formControlName="s3ImageKey"
-          />
-        </div>
+      <div>
+        <jhi-profile-image-upload (newCroppedImageEvent)="setCroppedImage($event)"></jhi-profile-image-upload>
       </div>
 
       <div>

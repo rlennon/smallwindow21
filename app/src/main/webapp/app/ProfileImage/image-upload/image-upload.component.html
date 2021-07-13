@@ -1,0 +1,19 @@
+<div class="card-body">
+  <input type="file" (change)="fileChangeEvent($event)" />
+  <div class="row" style="margin-top: 15px">
+    <div class="text-center image-cropper">
+      <image-cropper
+        #cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="2 / 2"
+        [resizeToWidth]="128"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+    </div>
+  </div>
+</div>
