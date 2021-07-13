@@ -21,7 +21,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
         if: steps.mvncache.outputs.cache-hit != 'true' 
-      # ##      
+      # ####### 
       - run: mvn -Pprod,api-docs clean verify --file app/pom.xml
       - run: mkdir staging && cp app/target/smallwindow-21-0.0.1-SNAPSHOT.jar staging
       - uses: actions/upload-artifact@v2
