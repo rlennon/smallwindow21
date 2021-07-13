@@ -36,7 +36,6 @@
           <th scope="col" jhiSortBy="firstName"><span>First Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="lastName"><span>Last Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span>Email</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="s3ImageKey"><span>S 3 Image Key</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -48,7 +47,6 @@
           <td>{{ employee.firstName }}</td>
           <td>{{ employee.lastName }}</td>
           <td>{{ employee.email }}</td>
-          <td>{{ employee.s3ImageKey }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
@@ -61,7 +59,8 @@
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"
                 [routerLink]="['/employee', employee.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -71,7 +70,13 @@
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" (click)="delete(employee)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                (click)="delete(employee)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>

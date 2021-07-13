@@ -1,6 +1,8 @@
 package ie.lyit.app.service.aws;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import org.apache.commons.compress.utils.ByteUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,10 +51,52 @@ public class S3Service {
             log.error("Key passed in is null or empty");
             return false;
         }
+        RequestBody requestBody = RequestBody.fromBytes(contents);
+        return uploadToS3(requestBody, key);
+    }
 
+    /**
+     * Method to upload a base64 string to AWS S3
+     *
+     * @param contents - the string contents in base 64 format
+     * @param key      the key for the file to upload
+     * @return
+     */
+    public boolean uploadBase64String(String contents, String key) {
+        log.debug("Uploading contents with key {} to AWS S3", key);
+
+        if (StringUtils.isEmpty(contents)) {
+            log.error("Contents passed in are null or empty");
+            return false;
+        }
+        if (StringUtils.isEmpty(key)) {
+            log.error("Key passed in is null or empty");
+            return false;
+        }
+        // requestBody = RequestBody.fromString(contents);
+        String newContents = contents.replace("data:image/png;base64,", "");
+        log.info("contents:{}" + contents);
+        log.info("newContents:{}" + newContents);
+        log.info("newContents:{}" + newContents.length());
+        String diff = contents.replace(newContents, "");
+        log.info("diff:{}" + diff);
+
+        byte[] fileContents = Base64.getEncoder().encode(newContents.getBytes());
+
+        RequestBody requestBody = RequestBody.fromBytes(newContents.getBytes());
+
+        return uploadToS3(requestBody, key);
+    }
+
+    /**
+     * Method to upload a file to S3
+     * @param requestBody
+     * @param key
+     * @return
+     */
+    private boolean uploadToS3(RequestBody requestBody, String key) {
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(storageBucketName).key(key).build();
-            RequestBody requestBody = RequestBody.fromBytes(contents);
             PutObjectResponse putObjectResponse = s3Client.putObject(putObjectRequest, requestBody);
 
             if (putObjectResponse == null) {

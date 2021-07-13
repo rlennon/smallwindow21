@@ -3,28 +3,33 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.domain.Employee;
 import ie.lyit.app.repository.EmployeeRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.aws.S3Service;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -46,9 +51,11 @@ public class EmployeeResource {
     private String applicationName;
 
     private final EmployeeRepository employeeRepository;
+    private final S3Service s3Service;
 
-    public EmployeeResource(EmployeeRepository employeeRepository) {
+    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service) {
         this.employeeRepository = employeeRepository;
+        this.s3Service = s3Service;
     }
 
     /**
@@ -202,7 +209,7 @@ public class EmployeeResource {
      */
     @DeleteMapping("/employees/{id}")
     @ApiOperation(value = "Delete an employee", notes = "Allows you to delete a employee on the system based on id")
-	@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
         employeeRepository.deleteById(id);
@@ -210,5 +217,72 @@ public class EmployeeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * Method to upload a profile image
+     *
+     * @param profile image file to upload
+     * @return
+     */
+    @PostMapping("/employees/profileImage/{filename:.+}")
+    @ApiOperation(value = "Upload the users profile image", notes = "Allows you to upload a users profile image to S3")
+    public boolean handleFileUpload(
+        @RequestParam("file") MultipartFile file,
+        @PathVariable @ApiParam(value = "Name of the profile image") String filename
+    ) {
+        try {
+            return s3Service.uploadFile(file.getBytes(), filename);
+        } catch (IOException e) {
+            log.error("IOException occurred handling the handle the file upload.");
+            return false;
+        }
+    }
+
+    /**
+     * Method to download a profile image and serve it
+     *
+     * @param filename
+     * @return
+     */
+    // See https://spring.io/guides/gs/uploading-files/
+    @GetMapping("/employees/profileImage/{filename:.+}")
+    @ResponseBody
+    @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
+    public ResponseEntity<String> downloadFile(@PathVariable @ApiParam(value = "Name of the profile image to download") String filename) {
+        byte[] file = s3Service.downloadFile(filename);
+        if (file != null && file.length > 0) {
+            String base64Image = Base64.getEncoder().encodeToString(file);
+            return ResponseEntity.ok().body(base64Image);
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
+    /**
+     * Method to delete a profile image
+     *
+     * @param employeeId - the id of the employee to delete the profile image for
+     * @return
+     */
+    // See https://spring.io/guides/gs/uploading-files/
+    @DeleteMapping("/employees/profileImage/{id}")
+    @ResponseBody
+    @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
+    public ResponseEntity<Boolean> downloadFile(
+        @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
+    ) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (!employeeOptional.isPresent()) {
+            log.error("No employee found for the id {}", id);
+            return ResponseEntity.badRequest().body(false);
+        }
+        Employee employee = employeeOptional.get();
+        String s3ProfileImage = employee.gets3ImageKey();
+        employee.sets3ImageKey(null);
+
+        employeeRepository.save(employee);
+
+        boolean result = s3Service.deleteFile(s3ProfileImage);
+        return ResponseEntity.ok().body(result);
     }
 }
