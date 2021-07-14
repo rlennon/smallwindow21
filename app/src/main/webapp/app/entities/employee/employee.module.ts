@@ -9,6 +9,7 @@ import { EmployeeRoutingModule } from './route/employee-routing.module';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageUploadComponent } from 'app/entities/employee/profile-image/image-upload/image-upload.component';
 import { ViewComponent } from 'app/entities/employee/profile-image/image-view/image-view.component';
+import { UploadFilesComponent } from './upload-files/upload-files.component';
 
 @NgModule({
   imports: [SharedModule, EmployeeRoutingModule, ImageCropperModule],
@@ -19,6 +20,7 @@ import { ViewComponent } from 'app/entities/employee/profile-image/image-view/im
     EmployeeDeleteDialogComponent,
     ImageUploadComponent,
     ViewComponent,
+    UploadFilesComponent,
   ],
   entryComponents: [EmployeeDeleteDialogComponent],
 })
