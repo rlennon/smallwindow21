@@ -7,8 +7,8 @@ import { EmployeeUpdateComponent } from './update/employee-update.component';
 import { EmployeeDeleteDialogComponent } from './delete/employee-delete-dialog.component';
 import { EmployeeRoutingModule } from './route/employee-routing.module';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { ImageUploadComponent } from 'app/ProfileImage/image-upload/image-upload.component';
-import { ViewComponent } from 'app/ProfileImage/image-view/image-view.component';
+import { ImageUploadComponent } from 'app/entities/employee/profile-image/image-upload/image-upload.component';
+import { ViewComponent } from 'app/entities/employee/profile-image/image-view/image-view.component';
 
 @NgModule({
   imports: [SharedModule, EmployeeRoutingModule, ImageCropperModule],
