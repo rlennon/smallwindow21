@@ -1,0 +1,1096 @@
+{
+	"info": {
+		"_postman_id": "38499002-1526-40a6-9bf6-7248b2160bf8",
+		"name": "Example API - Open Skills API ",
+		"description": "A complete and standard data store for canonical and emerging skills, knowledge, abilities, tools, technolgies, and how they relate to jobs.\n\nContact Support:\n Name: Work Data Initiative",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "jobs",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Skills Associated with a Job",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs/:id/related_skills",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs",
+										":id",
+										"related_skills"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26bc4486dfd0f60b3bb0d8d64e001800",
+											"description": "(Required) The UUID of the job to retrieve skills for"
+										}
+									]
+								},
+								"description": "Retrieves a collection of skills associated with a specified job."
+							},
+							"response": [
+								{
+									"name": "A job and its related skills",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/jobs/:id/related_skills",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"jobs",
+												":id",
+												"related_skills"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"job_uuid\": \"id labore consequat\",\n \"job_title\": \"ad mollit consequat incididunt\",\n \"normalized_job_title\": \"voluptate occa\",\n \"skills\": [\n  {\n   \"skill_uuid\": \"magna U\",\n   \"skill_name\": \"ipsum Ut qui\",\n   \"description\": \"aliquip quis\",\n   \"normalized_skill_name\": \"ipsum tempor sint voluptate\",\n   \"importance\": -23298192.894911423,\n   \"level\": 46605721.88106117\n  },\n  {\n   \"skill_uuid\": \"aute\",\n   \"skill_name\": \"laboris ut incididunt laborum in\",\n   \"description\": \"esse \",\n   \"normalized_skill_name\": \"officia in\",\n   \"importance\": 33876999.27828805,\n   \"level\": 94635410.4483361\n  }\n ]\n}"
+								},
+								{
+									"name": "Unexpected error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/jobs/:id/related_skills",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"jobs",
+												":id",
+												"related_skills"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Jobs Associated with a Job",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs/:id/related_jobs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs",
+										":id",
+										"related_jobs"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26bc4486dfd0f60b3bb0d8d64e001800",
+											"description": "(Required) The UUID of the job to retrieve related jobs for"
+										}
+									]
+								},
+								"description": "Retrieves a collection of jobs associated with a specified job."
+							},
+							"response": [
+								{
+									"name": "A job and its related jobs",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/jobs/:id/related_jobs",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"jobs",
+												":id",
+												"related_jobs"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"uuid\": \"amet consectetur\",\n \"related_job_titles\": [\n  {\n   \"uuid\": \"laboris irure culpa\",\n   \"title\": \"Duis\",\n   \"parent_uuid\": \"cillum sed\"\n  },\n  {\n   \"uuid\": \"aliqua amet in Lorem\",\n   \"title\": \"eiusmod ullamco adipisicing tempor ame\",\n   \"parent_uuid\": \"Excepteur exercitation\"\n  }\n ]\n}"
+								},
+								{
+									"name": "Unexpected error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/jobs/:id/related_jobs",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"jobs",
+												":id",
+												"related_jobs"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Job Titles and Descriptions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/jobs?offset=0&limit=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Pagination offset. Default is 0."
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Maximum number of items per page. Default is 20 and cannot exceed 500."
+								}
+							]
+						},
+						"description": "Retrieves the names, descriptions, and UUIDs of all job titles."
+					},
+					"response": [
+						{
+							"name": "A collection of jobs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs?offset=82328809&limit=82328809",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "82328809"
+										},
+										{
+											"key": "limit",
+											"value": "82328809"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"links\": [\n  {\n   \"rel\": \"adipisicing Duis fugiat commodo\",\n   \"href\": \"labore sint\"\n  },\n  {\n   \"rel\": \"ut sed dolor\",\n   \"href\": \"proident esse enim dolor\"\n  }\n ]\n}"
+						},
+						{
+							"name": "Unexpected error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs?offset=82328809&limit=82328809",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "82328809"
+										},
+										{
+											"key": "limit",
+											"value": "82328809"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Title Autocomplete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/jobs/autocomplete?begins_with=n&contains=n&ends_with=r",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"jobs",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "begins_with",
+									"value": "n",
+									"description": "Find job titles beginning with the given text fragment"
+								},
+								{
+									"key": "contains",
+									"value": "n",
+									"description": "Find job titles containing the given text fragment"
+								},
+								{
+									"key": "ends_with",
+									"value": "r",
+									"description": "Find job titles ending with the given text fragment"
+								}
+							]
+						},
+						"description": "Retrieves the names, descriptions, and UUIDs of all job titles matching a given search criteria."
+					},
+					"response": [
+						{
+							"name": "A collection of jobs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs/autocomplete?begins_with=in tempor nostru&contains=in tempor nostru&ends_with=in tempor nostru",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs",
+										"autocomplete"
+									],
+									"query": [
+										{
+											"key": "begins_with",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "contains",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "ends_with",
+											"value": "in tempor nostru"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"links\": [\n  {\n   \"rel\": \"aliqua sit aute\",\n   \"href\": \"ullamco ut\"\n  },\n  {\n   \"rel\": \"laborum do eu\",\n   \"href\": \"ex non voluptate consequat\"\n  }\n ]\n}"
+						},
+						{
+							"name": "Unexpected error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs/autocomplete?begins_with=in tempor nostru&contains=in tempor nostru&ends_with=in tempor nostru",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs",
+										"autocomplete"
+									],
+									"query": [
+										{
+											"key": "begins_with",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "contains",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "ends_with",
+											"value": "in tempor nostru"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Unusual Job Titles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/jobs/unusual_titles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"jobs",
+								"unusual_titles"
+							]
+						},
+						"description": "Retrieves a list of unusual job titles and the UUIDs of their canonical jobs."
+					},
+					"response": [
+						{
+							"name": "A collection of normalized jobs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/jobs/unusual_titles",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"jobs",
+										"unusual_titles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"uuid\": \"enim sint amet\",\n  \"title\": \"laborum magna\",\n  \"relevance_score\": \"in\",\n  \"parent_uuid\": \"ullamco Duis quis\"\n },\n {\n  \"uuid\": \"Excepteur\",\n  \"title\": \"quis tempor qui dolore mollit\",\n  \"relevance_score\": \"cupidatat reprehenderit cillum non\",\n  \"parent_uuid\": \"exercitation adipisicing voluptate aliqua\"\n }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "skills",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Skill Name and Description",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "89c740d1b5aebf1f72c29d16f5eb01e0",
+											"description": "(Required) The UUID of the skill name to retrieve"
+										}
+									]
+								},
+								"description": "Retrieves the name, description, and UUID of a job by specifying its UUID."
+							},
+							"response": [
+								{
+									"name": "A skill",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"uuid\": \"ea do exercitation nostrud officia\",\n \"name\": \"est consequat labore voluptate adipisicing\",\n \"onet_element_id\": \"aliquip adipisicing ut\",\n \"normalized_skill_name\": \"in sed Excepteur\"\n}"
+								},
+								{
+									"name": "Unexpected error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Jobs Associated with a Skill",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/:id/related_jobs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										":id",
+										"related_jobs"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "89c740d1b5aebf1f72c29d16f5eb01e0",
+											"description": "(Required) The UUID of the skill to retrieve jobs for"
+										}
+									]
+								},
+								"description": "Retrieves a collection of jobs associated with a specified skill."
+							},
+							"response": [
+								{
+									"name": "A skill and its related jobs",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id/related_jobs",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id",
+												"related_jobs"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"skill_uuid\": \"culpa quis\",\n \"skill_name\": \"proident\",\n \"normalized_job_title\": \"id sit Ut aliquip\",\n \"jobs\": [\n  {\n   \"job_uuid\": \"qui adipisicing reprehenderit Duis magna\",\n   \"job_title\": \"ea\",\n   \"normalized_job_title\": \"officia quis eu in\",\n   \"importance\": 14667603.203257546,\n   \"level\": -7031973.013427168\n  },\n  {\n   \"job_uuid\": \"eu labore aliquip sed\",\n   \"job_title\": \"consequat fugiat nulla est\",\n   \"normalized_job_title\": \"in aute an\",\n   \"importance\": -91662233.1190259,\n   \"level\": 50809005.02935997\n  }\n ]\n}"
+								},
+								{
+									"name": "Unexpected error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id/related_jobs",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id",
+												"related_jobs"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Skills Associated with a Skill",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/:id/related_skills",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										":id",
+										"related_skills"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "89c740d1b5aebf1f72c29d16f5eb01e0",
+											"description": "(Required) The UUID of the skill to retrieve related skills for"
+										}
+									]
+								},
+								"description": "Retrieves a collection of skills associated with a specified skill."
+							},
+							"response": [
+								{
+									"name": "A skill and its related skills",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id/related_skills",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id",
+												"related_skills"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"uuid\": \"in Lorem eiusmod ex\",\n \"related_skill_name\": [\n  {\n   \"uuid\": \"adipisicing\",\n   \"skill_name\": \"Excepteur consequat dolore nisi\"\n  },\n  {\n   \"uuid\": \"nisi ad nostrud incididunt\",\n   \"skill_name\": \"ipsum ullamco commodo\"\n  }\n ]\n}"
+								},
+								{
+									"name": "Unexpected error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/skills/:id/related_skills",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"skills",
+												":id",
+												"related_skills"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Skill Names and Descriptions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/skills?offset=0&limit=100",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"skills"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Pagination offset. Default is 0."
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Maximum number of items per page. Default is 20 and cannot exceed 500."
+								}
+							]
+						},
+						"description": "Retrieve the names, descriptions, and UUIDs of all skills."
+					},
+					"response": [
+						{
+							"name": "A collection of skills",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills?offset=82328809&limit=82328809",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "82328809"
+										},
+										{
+											"key": "limit",
+											"value": "82328809"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"links\": [\n  {\n   \"rel\": \"anim occaecat do aute\",\n   \"href\": \"dolor eiusmod tempor ut\"\n  },\n  {\n   \"rel\": \"magna velit Duis\",\n   \"href\": \"ex enim\"\n  }\n ]\n}"
+						},
+						{
+							"name": "Unexpected error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills?offset=82328809&limit=82328809",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "82328809"
+										},
+										{
+											"key": "limit",
+											"value": "82328809"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Skill Name Autocomplete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/skills/autocomplete?begins_with=8&contains=8&ends_with=s",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"skills",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "begins_with",
+									"value": "8",
+									"description": "Find skill names beginning with the given text fragment"
+								},
+								{
+									"key": "contains",
+									"value": "8",
+									"description": "Find skill names containing the given text fragment"
+								},
+								{
+									"key": "ends_with",
+									"value": "s",
+									"description": "Find skill names ending with the given text fragment"
+								}
+							]
+						},
+						"description": "Retrieves the names, descriptions, and UUIDs of all skills matching a given search criteria."
+					},
+					"response": [
+						{
+							"name": "A collection of skills",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/autocomplete?begins_with=in tempor nostru&contains=in tempor nostru&ends_with=in tempor nostru",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										"autocomplete"
+									],
+									"query": [
+										{
+											"key": "begins_with",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "contains",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "ends_with",
+											"value": "in tempor nostru"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"skill_uuid\": \"mollit pariatur ut anim\",\n \"skill_name\": \"eu magna\",\n \"normalized_job_title\": \"culpa adipisicing cupidata\",\n \"jobs\": [\n  {\n   \"job_uuid\": \"laborum \",\n   \"job_title\": \"ipsum dolore do reprehenderit\",\n   \"normalized_job_title\": \"do in adipisicing\",\n   \"importance\": 10698120.001925424,\n   \"level\": -98013327.07000268\n  },\n  {\n   \"job_uuid\": \"fugiat labore esse in adipisicing\",\n   \"job_title\": \"adipisicing incididunt id\",\n   \"normalized_job_title\": \"deserunt et voluptate consectetur\",\n   \"importance\": 50711904.762859255,\n   \"level\": 96238805.95823905\n  }\n ]\n}"
+						},
+						{
+							"name": "Unexpected error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/autocomplete?begins_with=in tempor nostru&contains=in tempor nostru&ends_with=in tempor nostru",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										"autocomplete"
+									],
+									"query": [
+										{
+											"key": "begins_with",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "contains",
+											"value": "in tempor nostru"
+										},
+										{
+											"key": "ends_with",
+											"value": "in tempor nostru"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"code\": 99582064,\n \"message\": \"cillum in non sint\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Skill Name Normalization",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/skills/normalize?skill_name=client",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"skills",
+								"normalize"
+							],
+							"query": [
+								{
+									"key": "skill_name",
+									"value": "client",
+									"description": "(Required) Find the canonical skill name(s) for skills matching the given text fragment"
+								}
+							]
+						},
+						"description": "Retrieves the canonical skill name for a synonymous skill name"
+					},
+					"response": [
+						{
+							"name": "A collection of normalized skills",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/skills/normalize?skill_name=in tempor nostru",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"skills",
+										"normalize"
+									],
+									"query": [
+										{
+											"key": "skill_name",
+											"value": "in tempor nostru"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"uuid\": \"voluptate sunt\",\n  \"skill_name\": \"sunt deserunt aute laboris veniam\"\n },\n {\n  \"uuid\": \"adipisicing id\",\n  \"skill_name\": \"sit mollit\"\n }\n]"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"  pm.response.to.have.status(200);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://api.dataatwork.org/v1"
+		}
+	]
+}
