@@ -95,12 +95,12 @@ export class EmployeeService {
   deleteFile(fileId: string): Observable<any> {
     return this.http.delete(`${this.resourceUrl}/files/${fileId}`);
   }
-  downloadFile(fileId: string, s3FileKey: string, s3FileType: string): void {
+  downloadFile(fileId: string, fileName: string, s3FileType: string): void {
     this.http
       .get(`${this.resourceUrl}/files/download/${fileId}`, {
         responseType: 'arraybuffer',
       })
-      .subscribe(response => this.downLoadFile(response, s3FileKey, s3FileType));
+      .subscribe(response => this.flushFileToBrowser(response, fileName, s3FileType));
   }
 
   /**
@@ -109,9 +109,7 @@ export class EmployeeService {
    * @param s3FileKey - name of the file downloaded from S3.
    * @param s3FileType - type of the file downloaded from S3.
    */
-  downLoadFile(data: any, s3FileKey: string, s3FileType: string): void {
-    const fileName = s3FileKey.replace(/^.*[\\\\/]/, '');
-
+  flushFileToBrowser(data: any, fileName: string, s3FileType: string): void {
     const aElement = document.createElement('a');
     document.body.appendChild(aElement);
 

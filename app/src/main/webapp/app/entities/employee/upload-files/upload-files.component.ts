@@ -17,7 +17,10 @@ export class UploadFilesComponent implements OnInit {
   fileInfos?: Observable<any>;
   @Input()
   employeeId = '';
-
+  @Input()
+  showUpload = false;
+  @Input()
+  showDelete = false;
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
@@ -29,7 +32,8 @@ export class UploadFilesComponent implements OnInit {
   }
 
   downloadFile(fileId: string, s3FileKey: string, s3FileType: string): void {
-    this.employeeService.downloadFile(fileId, s3FileKey, s3FileType);
+    const fileName = this.getFileName(s3FileKey);
+    this.employeeService.downloadFile(fileId, fileName, s3FileType);
   }
 
   deleteFile(fileId: string): void {
@@ -44,7 +48,9 @@ export class UploadFilesComponent implements OnInit {
       );
     }
   }
-
+  getFileName(s3FileKey: string): string {
+    return s3FileKey.replace(/^.*[\\\\/]/, '');
+  }
   upload(): void {
     this.progress = 0;
 
