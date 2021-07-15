@@ -20,6 +20,9 @@ public class File implements Serializable {
     @Column(name = "s_3_file_key")
     private String s3FileKey;
 
+    @Column(name = "s_3_file_type")
+    private String s3FileType;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "files", "skills" }, allowSetters = true)
     private Employee employee;
@@ -42,13 +45,26 @@ public class File implements Serializable {
         return this.s3FileKey;
     }
 
+    public String gets3FileType() {
+        return this.s3FileType;
+    }
+
     public File s3FileKey(String s3FileKey) {
         this.s3FileKey = s3FileKey;
         return this;
     }
 
+    public File s3FileType(String s3FileType) {
+        this.s3FileType = s3FileType;
+        return this;
+    }
+
     public void sets3FileKey(String s3FileKey) {
         this.s3FileKey = s3FileKey;
+    }
+
+    public void sets3FileType(String s3FileType) {
+        this.s3FileType = s3FileType;
     }
 
     public Employee getEmployee() {
@@ -89,6 +105,7 @@ public class File implements Serializable {
         return "File{" +
             "id=" + getId() +
             ", s3FileKey='" + gets3FileKey() + "'" +
+            ", s3FileType='" + gets3FileKey() + "'" +
             "}";
     }
 }

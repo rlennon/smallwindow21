@@ -1,7 +1,9 @@
 package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.Employee;
+import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.EmployeeRepository;
+import ie.lyit.app.repository.FileRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.aws.S3Service;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
@@ -52,10 +54,12 @@ public class EmployeeResource {
 
     private final EmployeeRepository employeeRepository;
     private final S3Service s3Service;
+    private final FileRepository fileRepository;
 
-    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service) {
+    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service, FileRepository fileRepository) {
         this.employeeRepository = employeeRepository;
         this.s3Service = s3Service;
+        this.fileRepository = fileRepository;
     }
 
     /**
@@ -249,7 +253,9 @@ public class EmployeeResource {
     @GetMapping("/employees/profileImage/{filename:.+}")
     @ResponseBody
     @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
-    public ResponseEntity<String> downloadFile(@PathVariable @ApiParam(value = "Name of the profile image to download") String filename) {
+    public ResponseEntity<String> downloadProfileImage(
+        @PathVariable @ApiParam(value = "Name of the profile image to download") String filename
+    ) {
         byte[] file = s3Service.downloadFile(filename);
         if (file != null && file.length > 0) {
             String base64Image = Base64.getEncoder().encodeToString(file);
@@ -261,14 +267,14 @@ public class EmployeeResource {
     /**
      * Method to delete a profile image
      *
-     * @param employeeId - the id of the employee to delete the profile image for
+     * @param id - the id of the employee to delete the profile image for
      * @return
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/employees/profileImage/{id}")
     @ResponseBody
-    @ApiOperation(value = "Download profile image", notes = "Allows you to download a profile image from S3")
-    public ResponseEntity<Boolean> downloadFile(
+    @ApiOperation(value = "Delete profile image", notes = "Allows you to delete a profile image from S3")
+    public ResponseEntity<Boolean> deleteProfileImage(
         @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
     ) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
@@ -283,6 +289,100 @@ public class EmployeeResource {
         employeeRepository.save(employee);
 
         boolean result = s3Service.deleteFile(s3ProfileImage);
+        return ResponseEntity.ok().body(result);
+    }
+
+    /**
+     * Method to get all files uploaded for an empoloyee
+     *
+     * @param id - the id of the employee to delete the profile image for
+     * @return
+     */
+    @GetMapping("/employees/files/{id}")
+    @ResponseBody
+    @ApiOperation(value = "List all files", notes = "Allows you to list all files for an employee")
+    public ResponseEntity<List<File>> getFiles(
+        @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
+    ) {
+        List<File> fileList = fileRepository.findByEmployeeId(id);
+        return ResponseEntity.ok().body(fileList);
+    }
+
+    /**
+     * Method to upload a file
+     *
+     * @param id - the id of the employee to delete the profile image for
+     * @return
+     */
+    @PostMapping("/employees/files/{id}")
+    @ResponseBody
+    @ApiOperation(value = "Upload a file", notes = "Allows you to upload a file for an employee")
+    public boolean uploadFile(
+        @RequestParam("file") MultipartFile file,
+        @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
+    ) {
+        try {
+            Employee employee = employeeRepository.findById(id).get();
+            String fileName = file.getOriginalFilename();
+            log.info("fileName:{}", fileName);
+            String fileType = file.getContentType();
+            log.info("fileType:{}", fileType);
+
+            String s3FileKey = id + "/files/" + fileName;
+            File fileObj = new File();
+            fileObj.setEmployee(employee);
+            fileObj.sets3FileKey(s3FileKey);
+            fileObj.sets3FileType(fileType);
+            fileRepository.save(fileObj);
+            return s3Service.uploadFile(file.getBytes(), s3FileKey);
+        } catch (IOException e) {
+            log.error("IOException occurred handling the handle the file upload.");
+            return false;
+        }
+    }
+
+    /**
+     * Method to download a file
+     *
+     * @param id - the id of the file to download
+     * @return
+     */
+    @GetMapping("/employees/files/download/{id}")
+    @ResponseBody
+    @ApiOperation(value = "Download a file", notes = "Allows you to download a file based on fileId")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable @ApiParam(value = "Id of the file to download") Long id) {
+        File file = fileRepository.findById(id).get();
+        String s3FileKey = file.gets3FileKey();
+
+        byte[] fileByteArray = s3Service.downloadFile(s3FileKey);
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + s3FileKey + "\"")
+            .body(fileByteArray);
+    }
+
+    /**
+     * Method to delete a file based on id
+     *
+     * @param id - the id of the file to delete
+     * @return
+     */
+    // See https://spring.io/guides/gs/uploading-files/
+    @DeleteMapping("/employees/files/{id}")
+    @ResponseBody
+    @ApiOperation(value = "Delete file", notes = "Allows you to delete a file")
+    public ResponseEntity<Boolean> deleteFile(@PathVariable @ApiParam(value = "Id of the file to delete") Long id) {
+        Optional<File> fileOptional = fileRepository.findById(id);
+        if (!fileOptional.isPresent()) {
+            log.error("No file found for the id {}", id);
+            return ResponseEntity.badRequest().body(false);
+        }
+        File file = fileOptional.get();
+        String s3Key = file.gets3FileKey();
+
+        fileRepository.deleteById(id);
+
+        boolean result = s3Service.deleteFile(s3Key);
         return ResponseEntity.ok().body(result);
     }
 }
