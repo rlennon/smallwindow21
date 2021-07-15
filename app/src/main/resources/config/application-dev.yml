@@ -12,7 +12,11 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
+aws:
+  region: us-east-1
+  storageBucketName: dg-test123
+  local:
+    endpoint: http://localhost:4572
 logging:
   level:
     ROOT: DEBUG

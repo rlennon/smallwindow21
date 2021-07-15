@@ -1,0 +1,50 @@
+{
+  "name": "Employee",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String",
+      "javadoc": "The firstname attribute."
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "s3ImageKey",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "file",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "file",
+      "otherEntityField": "s3FileKey"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "skill",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "skill",
+      "ownerSide": false
+    }
+  ],
+  "javadoc": "The Employee entity.",
+  "entityTableName": "employee",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210704135834"
+}

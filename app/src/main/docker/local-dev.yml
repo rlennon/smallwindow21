@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+
+  localstack:
+    image: localstack/localstack:0.11.2
+    ports:
+      - "4567-4599:4567-4599"
+      - "${PORT_WEB_UI-8081}:${PORT_WEB_UI-8081}"
+    environment:
+      - SERVICES=s3
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - PORT_WEB_UI=${PORT_WEB_UI- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - smaillWindow_network
+
+  setup-resources:
+    image: mesosphere/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=dummyaccess
+      - AWS_SECRET_ACCESS_KEY=dummysecret
+      - AWS_DEFAULT_REGION=eu_west_1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        sleep 10;
+        aws --endpoint-url=http://localstack:4572 s3 mb s3://dg-test123
+      "
+    networks:
+      - smaillWindow_network
+    depends_on:
+      - localstack
+
+  smallwindow21-mysql:
+    image: mysql:8.0.23
+    # volumes:
+    #   - ~/volumes/jhipster/smallwindow21/mysql/:/var/lib/mysql/
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=smallwindow21
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:3306:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+
+networks:
+  smaillWindow_network:
