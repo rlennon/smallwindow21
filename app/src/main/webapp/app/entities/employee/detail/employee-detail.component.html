@@ -37,6 +37,10 @@
         <dd>
           <span>{{ employee.email }}</span>
         </dd>
+        <dt>Files</dt>
+        <dd>
+          <jhi-upload-files [employeeId]="employeeId" [showUpload]="false" [showDelete]="false"></jhi-upload-files>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

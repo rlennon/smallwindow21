@@ -35,10 +35,16 @@
             <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required"> This field is required. </small>
           </div>
         </div>
-      </div>
 
-      <div>
-        <jhi-profile-image-upload (newCroppedImageEvent)="setCroppedImage($event)"></jhi-profile-image-upload>
+        <div class="form-group">
+          <label class="form-control-label" for="field_email">Profile Image</label>
+          <jhi-profile-image-upload (newCroppedImageEvent)="setCroppedImage($event)"></jhi-profile-image-upload>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_email">Files</label>
+          <jhi-upload-files [employeeId]="employeeId" [showUpload]="true" [showDelete]="true"></jhi-upload-files>
+        </div>
       </div>
 
       <div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -74,5 +74,50 @@ export class EmployeeService {
 
   deleteImage(employeeId: string): Observable<HttpResponse<boolean>> {
     return this.http.delete<boolean>(`${this.resourceUrl}/profileImage/${employeeId}`, { observe: 'response' });
+  }
+
+  upload(file: File, employeeId: string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.resourceUrl}/files/${employeeId}`, formData, {
+      reportProgress: true,
+      responseType: 'json',
+    });
+
+    return this.http.request(req);
+  }
+
+  getFiles(employeeId: string): Observable<any> {
+    return this.http.get(`${this.resourceUrl}/files/${employeeId}`);
+  }
+  deleteFile(fileId: string): Observable<any> {
+    return this.http.delete(`${this.resourceUrl}/files/${fileId}`);
+  }
+  downloadFile(fileId: string, fileName: string, s3FileType: string): void {
+    this.http
+      .get(`${this.resourceUrl}/files/download/${fileId}`, {
+        responseType: 'arraybuffer',
+      })
+      .subscribe(response => this.flushFileToBrowser(response, fileName, s3FileType));
+  }
+
+  /**
+   * Method is use to download file.
+   * @param data - Array Buffer data
+   * @param s3FileKey - name of the file downloaded from S3.
+   * @param s3FileType - type of the file downloaded from S3.
+   */
+  flushFileToBrowser(data: any, fileName: string, s3FileType: string): void {
+    const aElement = document.createElement('a');
+    document.body.appendChild(aElement);
+
+    const blob = new Blob([data], { type: s3FileType });
+    const url = window.URL.createObjectURL(blob);
+
+    aElement.href = url;
+    aElement.download = fileName;
+    aElement.click();
   }
 }
