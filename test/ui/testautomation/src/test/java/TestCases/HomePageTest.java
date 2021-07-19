@@ -49,7 +49,7 @@ public class HomePageTest {
 
         homepage = new HomePage(WebDriverHelper.getDriver());
 
-        String pageTitle = homepage.NavBarElement().getText().toString();
+        String pageTitle = homepage.navBarElement().getText().toString();
 
         //verify the title of the page
         assertEquals("Smallwindow21", pageTitle);

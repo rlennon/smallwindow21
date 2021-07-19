@@ -26,6 +26,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.*;
 
+
+
+/**
+ * Webdriver Helper Class to manage the Webdriver
+ * From opening to closing to error handling
+ * @author Sharon  
+ */
 public final class WebDriverHelper{
 
     public static String driverLocation = null;
@@ -36,22 +43,43 @@ public final class WebDriverHelper{
 
     private static Path CurrentDirectory = null;
 
+    /**
+     * Set's the driver location
+     * @param location
+     */
     public static void setDriverLocation(String location){
         driverLocation = location;
     }
 
+    /**
+     * Get's the webdriver location
+     * @return driverlocation
+     */
     public static String getDriverLocation(){
         return driverLocation != null ? driverLocation : Paths.get("").toAbsolutePath().toString();
     }
 
+    /**
+     * Get's the Webdriver
+     * @return
+     */
     public static WebDriver getDriver(){
         return driver;
     }
 
+    /**
+     * Sets the Webdriver
+     * @param driver
+     */
     public static void setDriver(WebDriver driver){
         WebDriverHelper.driver = driver;
     }
 
+    /**
+     * Sets the Chrome Options and gives the option to run headlessly
+     * @param isHeadless
+     * @return Chrome Options that were selected
+     */
     protected static ChromeOptions optionsGC(Boolean isHeadless){
         ChromeOptions options = new ChromeOptions();
 
@@ -75,6 +103,11 @@ public final class WebDriverHelper{
         return options;
     }
 
+    /**
+     * Launch the Webdriver
+     * @return the Webdriver instance
+     * @throws MalformedURLException
+     */
     public static WebDriver open() throws MalformedURLException{
         
         PropertyConfigurator.configure(System.getProperty("user.dir") + File.separator + "log4j.properties");
@@ -93,6 +126,12 @@ public final class WebDriverHelper{
         return driver;
     }
 
+    /**
+     * Launch the Webdriver with URL
+     * @param url
+     * @return the Webdriver
+     * @throws MalformedURLException
+     */
     public static WebDriver open(String url) throws MalformedURLException{
         WebDriver driver = open();
 
@@ -103,18 +142,14 @@ public final class WebDriverHelper{
         return driver;
     }
 
+    /**
+     * Set Remote Webdriver for execution on a VDI
+     * @param driver
+     * @return Remote Webdriver
+     */
     public static RemoteWebDriver getRemoteWebDriver(WebDriver driver){
         return((RemoteWebDriver) driver);
     }
-
-    // public static void close(WebDriver driver){
-    //     if (driver != null){
-    //         if(getRemoteWebDriver(driver).getSessionID() != null){
-    //             driver.close();
-    //             driver.quit();
-    //         }
-    //     }
-    // }
 
     public static void close(boolean CallingfromBaseSuite){
         if(getDriver() != null){
@@ -129,6 +164,10 @@ public final class WebDriverHelper{
         }
     }
 
+    /**
+     * Take a screenshot of the browser and get filename
+     * @return path to screenshot file or null
+     */
     public static String screenShot(){
         if(CurrentDirectory == null){
             CurrentDirectory = Paths.get("").toAbsolutePath();
@@ -152,13 +191,15 @@ public final class WebDriverHelper{
         return null;
     }
 
+    /**
+     * Take screenshot of browser 
+     * @param driver
+     * @return screenshot
+     */
     public static File getScreenshot(WebDriver driver){
         File screen_shot = null;
 
         try{
-            if(driver == null){
-                return screen_shot;
-            }
             logger.info("Taking screenshot of browser titled: '" + driver.getTitle() + "', URL: " + driver.getCurrentUrl());
             screen_shot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         } catch (Exception e){
@@ -168,6 +209,13 @@ public final class WebDriverHelper{
         return screen_shot;
     }
 
+  
+    /**
+     * Create and return a unique screenshot name
+     * @param screenShotName
+     * @param screenshotPath
+     * @return screenshot name
+     */
     public static String getScreenshotName(String screenShotName, String screenshotPath){
         boolean existing = true;
         int extension = 2;
