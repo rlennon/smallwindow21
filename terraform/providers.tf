@@ -11,7 +11,7 @@ terraform {
     organization = "SmallWindow21-SO"
 
     workspaces {
-      name = "SmallWindow21-Workspace"
+      name = "SmallWindow21-workspace"
     }
   }
 }

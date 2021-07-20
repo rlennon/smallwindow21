@@ -1,21 +1,27 @@
 variable "base_resource_name" {
   type = string
 }
+
 variable "owner_name" {
   type = string
 }
+
 variable "project_name" {
   type = string
 }
+
 variable "availability_zone_1" {
   type = string
 }
+
 variable "availability_zone_2" {
   type = string
 }
+
 variable "public_subnet_base_name" {
   type = string
 }
+
 variable "private_subnet_base_name" {
   type = string
 }
@@ -172,9 +178,11 @@ output "vpc_id" {
 output "public_subnet_id" {
   value = aws_subnet.public_subnet.id
 }
+
 output "private_subnet_app_id" {
   value = aws_subnet.private_subnet_app.id
 }
+
 output "private_subnet_dbase_1_id" {
   value = aws_subnet.private_subnet_dbase_1.id
 }
