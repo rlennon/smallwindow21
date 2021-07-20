@@ -20,14 +20,27 @@ jobs:
       with:
         path: ~/.tflint.d/plugins
         key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
-    - uses: terraform-linters/setup-tflint@v1
-      name: Setup TFLint
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -recursive -check
+
+    - name: Terraform Init
+      id: init
+      run: terraform init    
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v1
       with:
         tflint_version: v0.29.0
+
     - name: Show version
       run: tflint --version
+
     - name: Init TFLint
       run: tflint --init
+
     - name: Run TFLint
       run: tflint --module -f compact |
            tflint --module security -f compact |
@@ -35,6 +48,7 @@ jobs:
            tflint --module database -f compact | 
            tflint --module storage -f compact |
            tflint --module compute -f compact
+           
   build-application:
     name: "Build Application"
     runs-on: ubuntu-latest
