@@ -67,8 +67,8 @@ jobs:
         with:
           java-version: 11
       - run: mvn -B clean install --file app/pom.xml
-      - run: mkdir test && cp app/target/smallwindow-21-0.0.1-SNAPSHOT.jar test
+      - run: mkdir appTests && cp app/target/smallwindow-21-0.0.1-SNAPSHOT.jar appTests
       - uses: actions/upload-artifact@v2
         with:
           name: TestPackage
-          path: test 
+          path: appTests 
