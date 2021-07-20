@@ -20,7 +20,7 @@ jobs:
       with:
         path: ~/.tflint.d/plugins
         key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
-        
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
@@ -44,13 +44,18 @@ jobs:
     - name: Init TFLint
       run: tflint --init
 
-    - name: Run TFLint
-      run: tflint --module -f compact |
-           tflint --module security -f compact |
-           tflint --module networking -f compact |
-           tflint --module database -f compact | 
-           tflint --module storage -f compact |
-           tflint --module compute -f compact
+    - name: Run TFLint root module
+      run: tflint --module -f compact 
+    - name: Run TFLint security module
+      run: tflint --module security -f compact 
+    - name: Run TFLint networking module
+      run: tflint --module networking -f compact 
+    - name: Run TFLint database module
+      run: tflint --module database -f compact 
+    - name: Run TFLint storage module
+      run: tflint --module storage -f compact 
+    - name: Run TFLint compute module
+      run: tflint --module compute -f compact 
 
   build-application:
     name: "Build Application"
