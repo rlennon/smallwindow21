@@ -45,6 +45,12 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    /**
+     * Constructor
+     * @param userRepository -
+     * @param userService -
+     * @param mailService -
+     */
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;

@@ -18,6 +18,9 @@ public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * name
+     */
     @NotNull
     @Size(max = 50)
     @Id

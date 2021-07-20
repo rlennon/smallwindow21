@@ -18,6 +18,14 @@ import tech.jhipster.config.JHipsterProperties;
 @Configuration
 public class LoggingConfiguration {
 
+    /**
+     * Class constructor
+     * @param appName -
+     * @param serverPort -
+     * @param jHipsterProperties -
+     * @param mapper -
+     * @throws JsonProcessingException -
+     */
     public LoggingConfiguration(
         @Value("${spring.application.name}") String appName,
         @Value("${server.port}") String serverPort,

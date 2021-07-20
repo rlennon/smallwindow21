@@ -29,10 +29,23 @@ public class LiquibaseConfiguration {
 
     private final Environment env;
 
+    /**
+     * Class constructor
+     * @param env Environment to set
+     */
     public LiquibaseConfiguration(Environment env) {
         this.env = env;
     }
 
+    /**
+     * Create a SpringLiquibase instance
+     * @param executor -
+     * @param liquibaseDataSource -
+     * @param liquibaseProperties -
+     * @param dataSource -
+     * @param dataSourceProperties -
+     * @return SpringLiquibase instance
+     */
     @Bean
     public SpringLiquibase liquibase(
         @Qualifier("taskExecutor") Executor executor,

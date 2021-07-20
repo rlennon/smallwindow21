@@ -44,8 +44,8 @@ public class CacheConfiguration {
     }
 
     /**
-     * Cache m=Manager customizer
-     * @return
+     * Cache manager customizer
+     * @return JCacheManagerCustomizer instance
      */
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
@@ -65,6 +65,10 @@ public class CacheConfiguration {
         }
     }
 
+    /**
+     * set the git properties
+     * @param gitProperties - properties to set
+     */
     @Autowired(required = false)
     public void setGitProperties(GitProperties gitProperties) {
         this.gitProperties = gitProperties;
@@ -79,6 +83,10 @@ public class CacheConfiguration {
         this.buildProperties = buildProperties;
     }
 
+    /**
+     * Create keyGenerator bean
+     * @return KeyGenerator instance
+     */
     @Bean
     public KeyGenerator keyGenerator() {
         return new PrefixedKeyGenerator(this.gitProperties, this.buildProperties);

@@ -49,12 +49,19 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     private final Environment env;
 
+    /**
+     * Constructor
+     * @param env -
+     */
     public ExceptionTranslator(Environment env) {
         this.env = env;
     }
 
     /**
      * Post-process the Problem payload to add the message key for the front-end if needed.
+     * @param entity -
+     * @param request -
+     * @return -
      */
     @Override
     public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
@@ -89,6 +96,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @Override
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
@@ -116,6 +129,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(ex, problem, request);
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
         ie.lyit.app.service.EmailAlreadyUsedException ex,
@@ -129,6 +148,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
         ie.lyit.app.service.UsernameAlreadyUsedException ex,
@@ -142,6 +167,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(
         ie.lyit.app.service.InvalidPasswordException ex,
@@ -150,6 +181,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(new InvalidPasswordException(), request);
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
         return create(
@@ -159,12 +196,25 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
+    /**
+     *
+     * @param ex -
+     * @param request -
+     * @return -
+     */
     @ExceptionHandler
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
         Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
         return create(ex, problem, request);
     }
 
+    /**
+     *
+     * @param throwable -
+     * @param status -
+     * @param type -
+     * @return -
+     */
     @Override
     public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());

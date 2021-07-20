@@ -15,6 +15,10 @@ import tech.jhipster.config.locale.AngularCookieLocaleResolver;
 @Configuration
 public class LocaleConfiguration implements WebMvcConfigurer {
 
+    /**
+     * Create LocaleResolver
+     * @return LocaleResolver instance
+     */
     @Bean
     public LocaleResolver localeResolver() {
         AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver();
@@ -22,6 +26,10 @@ public class LocaleConfiguration implements WebMvcConfigurer {
         return cookieLocaleResolver;
     }
 
+    /**
+     * Add interceptors
+     * @param registry interceptor to add
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
