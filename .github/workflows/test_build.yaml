@@ -17,19 +17,19 @@ jobs:
         # Do not change the line below except the word main with tag number maybe
     - uses: avinal/github-pages-deploy-action@main
       with:
-      # GitHub access token with Repo Access
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # For JavaDoc - "java"
-      # For python write python package and additional packages if any - "python3 python3-pip" 
-      LANGUAGE: "java"
-      # Write make command to generate html e.g.- "make html"
-      MAKE_COMMAND: "make html"
-      # Write the branch name for storing github pages source 
-      PAGES_BRANCH: "gh-pages"
-      # Write the branch name having source files for site/documentation
-      BUILD_FROM: "develop"
-      # Write the name of the output folder where generated html is stored by makefile.
-      DOCS_FOLDER: "docs"
+        # GitHub access token with Repo Access
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # For JavaDoc - "java"
+        # For python write python package and additional packages if any - "python3 python3-pip" 
+        LANGUAGE: "java"
+        # Write make command to generate html e.g.- "make html"
+        MAKE_COMMAND: "make html"
+        # Write the branch name for storing github pages source 
+        PAGES_BRANCH: "gh-pages"
+        # Write the branch name having source files for site/documentation
+        BUILD_FROM: "develop"
+        # Write the name of the output folder where generated html is stored by makefile.
+        DOCS_FOLDER: "docs"
 
   tflint:
     name: "Run tflint on application"
