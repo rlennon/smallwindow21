@@ -872,7 +872,7 @@
                             <execution>
                                 <id>npm install</id>
                                 <goals>
-                                    <goal>npm</goal>
+                                    <goal>npm install --force</goal>
                                 </goals>
                             </execution>
                             <execution>
@@ -967,7 +967,7 @@
                             <execution>
                                 <id>npm install</id>
                                 <goals>
-                                    <goal>npm</goal>
+                                    <goal>npm install --force</goal>
                                 </goals>
                                 <configuration>
                                     <arguments>install</arguments>
