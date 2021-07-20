@@ -77,7 +77,7 @@ resource "aws_db_instance" "db_instance" {
   allocated_storage      = var.dbase_allocated_storage
   engine                 = var.dbase_engine
   engine_version         = var.dbase_engine_version
-  instance_class         = "db.t3.micro123"
+  instance_class         = var.dbase_instance_type
   name                   = var.dbase_db_name
   username               = var.dbase_username
   password               = random_string.db_password.result
