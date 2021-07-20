@@ -15,7 +15,7 @@ jobs:
     steps:
         # Use avinal/github-pages-deploy-action@<latest-release-tag> for latest stable release
         # Do not change the line below except the word main with tag number maybe
-    - uses: avinal/github-pages-deploy-action@main
+    - uses: avinal/github-pages-deploy-action@v0.9
       with:
         # GitHub access token with Repo Access
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
