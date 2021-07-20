@@ -18,7 +18,7 @@ jobs:
     - uses: avinal/github-pages-deploy-action@main
       with:
       # GitHub access token with Repo Access
-      GITHUB_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # For JavaDoc - "java"
       # For python write python package and additional packages if any - "python3 python3-pip" 
       LANGUAGE: "java"
