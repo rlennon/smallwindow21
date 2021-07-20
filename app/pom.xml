@@ -872,8 +872,11 @@
                             <execution>
                                 <id>npm install</id>
                                 <goals>
-                                    <goal>npm install --force</goal>
+                                    <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --force</arguments>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>webapp build dev</id>
@@ -967,10 +970,10 @@
                             <execution>
                                 <id>npm install</id>
                                 <goals>
-                                    <goal>npm install --force</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install</arguments>
+                                    <arguments>install --force</arguments>
                                 </configuration>
                             </execution>
                             <execution>
