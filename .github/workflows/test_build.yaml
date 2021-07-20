@@ -5,7 +5,33 @@ on:
     branches: [ ! main ]
 
 jobs:
+  tflint:
+    name: "Run tflint on application"
+    runs-on: ubuntu-latest
 
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout source code
+    - uses: actions/cache@v2
+      name: Cache plugin dir
+      with:
+        path: ~/.tflint.d/plugins
+        key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+    - uses: terraform-linters/setup-tflint@v1
+      name: Setup TFLint
+      with:
+        tflint_version: v0.29.0
+    - name: Show version
+      run: tflint --version
+    - name: Init TFLint
+      run: tflint --init
+    - name: Run TFLint
+      run: tflint --module -f compact |
+           tflint --module security -f compact |
+           tflint --module networking -f compact |
+           tflint --module database -f compact | 
+           tflint --module storage -f compact |
+           tflint --module compute -f compact
   build-application:
     name: "Build Application"
     runs-on: ubuntu-latest
