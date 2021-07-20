@@ -2,13 +2,16 @@ name: "SmallWindow21 Test Deploy"
 
 on:
   push:
-    branches: [ ! main ]
+    #branches: [ ! main ]
 
 jobs:
   tflint:
     name: "Run tflint on application"
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
     steps:
     - uses: actions/checkout@v2
       name: Checkout source code
