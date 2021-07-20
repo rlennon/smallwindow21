@@ -7,6 +7,11 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import tech.jhipster.config.locale.AngularCookieLocaleResolver;
 
+/**
+ * Locale config class
+ *
+ * @author smallwindow21 team
+ */
 @Configuration
 public class LocaleConfiguration implements WebMvcConfigurer {
 

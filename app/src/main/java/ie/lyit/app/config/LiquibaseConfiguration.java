@@ -17,6 +17,11 @@ import org.springframework.core.env.Profiles;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.liquibase.SpringLiquibaseUtil;
 
+/**
+ * Liquibase config class
+ *
+ * @author smallwindow21 team
+ */
 @Configuration
 public class LiquibaseConfiguration {
 

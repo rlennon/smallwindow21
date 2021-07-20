@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
+/**
+ * Jackson config class
+ *
+ * @author smallwindow21 team
+ */
 @Configuration
 public class JacksonConfiguration {
 

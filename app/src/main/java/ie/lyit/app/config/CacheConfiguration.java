@@ -13,6 +13,12 @@ import org.springframework.context.annotation.*;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
+/**
+ * Main AWS Config class
+ *
+ * @author smallwindow21 team
+ *
+ */
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
@@ -21,6 +27,10 @@ public class CacheConfiguration {
     private BuildProperties buildProperties;
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
+    /**
+     * Class constructor
+     * @param jHipsterProperties - properties to use
+     */
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
         JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
 
@@ -33,6 +43,10 @@ public class CacheConfiguration {
             );
     }
 
+    /**
+     * Cache m=Manager customizer
+     * @return
+     */
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
@@ -56,6 +70,10 @@ public class CacheConfiguration {
         this.gitProperties = gitProperties;
     }
 
+    /**
+     * Set the build properties
+     * @param buildProperties - properties to set
+     */
     @Autowired(required = false)
     public void setBuildProperties(BuildProperties buildProperties) {
         this.buildProperties = buildProperties;
