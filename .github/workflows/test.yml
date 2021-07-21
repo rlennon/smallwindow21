@@ -1,4 +1,4 @@
-name: "SmallWindow21 Test Deploy 1"
+name: "SmallWindow21 Test Deploy"
 
 on:
   push:
