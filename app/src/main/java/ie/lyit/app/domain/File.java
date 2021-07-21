@@ -13,16 +13,28 @@ public class File implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * generated id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * s3e file key
+     */
     @Column(name = "s_3_file_key")
     private String s3FileKey;
 
+    /**
+     * s3 file type
+     */
     @Column(name = "s_3_file_type")
     private String s3FileType;
 
+    /**
+     * employee who owns file
+     */
     @ManyToOne
     @JsonIgnoreProperties(value = { "files", "skills" }, allowSetters = true)
     private Employee employee;

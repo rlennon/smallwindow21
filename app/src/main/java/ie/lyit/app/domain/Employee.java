@@ -19,6 +19,9 @@ public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * generated id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,20 +33,35 @@ public class Employee implements Serializable {
     @Column(name = "first_name")
     private String firstName;
 
+    /**
+     * last name assigned
+     */
     @Column(name = "last_name")
     private String lastName;
 
+    /**
+     * employees email
+     */
     @NotNull
     @Column(name = "email", nullable = false)
     private String email;
 
+    /**
+     * s3 image key for profile image
+     */
     @Column(name = "s_3_image_key")
     private String s3ImageKey;
 
+    /**
+     * files associated to user
+     */
     @OneToMany(mappedBy = "employee")
     @JsonIgnoreProperties(value = { "employee" }, allowSetters = true)
     private Set<File> files = new HashSet<>();
 
+    /**
+     * skills associated to user
+     */
     @ManyToMany(mappedBy = "employees")
     @JsonIgnoreProperties(value = { "categories", "employees" }, allowSetters = true)
     private Set<Skill> skills = new HashSet<>();

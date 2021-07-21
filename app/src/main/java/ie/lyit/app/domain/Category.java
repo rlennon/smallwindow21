@@ -16,14 +16,23 @@ public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * generated id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * category name
+     */
     @NotNull
     @Column(name = "category_name", nullable = false)
     private String categoryName;
 
+    /**
+     * assigned skills
+     */
     @ManyToMany(mappedBy = "categories")
     @JsonIgnoreProperties(value = { "categories", "employees" }, allowSetters = true)
     private Set<Skill> skills = new HashSet<>();

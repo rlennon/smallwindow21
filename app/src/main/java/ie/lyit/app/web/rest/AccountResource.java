@@ -30,8 +30,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AccountResource {
 
+    /**
+     * Private nested exception class
+     */
     private static class AccountResourceException extends RuntimeException {
 
+        /**
+         * Constructor
+         */
         private AccountResourceException(String message) {
             super(message);
         }

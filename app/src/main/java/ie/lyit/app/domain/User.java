@@ -24,60 +24,99 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * generated id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * login to use
+     */
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     @Column(length = 50, unique = true, nullable = false)
     private String login;
 
+    /**
+     * users password
+     */
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
+    /**
+     * users firstname
+     */
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
     private String firstName;
 
+    /**
+     * users last name
+     */
     @Size(max = 50)
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    /**
+     * users email
+     */
     @Email
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
     private String email;
 
+    /**
+     * activated or not
+     */
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
 
+    /**
+     * langKey to use
+     */
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
 
+    /**
+     * imageUrl to use
+     */
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
 
+    /**
+     * activation key to use
+     */
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
     private String activationKey;
 
+    /**
+     * reset key to use
+     */
     @Size(max = 20)
     @Column(name = "reset_key", length = 20)
     @JsonIgnore
     private String resetKey;
 
+    /**
+     * resetDate
+     */
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    /**
+     * Authorities assigned to user
+     */
     @JsonIgnore
     @ManyToMany
     @JoinTable(

@@ -15,16 +15,28 @@ public class Skill implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * generated id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * title
+     */
     @Column(name = "title")
     private String title;
 
+    /**
+     * description
+     */
     @Column(name = "description")
     private String description;
 
+    /**
+     * categories assigned
+     */
     @ManyToMany
     @JoinTable(
         name = "rel_skill__category",
@@ -34,6 +46,9 @@ public class Skill implements Serializable {
     @JsonIgnoreProperties(value = { "skills" }, allowSetters = true)
     private Set<Category> categories = new HashSet<>();
 
+    /**
+     * employees assigned
+     */
     @ManyToMany
     @JoinTable(
         name = "rel_skill__employee",

@@ -8,11 +8,17 @@ import java.io.Serializable;
 public class FieldErrorVM implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    /**
+     * objectName string
+     */
     private final String objectName;
-
+    /**
+     * field string
+     */
     private final String field;
-
+    /**
+     * messagestring
+     */
     private final String message;
 
     /**

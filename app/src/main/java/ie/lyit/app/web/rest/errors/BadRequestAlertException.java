@@ -12,9 +12,14 @@ import org.zalando.problem.Status;
 public class BadRequestAlertException extends AbstractThrowableProblem {
 
     private static final long serialVersionUID = 1L;
-
+    /**
+     * Entityname string
+     */
     private final String entityName;
 
+    /**
+     * errorKey string
+     */
     private final String errorKey;
 
     /**
