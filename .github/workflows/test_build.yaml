@@ -2,7 +2,8 @@ name: "SmallWindow21 Test Deploy"
 
 on:
   push:
-    branches: [ ! main ]
+    branches:
+       - '!main'
 
 jobs:
   tflint:
