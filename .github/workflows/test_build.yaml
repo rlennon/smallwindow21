@@ -71,4 +71,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: TestPackage
-          path: appTests 
+          path: appTests
