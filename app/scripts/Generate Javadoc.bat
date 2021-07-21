@@ -1,2 +1,2 @@
 ../mvnw.cmd -f ../pom.xml clean javadoc:javadoc
-open ../target/site/apidocs/index.html
+start chrome ../target/site/apidocs/index.html
