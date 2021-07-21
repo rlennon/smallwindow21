@@ -1,0 +1,45 @@
+<div class="row" *ngIf="showUpload">
+  <div class="col-8">
+    <label class="btn btn-default p-0">
+      <input type="file" (change)="selectFile($event)" />
+    </label>
+  </div>
+
+  <div class="col-4">
+    <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">Upload File</button>
+  </div>
+</div>
+
+<div *ngIf="currentFile" class="progress my-3">
+  <div
+    class="progress-bar progress-bar-info progress-bar-striped"
+    role="progressbar"
+    attr.aria-valuenow="{{ progress }}"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [ngStyle]="{ width: progress + '%' }"
+  >
+    {{ progress }}%
+  </div>
+</div>
+
+<div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+
+<div class="card mt-3" *ngIf="(fileInfos | async)?.length > 0">
+  <div class="card-header">List of Employee Files</div>
+  <ul class="list-group list-group-flush" *ngFor="let file of fileInfos | async">
+    <li class="list-group-item">
+      <div class="wrapper">
+        <div class="left clickable" (click)="downloadFile(file.id, file.s3FileKey, file.s3FileType)" title="Click to download the file">
+          {{ file.id }} - {{ getFileName(file.s3FileKey) }}
+        </div>
+        <div class="right clickable">
+          <button type="button" (click)="deleteFile(file.id)" class="btn btn-danger btn-sm" *ngIf="showDelete">
+            <fa-icon icon="times"></fa-icon>
+            <span class="d-none d-md-inline">Delete File</span>
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

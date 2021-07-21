@@ -23,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping("/api/s3")
 public class S3Resource {
@@ -31,6 +34,10 @@ public class S3Resource {
 
     private final S3Service s3Service;
 
+    /**
+     * Constructor
+     * @param s3Service -
+     */
     public S3Resource(S3Service s3Service) {
         this.s3Service = s3Service;
     }
@@ -38,8 +45,8 @@ public class S3Resource {
     /**
      * Method to download a file and serve it
      *
-     * @param filename
-     * @return
+     * @param filename -
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @GetMapping("/{filename:.+}")
@@ -54,7 +61,8 @@ public class S3Resource {
      * Method to upload a file
      *
      * @param file to upload
-     * @return
+     * @param filename -
+     * @return -
      */
     @PostMapping("/file/{filename:.+}")
     @ApiOperation(value = "Upload a file", notes = "Allows you to upload a file to S3")
@@ -74,7 +82,8 @@ public class S3Resource {
      * Method to upload a base 64 string
      *
      * @param base64 string to upload
-     * @return
+     * @param filename -
+     * @return -
      */
     @PostMapping("/base64/{filename:.+}")
     @ApiOperation(value = "Upload a base64 string", notes = "Allows you to upload a base64 string to S3")
@@ -88,8 +97,8 @@ public class S3Resource {
     /**
      * Method to delete a file
      *
-     * @param filename
-     * @return
+     * @param filename -
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/{filename:.+}")

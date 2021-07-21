@@ -4,14 +4,13 @@ import ie.lyit.app.domain.Skill;
 import ie.lyit.app.repository.SkillRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +44,10 @@ public class SkillResource {
 
     private final SkillRepository skillRepository;
 
+    /**
+     * Constructor
+     * @param skillRepository -
+     */
     public SkillResource(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }
@@ -83,8 +86,10 @@ public class SkillResource {
     @PutMapping("/skills/{id}")
     @ApiOperation(value = "Update existing skill", notes = "Allows you to update an existing skill on the system")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-	public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id, @RequestBody Skill skill)
-        throws URISyntaxException {
+    public ResponseEntity<Skill> updateSkill(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id,
+        @RequestBody Skill skill
+    ) throws URISyntaxException {
         log.debug("REST request to update Skill : {}, {}", id, skill);
         if (skill.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -117,8 +122,10 @@ public class SkillResource {
      */
     @PatchMapping(value = "/skills/{id}", consumes = "application/merge-patch+json")
     @ApiOperation(value = "Partially Update existing skill", notes = "Allows you to partially update an existing skill on the system")
-    public ResponseEntity<Skill> partialUpdateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id, @RequestBody Skill skill)
-        throws URISyntaxException {
+    public ResponseEntity<Skill> partialUpdateSkill(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id,
+        @RequestBody Skill skill
+    ) throws URISyntaxException {
         log.debug("REST request to partial update Skill partially : {}, {}", id, skill);
         if (skill.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -200,7 +207,7 @@ public class SkillResource {
     @DeleteMapping("/skills/{id}")
     @ApiOperation(value = "Delete a skill", notes = "Allows you to delete a skill on the system based on id")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-	public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
+    public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
         log.debug("REST request to delete Skill : {}", id);
         skillRepository.deleteById(id);
         return ResponseEntity
