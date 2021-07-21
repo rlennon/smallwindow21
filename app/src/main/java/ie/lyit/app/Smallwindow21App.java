@@ -18,6 +18,12 @@ import org.springframework.core.env.Environment;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
+/**
+ * Smallwindow21 app class
+ *
+ * @author smallwindow21 team
+ *
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
 public class Smallwindow21App {
@@ -26,6 +32,10 @@ public class Smallwindow21App {
 
     private final Environment env;
 
+    /**
+     * Class constructor
+     * @param env Environment to use
+     */
     public Smallwindow21App(Environment env) {
         this.env = env;
     }

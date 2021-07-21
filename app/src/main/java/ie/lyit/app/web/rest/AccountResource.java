@@ -32,8 +32,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AccountResource {
 
+    /**
+     * Private nested exception class
+     */
     private static class AccountResourceException extends RuntimeException {
 
+        /**
+         * Constructor
+         */
         private AccountResourceException(String message) {
             super(message);
         }
@@ -47,6 +53,12 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    /**
+     * Constructor
+     * @param userRepository -
+     * @param userService -
+     * @param mailService -
+     */
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
