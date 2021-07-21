@@ -5,6 +5,8 @@ import ie.lyit.app.repository.CategoryRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.CategoryService;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -12,9 +14,6 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +41,11 @@ public class CategoryResource {
 
     private final CategoryRepository categoryRepository;
 
+    /**
+     * Constructor
+     * @param categoryService -
+     * @param categoryRepository -
+     */
     public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
@@ -82,7 +86,7 @@ public class CategoryResource {
     @ApiOperation(value = "Update existing category", notes = "Allows you to update an existing category on the system")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Category> updateCategory(
-        @PathVariable(value = "id", required = false)  @ApiParam(value = "Id of the category to update") Long id,
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the category to update") Long id,
         @Valid @RequestBody Category category
     ) throws URISyntaxException {
         log.debug("REST request to update Category : {}, {}", id, category);
@@ -161,7 +165,7 @@ public class CategoryResource {
      */
     @GetMapping("/categories/{id}")
     @ApiOperation(value = "Retrieve a category", notes = "Allows you to retrieve a category on the system based on id")
-    public ResponseEntity<Category> getCategory(@PathVariable  @ApiParam(value = "Id of the category to retrieve") Long id) {
+    public ResponseEntity<Category> getCategory(@PathVariable @ApiParam(value = "Id of the category to retrieve") Long id) {
         log.debug("REST request to get Category : {}", id);
         Optional<Category> category = categoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(category);
