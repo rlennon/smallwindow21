@@ -5,14 +5,13 @@ import ie.lyit.app.repository.FileRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.FileService;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +45,11 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
+    /**
+     * Constructor
+     * @param fileService -
+     * @param fileRepository -
+     */
     public FileResource(FileService fileService, FileRepository fileRepository) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;
@@ -84,9 +88,11 @@ public class FileResource {
      */
     @PutMapping("/files/{id}")
     @ApiOperation(value = "Update existing file", notes = "Allows you to update an existing file on the system")
-	@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<File> updateFile(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to update") Long id, @RequestBody File file)
-        throws URISyntaxException {
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<File> updateFile(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to update") Long id,
+        @RequestBody File file
+    ) throws URISyntaxException {
         log.debug("REST request to update File : {}, {}", id, file);
         if (file.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -119,8 +125,10 @@ public class FileResource {
      */
     @PatchMapping(value = "/files/{id}", consumes = "application/merge-patch+json")
     @ApiOperation(value = "Partially Update existing file", notes = "Allows you to partially update an existing file on the system")
-    public ResponseEntity<File> partialUpdateFile(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id, @RequestBody File file)
-        throws URISyntaxException {
+    public ResponseEntity<File> partialUpdateFile(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id,
+        @RequestBody File file
+    ) throws URISyntaxException {
         log.debug("REST request to partial update File partially : {}, {}", id, file);
         if (file.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -179,7 +187,7 @@ public class FileResource {
     @DeleteMapping("/files/{id}")
     @ApiOperation(value = "Delete a file", notes = "Allows you to delete a file on the system based on id")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-	public ResponseEntity<Void> deleteFile(@PathVariable @ApiParam(value = "Id of the file to delete") Long id) {
+    public ResponseEntity<Void> deleteFile(@PathVariable @ApiParam(value = "Id of the file to delete") Long id) {
         log.debug("REST request to delete File : {}", id);
         fileService.delete(id);
         return ResponseEntity

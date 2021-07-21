@@ -2,7 +2,8 @@ name: "SmallWindow21 Test Deploy"
 
 on:
   push:
-    branches: [ ! main ]
+    branches:
+      - '!main'     
 
 jobs:
   tflint:
@@ -71,4 +72,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: TestPackage
-          path: appTests 
+          path: appTests

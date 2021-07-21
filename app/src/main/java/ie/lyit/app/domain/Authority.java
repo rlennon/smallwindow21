@@ -18,20 +18,36 @@ public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * name
+     */
     @NotNull
     @Size(max = 50)
     @Id
     @Column(length = 50)
     private String name;
 
+    /**
+     * Get name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name
+     * @param name name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Equals method
+     * @param o object to compare to
+     * @return true or false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -43,11 +59,19 @@ public class Authority implements Serializable {
         return Objects.equals(name, ((Authority) o).name);
     }
 
+    /**
+     * Hashcode method
+     * @return unique hashcode value
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(name);
     }
 
+    /**
+     * toString method
+     * @return string for object
+     */
     // prettier-ignore
     @Override
     public String toString() {
