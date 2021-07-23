@@ -17,6 +17,19 @@
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Skill </span>
       </button>
+      <form #f="ngForm" class="form-inline float-right pr-3">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="searchData" class="sr-only">Search data</label>
+          <input type="text" class="form-control" id="searchData" name="searchData" [(ngModel)]="criteria.searchData" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <select class="form-control" id="searchField" name="searchField" [(ngModel)]="criteria.searchField">
+            <option [ngValue]="searchField.value" *ngFor="let searchField of searchFieldOptions">{{ searchField.label }}</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-info mb-2" (click)="searchSkills()">Search</button>
+        <button type="button" class="btn btn-danger mb-2" (click)="clearSearch()">Clear</button>
+      </form>
     </div>
   </h2>
 
@@ -52,12 +65,24 @@
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" [routerLink]="['/skill', skill.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                [routerLink]="['/skill', skill.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" (click)="delete(skill)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                (click)="delete(skill)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>

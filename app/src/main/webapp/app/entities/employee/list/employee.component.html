@@ -3,7 +3,7 @@
     <span>Employees</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh List</span>
       </button>
@@ -17,6 +17,19 @@
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Employee </span>
       </button>
+      <form #f="ngForm" class="form-inline float-right pr-3">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="searchData" class="sr-only">Search data</label>
+          <input type="text" class="form-control" id="searchData" name="searchData" [(ngModel)]="criteria.searchData" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <select class="form-control" id="searchField" name="searchField" [(ngModel)]="criteria.searchField">
+            <option [ngValue]="searchField.value" *ngFor="let searchField of searchFieldOptions">{{ searchField.label }}</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-info mb-2" (click)="searchEmployees()">Search</button>
+        <button type="button" class="btn btn-danger mb-2" (click)="clearSearch()">Clear</button>
+      </form>
     </div>
   </h2>
 
@@ -31,15 +44,16 @@
   <div class="table-responsive" id="entities" *ngIf="employees && employees.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="firstName"><span>First Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="lastName"><span>Last Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span>Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="s3ImageKey"><span>S 3 Image Key</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+      <tbody>
         <tr *ngFor="let employee of employees; trackBy: trackId" data-cy="entityTable">
           <td>
             <a [routerLink]="['/employee', employee.id, 'view']">{{ employee.id }}</a>
@@ -47,6 +61,7 @@
           <td>{{ employee.firstName }}</td>
           <td>{{ employee.lastName }}</td>
           <td>{{ employee.email }}</td>
+          <td>{{ employee.s3ImageKey }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
@@ -85,5 +100,22 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div *ngIf="employees && employees.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

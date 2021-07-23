@@ -23,6 +23,18 @@ export class SkillComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  searchFieldOptions = [
+    { value: 'title', label: 'Title' },
+    { value: 'description', label: 'Description' },
+  ];
+
+  criteria = {
+    searchData: '',
+    searchField: 'title',
+  };
+
+  activeSearchData = '';
+  activeSearchField = '';
 
   constructor(
     protected skillService: SkillService,
@@ -34,7 +46,27 @@ export class SkillComponent implements OnInit {
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
-
+    if (this.activeSearchData) {
+      const criteria = [{ key: `${this.activeSearchField}.contains`, value: `${this.activeSearchData}` }];
+      this.skillService
+        .query({
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+          criteria,
+        })
+        .subscribe(
+          (res: HttpResponse<ISkill[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+      return;
+    }
     this.skillService
       .query({
         page: pageToLoad - 1,
@@ -70,6 +102,21 @@ export class SkillComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  searchSkills(): void {
+    this.activeSearchData = this.criteria.searchData;
+    this.activeSearchField = this.criteria.searchField;
+    this.page = 1;
+    this.ngbPaginationPage = 1;
+    this.loadPage();
+  }
+
+  clearSearch(): void {
+    this.page = 0;
+    this.criteria.searchData = '';
+    this.activeSearchData = '';
+    this.loadPage();
   }
 
   protected sort(): string[] {

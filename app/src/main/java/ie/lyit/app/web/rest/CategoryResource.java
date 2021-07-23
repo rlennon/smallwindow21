@@ -3,8 +3,12 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.domain.Category;
 import ie.lyit.app.repository.CategoryRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.CategoryQueryService;
 import ie.lyit.app.service.CategoryService;
+import ie.lyit.app.service.criteria.CategoryCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -12,16 +16,19 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -42,9 +49,16 @@ public class CategoryResource {
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository) {
+    private final CategoryQueryService categoryQueryService;
+
+    public CategoryResource(
+        CategoryService categoryService,
+        CategoryRepository categoryRepository,
+        CategoryQueryService categoryQueryService
+    ) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
+        this.categoryQueryService = categoryQueryService;
     }
 
     /**
@@ -82,7 +96,7 @@ public class CategoryResource {
     @ApiOperation(value = "Update existing category", notes = "Allows you to update an existing category on the system")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Category> updateCategory(
-        @PathVariable(value = "id", required = false)  @ApiParam(value = "Id of the category to update") Long id,
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the category to update") Long id,
         @Valid @RequestBody Category category
     ) throws URISyntaxException {
         log.debug("REST request to update Category : {}, {}", id, category);
@@ -142,15 +156,18 @@ public class CategoryResource {
     }
 
     /**
-     * {@code GET  /categories} : get all the categories.
+     * {@code GET  /categories} : get all the skills.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of skills in body.
      */
     @GetMapping("/categories")
-    @ApiOperation(value = "Retrieve all categories", notes = "Allows you to retrieve all categories on the system")
-    public List<Category> getAllCategories() {
-        log.debug("REST request to get all Categories");
-        return categoryService.findAll();
+    public ResponseEntity<List<Category>> getAllCategories(CategoryCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Categories by criteria: {}", criteria);
+        Page<Category> page = categoryQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -161,7 +178,7 @@ public class CategoryResource {
      */
     @GetMapping("/categories/{id}")
     @ApiOperation(value = "Retrieve a category", notes = "Allows you to retrieve a category on the system based on id")
-    public ResponseEntity<Category> getCategory(@PathVariable  @ApiParam(value = "Id of the category to retrieve") Long id) {
+    public ResponseEntity<Category> getCategory(@PathVariable @ApiParam(value = "Id of the category to retrieve") Long id) {
         log.debug("REST request to get Category : {}", id);
         Optional<Category> category = categoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(category);

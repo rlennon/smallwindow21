@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Spring Data SQL repository for the Skill entity.
  */
 @Repository
-public interface SkillRepository extends JpaRepository<Skill, Long> {
+public interface SkillRepository extends JpaRepository<Skill, Long>, JpaSpecificationExecutor<Skill> {
     @Query(
         value = "select distinct skill from Skill skill left join fetch skill.categories left join fetch skill.employees",
         countQuery = "select count(distinct skill) from Skill skill"

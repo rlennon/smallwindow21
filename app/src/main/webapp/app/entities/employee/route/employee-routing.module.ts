@@ -11,6 +11,9 @@ const employeeRoute: Routes = [
   {
     path: '',
     component: EmployeeComponent,
+    data: {
+      defaultSort: 'id,asc',
+    },
     canActivate: [UserRouteAccessService],
   },
   {
