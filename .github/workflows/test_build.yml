@@ -2,10 +2,10 @@ name: "SmallWindow21 Test Deploy"
 
 on:
   push:
-    branches: 
+    branches-ignore: 
       - '!main'
   pull_request:
-    branches: 
+    branches-ignore: 
       - '!main'
 
 jobs:
