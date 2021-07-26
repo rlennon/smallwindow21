@@ -25,10 +25,19 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Class constructor
+     * @param userRepository -
+     */
     public DomainUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Load by username
+     * @param login -
+     * @return -
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {

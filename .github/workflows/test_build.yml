@@ -2,7 +2,11 @@ name: "SmallWindow21 Test Deploy"
 
 on:
   push:
-    branches: [ ! main ]
+    branches-ignore: 
+      - '!main'
+  pull_request:
+    branches-ignore: 
+      - '!main'
 
 jobs:
   tflint:
@@ -72,4 +76,3 @@ jobs:
         with:
           name: TestPackage
           path: appTests 
-

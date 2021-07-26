@@ -9,6 +9,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tech.jhipster.config.JHipsterConstants;
 
+/**
+ * Database config class
+ *
+ * @author smallwindow21 team
+ */
 @Configuration
 @EnableJpaRepositories("ie.lyit.app.repository")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
