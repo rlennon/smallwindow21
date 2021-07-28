@@ -22,6 +22,10 @@ public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
 
+    /**
+     * Constructor
+     * @param fileRepository -
+     */
     public FileServiceImpl(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
