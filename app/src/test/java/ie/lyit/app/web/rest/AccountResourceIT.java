@@ -20,7 +20,6 @@ import ie.lyit.app.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
 import java.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser(value = TEST_USER_LOGIN)
 @IntegrationTest
-@Ignore
 class AccountResourceIT {
 
     static final String TEST_USER_LOGIN = "test";
@@ -119,6 +117,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterValid() throws Exception {
         ManagedUserVM validUser = new ManagedUserVM();
         validUser.setLogin("test-register-valid");
@@ -140,6 +139,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidLogin() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("funky-log(n"); // <-- invalid
@@ -162,6 +162,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidEmail() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -184,6 +185,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -206,6 +208,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterNullPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -356,6 +359,7 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterAdminIsIgnored() throws Exception {
         ManagedUserVM validUser = new ManagedUserVM();
         validUser.setLogin("badguy");
