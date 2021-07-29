@@ -262,7 +262,7 @@ class AccountResourceIT {
         // First user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(firstUser)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().is2xxSuccessful());
 
         // Second (non activated) user
         restAccountMockMvc
@@ -298,7 +298,7 @@ class AccountResourceIT {
         // Register first user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(firstUser)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().is2xxSuccessful());
 
         Optional<User> testUser1 = userRepository.findOneByLogin("test-register-duplicate-email");
         assertThat(testUser1).isPresent();
