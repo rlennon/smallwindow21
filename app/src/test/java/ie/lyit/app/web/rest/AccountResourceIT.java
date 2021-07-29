@@ -347,8 +347,6 @@ class AccountResourceIT {
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
         assertThat(testUser4).isNotPresent();
 
-        userService.updateUser((new AdminUserDTO(testUser4.get())));
-
         // Register 4th (already activated) user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(secondUser)))
