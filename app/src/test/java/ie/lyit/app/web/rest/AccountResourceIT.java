@@ -231,7 +231,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterDuplicateLogin() throws Exception {
         // First registration
         ManagedUserVM firstUser = new ManagedUserVM();
@@ -282,7 +281,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterDuplicateEmail() throws Exception {
         // First user
         ManagedUserVM firstUser = new ManagedUserVM();
