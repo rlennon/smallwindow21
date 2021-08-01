@@ -156,11 +156,11 @@ public class CategoryResource {
     }
 
     /**
-     * {@code GET  /categories} : get all the skills.
+     * {@code GET  /categories} : get all the categories.
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of skills in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategories(CategoryCriteria criteria, Pageable pageable) {
