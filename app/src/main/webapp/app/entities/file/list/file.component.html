@@ -56,12 +56,12 @@
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(file)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" (click)="delete(file)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>

@@ -10,6 +10,8 @@ import ie.lyit.app.service.dto.AdminUserDTO;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import ie.lyit.app.web.rest.errors.EmailAlreadyUsedException;
 import ie.lyit.app.web.rest.errors.LoginAlreadyUsedException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -75,6 +77,12 @@ public class UserResource {
 
     private final MailService mailService;
 
+    /**
+     * Constructor
+     * @param userService -
+     * @param userRepository -
+     * @param mailService -
+     */
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
         this.userService = userService;
         this.userRepository = userRepository;
@@ -95,6 +103,7 @@ public class UserResource {
      */
     @PostMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @ApiOperation(value = "Create a User", notes = "Allows you to create a user on the system")
     public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
 
@@ -127,6 +136,7 @@ public class UserResource {
      */
     @PutMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @ApiOperation(value = "Update a User", notes = "Allows you to update a user on the system")
     public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
@@ -153,6 +163,7 @@ public class UserResource {
      */
     @GetMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @ApiOperation(value = "Retrieve all users", notes = "Allows you to retrieve all users on the system")
     public ResponseEntity<List<AdminUserDTO>> getAllUsers(Pageable pageable) {
         log.debug("REST request to get all User for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -176,7 +187,10 @@ public class UserResource {
      */
     @GetMapping("/users/{login}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
+    @ApiOperation(value = "Retrieve a User", notes = "Allows you to retrieve a user on the system based on login")
+    public ResponseEntity<AdminUserDTO> getUser(
+        @PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to retrieve") String login
+    ) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
     }
@@ -189,7 +203,10 @@ public class UserResource {
      */
     @DeleteMapping("/users/{login}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Void> deleteUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
+    @ApiOperation(value = "Delete a User", notes = "Allows you to delete a user on the system based on login")
+    public ResponseEntity<Void> deleteUser(
+        @PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to delete") String login
+    ) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity

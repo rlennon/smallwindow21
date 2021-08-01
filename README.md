@@ -18,6 +18,9 @@ Repo for Small Window Assignment
   * [Other](#other)
     + [Branching Strategy](#branching-strategy)
     + [Estimating Story Points](#estimating-story-points)
+    + [Definition of Ready](#definition-of-ready)
+    + [Definition of Done](#definition-of-done)
+    
 
 ## Preamble
 
@@ -192,3 +195,21 @@ GitworkFlows, Main > develop > feature
 The teams team's velocity is calculated by the number of story points we achieve on average in the previous sprints.
 
 The teams current story point velocity is "N/A".
+
+### Definition of Ready
+* Story is pointed
+* Enough information to start 
+* Acceptance criteria is defined
+ 
+### Definition of Done 
+
+#### Code
+* Min of 2 reviewers
+* Merged into main
+* Deployed successfully
+* Deployment Tested 
+
+#### Documentation
+* Reviewed, followed and executed by Reviewer
+* Working solution over documentation
+

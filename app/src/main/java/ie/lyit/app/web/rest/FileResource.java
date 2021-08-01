@@ -2,8 +2,11 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.FileRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.service.FileService;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -41,6 +45,11 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
+    /**
+     * Constructor
+     * @param fileService -
+     * @param fileRepository -
+     */
     public FileResource(FileService fileService, FileRepository fileRepository) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;
@@ -54,6 +63,7 @@ public class FileResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/files")
+    @ApiOperation(value = "Create a new file", notes = "Allows you to create a new file on the system")
     public ResponseEntity<File> createFile(@RequestBody File file) throws URISyntaxException {
         log.debug("REST request to save File : {}", file);
         if (file.getId() != null) {
@@ -77,8 +87,12 @@ public class FileResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/files/{id}")
-    public ResponseEntity<File> updateFile(@PathVariable(value = "id", required = false) final Long id, @RequestBody File file)
-        throws URISyntaxException {
+    @ApiOperation(value = "Update existing file", notes = "Allows you to update an existing file on the system")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<File> updateFile(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to update") Long id,
+        @RequestBody File file
+    ) throws URISyntaxException {
         log.debug("REST request to update File : {}, {}", id, file);
         if (file.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -110,8 +124,11 @@ public class FileResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/files/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<File> partialUpdateFile(@PathVariable(value = "id", required = false) final Long id, @RequestBody File file)
-        throws URISyntaxException {
+    @ApiOperation(value = "Partially Update existing file", notes = "Allows you to partially update an existing file on the system")
+    public ResponseEntity<File> partialUpdateFile(
+        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id,
+        @RequestBody File file
+    ) throws URISyntaxException {
         log.debug("REST request to partial update File partially : {}, {}", id, file);
         if (file.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -139,6 +156,7 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
      */
     @GetMapping("/files")
+    @ApiOperation(value = "Retrieve all files", notes = "Allows you to retrieve all files on the system")
     public ResponseEntity<List<File>> getAllFiles(Pageable pageable) {
         log.debug("REST request to get a page of Files");
         Page<File> page = fileService.findAll(pageable);
@@ -153,7 +171,8 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the file, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/files/{id}")
-    public ResponseEntity<File> getFile(@PathVariable Long id) {
+    @ApiOperation(value = "Retrieve a file", notes = "Allows you to retrieve a file on the system based on id")
+    public ResponseEntity<File> getFile(@PathVariable @ApiParam(value = "Id of the file to retrieve") Long id) {
         log.debug("REST request to get File : {}", id);
         Optional<File> file = fileService.findOne(id);
         return ResponseUtil.wrapOrNotFound(file);
@@ -166,7 +185,9 @@ public class FileResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/files/{id}")
-    public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
+    @ApiOperation(value = "Delete a file", notes = "Allows you to delete a file on the system based on id")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> deleteFile(@PathVariable @ApiParam(value = "Id of the file to delete") Long id) {
         log.debug("REST request to delete File : {}", id);
         fileService.delete(id);
         return ResponseEntity

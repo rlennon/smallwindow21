@@ -1,0 +1,24 @@
+.clickable {
+  cursor: pointer;
+  color: lightblue;
+  text-decoration: none;
+}
+.clickable:hover {
+  text-decoration: underline;
+  color: blue;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 65% 1fr;
+}
+.left {
+  grid-column: 1;
+  overflow: hidden;
+  border: 0px red solid;
+}
+
+.right {
+  grid-column: 2;
+  overflow: hidden;
+  border: 0px blue solid;
+}

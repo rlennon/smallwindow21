@@ -1,0 +1,1 @@
+../mvnw.cmd -f ../pom.xml initialize sonar:sonar

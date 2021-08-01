@@ -1,6 +1,5 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-    <span class="logo-img"></span>
     <span class="navbar-title">Smallwindow21</span>
     <span class="navbar-version">{{ version }}</span>
   </a>
@@ -108,6 +107,12 @@
           </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+          <li>
+            <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()">
+              <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+              <span>Register User</span>
+            </a>
+          </li>
           <li>
             <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="users" [fixedWidth]="true"></fa-icon>

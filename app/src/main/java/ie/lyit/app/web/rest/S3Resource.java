@@ -3,6 +3,8 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.service.UserService;
 import ie.lyit.app.service.aws.S3Service;
 import ie.lyit.app.service.dto.UserDTO;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping("/api/s3")
 public class S3Resource {
@@ -29,6 +34,10 @@ public class S3Resource {
 
     private final S3Service s3Service;
 
+    /**
+     * Constructor
+     * @param s3Service -
+     */
     public S3Resource(S3Service s3Service) {
         this.s3Service = s3Service;
     }
@@ -36,13 +45,14 @@ public class S3Resource {
     /**
      * Method to download a file and serve it
      *
-     * @param filename
-     * @return
+     * @param filename -
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @GetMapping("/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) {
+    @ApiOperation(value = "Download a file", notes = "Allows you to download a file from S3")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable @ApiParam(value = "Name of the file to download") String filename) {
         byte[] file = s3Service.downloadFile(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"").body(file);
     }
@@ -51,10 +61,15 @@ public class S3Resource {
      * Method to upload a file
      *
      * @param file to upload
-     * @return
+     * @param filename -
+     * @return -
      */
-    @PostMapping("/{filename:.+}")
-    public boolean handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable String filename) {
+    @PostMapping("/file/{filename:.+}")
+    @ApiOperation(value = "Upload a file", notes = "Allows you to upload a file to S3")
+    public boolean handleFileUpload(
+        @RequestParam("file") MultipartFile file,
+        @PathVariable @ApiParam(value = "Name of the file to upload") String filename
+    ) {
         try {
             return s3Service.uploadFile(file.getBytes(), filename);
         } catch (IOException e) {
@@ -64,14 +79,31 @@ public class S3Resource {
     }
 
     /**
+     * Method to upload a base 64 string
+     *
+     * @param base64 string to upload
+     * @param filename -
+     * @return -
+     */
+    @PostMapping("/base64/{filename:.+}")
+    @ApiOperation(value = "Upload a base64 string", notes = "Allows you to upload a base64 string to S3")
+    public boolean handleBase64StringUpload(
+        @RequestBody String base64,
+        @PathVariable @ApiParam(value = "Name of the file to upload") String filename
+    ) {
+        return s3Service.uploadBase64String(base64, filename);
+    }
+
+    /**
      * Method to delete a file
      *
-     * @param filename
-     * @return
+     * @param filename -
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/{filename:.+}")
-    public boolean deleteFile(@PathVariable String filename) {
+    @ApiOperation(value = "Delete a file", notes = "Allows you to delete a file from S3")
+    public boolean deleteFile(@PathVariable @ApiParam(value = "Name of the file to delete") String filename) {
         return s3Service.deleteFile(filename);
     }
 }

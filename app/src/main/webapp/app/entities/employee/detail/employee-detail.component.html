@@ -14,6 +14,17 @@
         <dd>
           <span>{{ employee.id }}</span>
         </dd>
+        <dt><span>Profile Image</span></dt>
+        <dd>
+          <span
+            ><jhi-profile-image-view
+              [showHeading]="false"
+              [showDelete]="false"
+              [employeeId]="employeeId"
+              [s3ImageKey]="s3ImageKey"
+            ></jhi-profile-image-view
+          ></span>
+        </dd>
         <dt><span ngbTooltip="The firstname attribute.">First Name</span></dt>
         <dd>
           <span>{{ employee.firstName }}</span>
@@ -26,9 +37,9 @@
         <dd>
           <span>{{ employee.email }}</span>
         </dd>
-        <dt><span>S 3 Image Key</span></dt>
+        <dt>Files</dt>
         <dd>
-          <span>{{ employee.s3ImageKey }}</span>
+          <jhi-upload-files [employeeId]="employeeId" [showUpload]="false" [showDelete]="false"></jhi-upload-files>
         </dd>
       </dl>
 
@@ -36,7 +47,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/employee', employee.id, 'edit']" class="btn btn-primary">
+      <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="button" [routerLink]="['/employee', employee.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>

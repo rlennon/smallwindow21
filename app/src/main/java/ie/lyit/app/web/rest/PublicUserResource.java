@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.service.UserService;
 import ie.lyit.app.service.dto.UserDTO;
+import io.swagger.annotations.ApiOperation;
 import java.util.*;
 import java.util.Collections;
 import org.slf4j.Logger;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class PublicUserResource {
@@ -28,6 +32,10 @@ public class PublicUserResource {
 
     private final UserService userService;
 
+    /**
+     * Constructor
+     * @param userService -
+     */
     public PublicUserResource(UserService userService) {
         this.userService = userService;
     }
@@ -39,6 +47,7 @@ public class PublicUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
     @GetMapping("/users")
+    @ApiOperation(value = "Retrieve all public users", notes = "Allows you to retrieve all public users on the system")
     public ResponseEntity<List<UserDTO>> getAllPublicUsers(Pageable pageable) {
         log.debug("REST request to get all public User names");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -59,6 +68,7 @@ public class PublicUserResource {
      * @return a string list of all roles.
      */
     @GetMapping("/authorities")
+    @ApiOperation(value = "Retrieve all authorities", notes = "Allows you to retrieve all authorities on the system")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
