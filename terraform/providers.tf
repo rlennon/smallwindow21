@@ -8,7 +8,7 @@ terraform {
   required_version = ">= 0.15.3"
 
   backend "remote" {
-    organization = "SmallWindow21-SO"
+    organization = "SmallWindow21"
 
     workspaces {
       name = "SmallWindow21-workspace"
