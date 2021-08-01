@@ -11,5 +11,12 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface FileRepository extends JpaRepository<File, Long>, JpaSpecificationExecutor<File> {
+
+    /**
+     *
+     * @param id -
+     * @return -
+     */
+
     List<File> findByEmployeeId(Long id);
 }

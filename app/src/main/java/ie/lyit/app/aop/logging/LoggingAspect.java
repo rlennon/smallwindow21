@@ -23,6 +23,10 @@ public class LoggingAspect {
 
     private final Environment env;
 
+    /**
+     * Class constructor
+     * @param env Environment to use
+     */
     public LoggingAspect(Environment env) {
         this.env = env;
     }

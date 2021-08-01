@@ -39,6 +39,13 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    /**
+     *
+     * @param jHipsterProperties -
+     * @param javaMailSender -
+     * @param messageSource -
+     * @param templateEngine -
+     */
     public MailService(
         JHipsterProperties jHipsterProperties,
         JavaMailSender javaMailSender,
@@ -51,6 +58,14 @@ public class MailService {
         this.templateEngine = templateEngine;
     }
 
+    /**
+     *
+     * @param to -
+     * @param subject -
+     * @param content -
+     * @param isMultipart -
+     * @param isHtml -
+     */
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
@@ -77,6 +92,12 @@ public class MailService {
         }
     }
 
+    /**
+     *
+     * @param user -
+     * @param templateName -
+     * @param titleKey -
+     */
     @Async
     public void sendEmailFromTemplate(User user, String templateName, String titleKey) {
         if (user.getEmail() == null) {
@@ -92,18 +113,30 @@ public class MailService {
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
+    /**
+     *
+     * @param user -
+     */
     @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
     }
 
+    /**
+     *
+     * @param user -
+     */
     @Async
     public void sendCreationEmail(User user) {
         log.debug("Sending creation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/creationEmail", "email.activation.title");
     }
 
+    /**
+     *
+     * @param user -
+     */
     @Async
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());

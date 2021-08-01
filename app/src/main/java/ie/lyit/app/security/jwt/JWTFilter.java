@@ -17,14 +17,29 @@ import org.springframework.web.filter.GenericFilterBean;
  */
 public class JWTFilter extends GenericFilterBean {
 
+    /**
+     * Auth header
+     */
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final TokenProvider tokenProvider;
 
+    /**
+     *
+     * @param tokenProvider -
+     */
     public JWTFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
+    /**
+     *
+     * @param servletRequest -
+     * @param servletResponse -
+     * @param filterChain -
+     * @throws IOException -
+     * @throws ServletException -
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
         throws IOException, ServletException {

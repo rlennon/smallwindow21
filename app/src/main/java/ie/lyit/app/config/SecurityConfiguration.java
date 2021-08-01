@@ -19,6 +19,11 @@ import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import tech.jhipster.config.JHipsterProperties;
 
+/**
+ * Security config class
+ *
+ * @author smallwindow21 team
+ */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
@@ -31,6 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final SecurityProblemSupport problemSupport;
 
+    /**
+     * Class constructor
+     * @param tokenProvider -
+     * @param corsFilter -
+     * @param jHipsterProperties -
+     * @param problemSupport -
+     */
     public SecurityConfiguration(
         TokenProvider tokenProvider,
         CorsFilter corsFilter,
@@ -43,11 +55,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.jHipsterProperties = jHipsterProperties;
     }
 
+    /**
+     * Create a PasswordEncoder instance
+     * @return PasswordEncoder instance
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configure security
+     * @param web -
+     */
     @Override
     public void configure(WebSecurity web) {
         web
@@ -60,6 +80,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/test/**");
     }
 
+    /**
+     * Condigure security
+     * @param http -
+     * @throws Exception -
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
@@ -86,7 +111,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
             .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()

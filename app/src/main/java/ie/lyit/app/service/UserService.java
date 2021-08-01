@@ -41,6 +41,13 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    /**
+     *
+     * @param userRepository -
+     * @param passwordEncoder -
+     * @param authorityRepository -
+     * @param cacheManager -
+     */
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
@@ -53,6 +60,11 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    /**
+     *
+     * @param key -
+     * @return -
+     */
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository
@@ -69,6 +81,12 @@ public class UserService {
             );
     }
 
+    /**
+     *
+     * @param newPassword -
+     * @param key -
+     * @return -
+     */
     public Optional<User> completePasswordReset(String newPassword, String key) {
         log.debug("Reset user password for reset key {}", key);
         return userRepository
@@ -85,6 +103,11 @@ public class UserService {
             );
     }
 
+    /**
+     *
+     * @param mail -
+     * @return -
+     */
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository
             .findOneByEmailIgnoreCase(mail)
@@ -99,6 +122,12 @@ public class UserService {
             );
     }
 
+    /**
+     *
+     * @param userDTO -
+     * @param password -
+     * @return -
+     */
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
@@ -133,7 +162,7 @@ public class UserService {
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
-        newUser.setActivated(false);
+        newUser.setActivated(true);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
@@ -155,6 +184,11 @@ public class UserService {
         return true;
     }
 
+    /**
+     *
+     * @param userDTO -
+     * @return -
+     */
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
@@ -230,6 +264,10 @@ public class UserService {
             .map(AdminUserDTO::new);
     }
 
+    /**
+     *
+     * @param login -
+     */
     public void deleteUser(String login) {
         userRepository
             .findOneByLogin(login)
@@ -270,6 +308,11 @@ public class UserService {
             );
     }
 
+    /**
+     *
+     * @param currentClearTextPassword -
+     * @param newPassword -
+     */
     @Transactional
     public void changePassword(String currentClearTextPassword, String newPassword) {
         SecurityUtils
@@ -289,21 +332,40 @@ public class UserService {
             );
     }
 
+    /**
+     *
+     * @param pageable -
+     * @return -
+     */
     @Transactional(readOnly = true)
     public Page<AdminUserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(AdminUserDTO::new);
     }
 
+    /**
+     *
+     * @param pageable -
+     * @return -
+     */
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllPublicUsers(Pageable pageable) {
         return userRepository.findAllByIdNotNullAndActivatedIsTrue(pageable).map(UserDTO::new);
     }
 
+    /**
+     *
+     * @param login -
+     * @return -
+     */
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
+    /**
+     *
+     * @return -
+     */
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);

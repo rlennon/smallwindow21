@@ -29,6 +29,10 @@ public class S3Service {
     @Value("${aws.storageBucketName}")
     private String storageBucketName;
 
+    /**
+     *
+     * @param s3Client -
+     */
     public S3Service(S3Client s3Client) {
         this.s3Client = s3Client;
     }
@@ -38,7 +42,7 @@ public class S3Service {
      *
      * @param contents - the file contents in byte array format
      * @param key      the key for the file to upload
-     * @return
+     * @return -
      */
     public boolean uploadFile(byte[] contents, String key) {
         log.debug("Uploading file with key {} to AWS S3", key);
@@ -60,7 +64,7 @@ public class S3Service {
      *
      * @param contents - the string contents in base 64 format
      * @param key      the key for the file to upload
-     * @return
+     * @return -
      */
     public boolean uploadBase64String(String contents, String key) {
         log.debug("Uploading contents with key {} to AWS S3", key);
@@ -92,7 +96,7 @@ public class S3Service {
      * Method to upload a file to S3
      * @param requestBody
      * @param key
-     * @return
+     * @return -
      */
     private boolean uploadToS3(RequestBody requestBody, String key) {
         try {
@@ -115,7 +119,7 @@ public class S3Service {
      * Method to download a file from AWS S3
      *
      * @param key the key for the file to download
-     * @return
+     * @return -
      */
     public byte[] downloadFile(String key) {
         log.debug("Downloading file with key {} from AWS S3", key);
@@ -152,7 +156,7 @@ public class S3Service {
      * Method to delete a file from AWS S3
      *
      * @param key the key for the file to delete
-     * @return
+     * @return -
      */
     public boolean deleteFile(String key) {
         log.debug("Deleting file with key {} from AWS S3", key);

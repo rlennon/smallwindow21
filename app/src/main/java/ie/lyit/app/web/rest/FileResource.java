@@ -48,7 +48,12 @@ public class FileResource {
     private final FileRepository fileRepository;
 
     private final FileQueryService fileQueryService;
-
+    /**
+     * 
+     * @param fileService
+     * @param fileRepository
+     * @param fileQueryService
+     */
     public FileResource(FileService fileService, FileRepository fileRepository, FileQueryService fileQueryService) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;

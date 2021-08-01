@@ -50,6 +50,12 @@ public class CategoryResource {
     private final CategoryRepository categoryRepository;
 
     private final CategoryQueryService categoryQueryService;
+    /**
+     * 
+     * @param categoryService
+     * @param categoryRepository
+     * @param categoryQueryService
+     */
 
     public CategoryResource(
         CategoryService categoryService,
