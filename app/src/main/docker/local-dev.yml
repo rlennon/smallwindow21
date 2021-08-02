@@ -1,12 +1,11 @@
-version: "3"
+version: '3'
 
 services:
-
   localstack:
     image: localstack/localstack:0.11.2
     ports:
-      - "4567-4599:4567-4599"
-      - "${PORT_WEB_UI-8081}:${PORT_WEB_UI-8081}"
+      - '4567-4599:4567-4599'
+      - '${PORT_WEB_UI-8081}:${PORT_WEB_UI-8081}'
     environment:
       - SERVICES=s3
       - DEBUG=${DEBUG- }
@@ -16,10 +15,10 @@ services:
       - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
-      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - '${TMPDIR:-/tmp/localstack}:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
-      - smaillWindow_network
+      - smallWindow_network
 
   setup-resources:
     image: mesosphere/aws-cli
@@ -34,7 +33,7 @@ services:
         aws --endpoint-url=http://localstack:4572 s3 mb s3://dg-test123
       "
     networks:
-      - smaillWindow_network
+      - smallWindow_network
     depends_on:
       - localstack
 
@@ -52,4 +51,4 @@ services:
     command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
 
 networks:
-  smaillWindow_network:
+  smallWindow_network:

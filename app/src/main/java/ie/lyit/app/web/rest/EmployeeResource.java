@@ -330,7 +330,12 @@ public class EmployeeResource {
         @PathVariable @ApiParam(value = "Id of the employee to delete the profile image for") Long id
     ) {
         try {
-            Employee employee = employeeRepository.findById(id).get();
+            Optional<Employee> employeeOptional = employeeRepository.findById(id);
+            if (!employeeOptional.isPresent()) {
+                log.error("Failed to retrieve employee for the id {}", id);
+                return false;
+            }
+            Employee employee = employeeOptional.get();
             String fileName = file.getOriginalFilename();
             log.info("fileName:{}", fileName);
             String fileType = file.getContentType();
@@ -359,7 +364,13 @@ public class EmployeeResource {
     @ResponseBody
     @ApiOperation(value = "Download a file", notes = "Allows you to download a file based on fileId")
     public ResponseEntity<byte[]> downloadFile(@PathVariable @ApiParam(value = "Id of the file to download") Long id) {
-        File file = fileRepository.findById(id).get();
+        Optional<File> fileOptional = fileRepository.findById(id);
+        if (!fileOptional.isPresent()) {
+            log.error("Failed to retrieve file for the id {}", id);
+            return ResponseEntity.badRequest().body("Unable to find file".getBytes());
+        }
+
+        File file = fileOptional.get();
         String s3FileKey = file.gets3FileKey();
 
         byte[] fileByteArray = s3Service.downloadFile(s3FileKey);
