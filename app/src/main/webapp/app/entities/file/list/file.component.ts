@@ -1,91 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+
 import { IFile } from '../file.model';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { FileService } from '../service/file.service';
 import { FileDeleteDialogComponent } from '../delete/file-delete-dialog.component';
+import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
   selector: 'jhi-file',
   templateUrl: './file.component.html',
 })
 export class FileComponent implements OnInit {
-  files?: IFile[];
+  files: IFile[];
   isLoading = false;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
-  searchFieldOptions = [
-    { value: 's3FileKey', label: 'S 3 File Key' },
-    { value: 'employee.email', label: 'Employee' },
-  ];
+  itemsPerPage: number;
+  links: { [key: string]: number };
+  page: number;
+  predicate: string;
+  ascending: boolean;
 
-  criteria = {
-    searchData: '',
-    searchField: 's3FileKey',
-  };
+  constructor(protected fileService: FileService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+    this.files = [];
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.page = 0;
+    this.links = {
+      last: 0,
+    };
+    this.predicate = 'id';
+    this.ascending = true;
+  }
 
-  activeSearchData = '';
-  activeSearchField = '';
-
-  constructor(
-    protected fileService: FileService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
-
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
-    if (this.activeSearchData) {
-      const criteria = [{ key: `${this.activeSearchField}.contains`, value: `${this.activeSearchData}` }];
-      this.fileService
-        .query({
-          page: pageToLoad - 1,
-          size: this.itemsPerPage,
-          sort: this.sort(),
-          criteria,
-        })
-        .subscribe(
-          (res: HttpResponse<IFile[]>) => {
-            this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-          },
-          () => {
-            this.isLoading = false;
-            this.onError();
-          }
-        );
-      return;
-    }
+
     this.fileService
       .query({
-        page: pageToLoad - 1,
+        page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IFile[]>) => {
           this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          this.paginateFiles(res.body, res.headers);
         },
         () => {
           this.isLoading = false;
-          this.onError();
         }
       );
   }
 
+  reset(): void {
+    this.page = 0;
+    this.files = [];
+    this.loadAll();
+  }
+
+  loadPage(page: number): void {
+    this.page = page;
+    this.loadAll();
+  }
+
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadAll();
   }
 
   trackId(index: number, item: IFile): number {
@@ -98,24 +78,9 @@ export class FileComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.reset();
       }
     });
-  }
-
-  searchFiles(): void {
-    this.activeSearchData = this.criteria.searchData;
-    this.activeSearchField = this.criteria.searchField;
-    this.page = 1;
-    this.ngbPaginationPage = 1;
-    this.loadPage();
-  }
-
-  clearSearch(): void {
-    this.page = 0;
-    this.criteria.searchData = '';
-    this.activeSearchData = '';
-    this.loadPage();
   }
 
   protected sort(): string[] {
@@ -126,38 +91,12 @@ export class FileComponent implements OnInit {
     return result;
   }
 
-  protected handleNavigation(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+  protected paginateFiles(data: IFile[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.files.push(d);
       }
-    });
-  }
-
-  protected onSuccess(data: IFile[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate(['/file'], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
-        },
-      });
     }
-    this.files = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
   }
 }

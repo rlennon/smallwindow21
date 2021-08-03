@@ -3,10 +3,10 @@ name: "SmallWindow21 Test Deploy"
 on:
   push:
     branches-ignore: 
-      - '!main'
+      - 'main'
   pull_request:
     branches-ignore: 
-      - '!main'
+      - 'main'
 
 jobs:
   tflint:

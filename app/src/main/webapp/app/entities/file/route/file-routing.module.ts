@@ -11,9 +11,6 @@ const fileRoute: Routes = [
   {
     path: '',
     component: FileComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ie.lyit.app.security.jwt.JWTFilter;
 import ie.lyit.app.security.jwt.TokenProvider;
 import ie.lyit.app.web.rest.vm.LoginVM;
-import javax.validation.Valid;
-
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +26,21 @@ public class UserJWTController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    /**
+     * Constructor
+     * @param tokenProvider -
+     * @param authenticationManagerBuilder -
+     */
     public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
+    /**
+     *
+     * @param loginVM -
+     * @return -
+     */
     @PostMapping("/authenticate")
     @ApiOperation(value = "Authorize a user", notes = "Allows you to authorize a user on the system based")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {

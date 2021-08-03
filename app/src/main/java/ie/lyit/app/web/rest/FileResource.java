@@ -3,9 +3,7 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.FileRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
-import ie.lyit.app.service.FileQueryService;
 import ie.lyit.app.service.FileService;
-import ie.lyit.app.service.criteria.FileCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -47,12 +45,14 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
-    private final FileQueryService fileQueryService;
-
-    public FileResource(FileService fileService, FileRepository fileRepository, FileQueryService fileQueryService) {
+    /**
+     * Constructor
+     * @param fileService -
+     * @param fileRepository -
+     */
+    public FileResource(FileService fileService, FileRepository fileRepository) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;
-        this.fileQueryService = fileQueryService;
     }
 
     /**
@@ -153,28 +153,15 @@ public class FileResource {
      * {@code GET  /files} : get all the files.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of files in body.
      */
     @GetMapping("/files")
     @ApiOperation(value = "Retrieve all files", notes = "Allows you to retrieve all files on the system")
-    public ResponseEntity<List<File>> getAllFiles(FileCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Files by criteria: {}", criteria);
-        Page<File> page = fileQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<File>> getAllFiles(Pageable pageable) {
+        log.debug("REST request to get a page of Files");
+        Page<File> page = fileService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /files/count} : count all the files.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/files/count")
-    public ResponseEntity<Long> countFiles(FileCriteria criteria) {
-        log.debug("REST request to count Files by criteria: {}", criteria);
-        return ResponseEntity.ok().body(fileQueryService.countByCriteria(criteria));
     }
 
     /**

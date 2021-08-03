@@ -65,10 +65,10 @@ describe('Component Tests', () => {
 
       it('Should call Employee query and add missing value', () => {
         const skill: ISkill = { id: 456 };
-        const employees: IEmployee[] = [{ id: 21874 }];
+        const employees: IEmployee[] = [{ id: 80983 }];
         skill.employees = employees;
 
-        const employeeCollection: IEmployee[] = [{ id: 22630 }];
+        const employeeCollection: IEmployee[] = [{ id: 11898 }];
         spyOn(employeeService, 'query').and.returnValue(of(new HttpResponse({ body: employeeCollection })));
         const additionalEmployees = [...employees];
         const expectedCollection: IEmployee[] = [...additionalEmployees, ...employeeCollection];
@@ -86,7 +86,7 @@ describe('Component Tests', () => {
         const skill: ISkill = { id: 456 };
         const categories: ICategory = { id: 19578 };
         skill.categories = [categories];
-        const employees: IEmployee = { id: 79413 };
+        const employees: IEmployee = { id: 75660 };
         skill.employees = [employees];
 
         activatedRoute.data = of({ skill });

@@ -1,9 +1,8 @@
 package ie.lyit.app.service;
 
 import ie.lyit.app.domain.Category;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link Category}.
@@ -27,10 +26,10 @@ public interface CategoryService {
 
     /**
      * Get all the categories.
-     * @param pageable the pagination information.
+     *
      * @return the list of entities.
      */
-    Page<Category> findAll(Pageable pageable);
+    List<Category> findAll();
 
     /**
      * Get the "id" category.

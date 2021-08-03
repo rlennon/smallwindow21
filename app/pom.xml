@@ -55,7 +55,7 @@
         <javassist.version>3.27.0-GA</javassist.version>
         <!-- The liquibase version should match the one managed by
         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-        <liquibase.version>4.4.0</liquibase.version>
+        <liquibase.version>4.4.1</liquibase.version>
         <liquibase-hibernate5.version>4.3.2</liquibase-hibernate5.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
@@ -704,7 +704,7 @@
                                 <message>You are running an incompatible version of Java. JHipster supports JDK 8 to
                                     15.
                                 </message>
-                                <version>[1.8,16)</version>
+                                <version>[1.8,)</version>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
@@ -874,6 +874,9 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --force</arguments>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>webapp build dev</id>
@@ -970,7 +973,7 @@
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install</arguments>
+                                    <arguments>install --force</arguments>
                                 </configuration>
                             </execution>
                             <execution>
