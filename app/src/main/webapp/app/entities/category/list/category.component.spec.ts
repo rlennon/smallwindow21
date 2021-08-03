@@ -1,8 +1,10 @@
+jest.mock('@angular/router');
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../service/category.service';
 
 import { CategoryComponent } from './category.component';
@@ -17,6 +19,24 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         declarations: [CategoryComponent],
+        providers: [
+          Router,
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              data: of({
+                defaultSort: 'id,asc',
+              }),
+              queryParamMap: of(
+                jest.requireActual('@angular/router').convertToParamMap({
+                  page: '1',
+                  size: '1',
+                  sort: 'id,desc',
+                })
+              ),
+            },
+          },
+        ],
       })
         .overrideTemplate(CategoryComponent, '')
         .compileComponents();

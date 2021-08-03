@@ -3,7 +3,7 @@
     <span>Categories</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh List</span>
       </button>
@@ -17,6 +17,19 @@
         <fa-icon icon="plus"></fa-icon>
         <span> Create a new Category </span>
       </button>
+      <form #f="ngForm" class="form-inline float-right pr-3">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="searchData" class="sr-only">Search data</label>
+          <input type="text" class="form-control" id="searchData" name="searchData" [(ngModel)]="criteria.searchData" />
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <select class="form-control" id="searchField" name="searchField" [(ngModel)]="criteria.searchField">
+            <option [ngValue]="searchField.value" *ngFor="let searchField of searchFieldOptions">{{ searchField.label }}</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-info mb-2" (click)="searchCategories()">Search</button>
+        <button type="button" class="btn btn-danger mb-2" (click)="clearSearch()">Clear</button>
+      </form>
     </div>
   </h2>
 
@@ -31,9 +44,9 @@
   <div class="table-responsive" id="entities" *ngIf="categories && categories.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span>ID</span></th>
-          <th scope="col"><span>Category Name</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="categoryName"><span>Category Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -55,7 +68,8 @@
                 <span class="d-none d-md-inline">View</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"
                 [routerLink]="['/category', category.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -65,7 +79,13 @@
                 <span class="d-none d-md-inline">Edit</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit" (click)="delete(category)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                (click)="delete(category)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline">Delete</span>
               </button>
@@ -74,5 +94,22 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div *ngIf="categories && categories.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

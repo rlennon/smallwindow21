@@ -1,47 +1,48 @@
 package ie.lyit.app.service;
 
-import ie.lyit.app.domain.Category;
+import ie.lyit.app.domain.Employee;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link Category}.
+ * Service Interface for managing {@link Employee}.
  */
-public interface CategoryService {
+public interface EmployeeService {
     /**
-     * Save a category.
+     * Save a employee.
      *
-     * @param category the entity to save.
+     * @param employee the entity to save.
      * @return the persisted entity.
      */
-    Category save(Category category);
+    Employee save(Employee employee);
 
     /**
-     * Partially updates a category.
+     * Partially updates a employee.
      *
-     * @param category the entity to update partially.
+     * @param employee the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<Category> partialUpdate(Category category);
+    Optional<Employee> partialUpdate(Employee employee);
 
     /**
-     * Get all the categories.
+     * Get all the employees.
+     *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Category> findAll(Pageable pageable);
+    Page<Employee> findAll(Pageable pageable);
 
     /**
-     * Get the "id" category.
+     * Get the "id" employee.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Category> findOne(Long id);
+    Optional<Employee> findOne(Long id);
 
     /**
-     * Delete the "id" category.
+     * Delete the "id" employee.
      *
      * @param id the id of the entity.
      */

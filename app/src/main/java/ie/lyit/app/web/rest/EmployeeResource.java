@@ -5,7 +5,10 @@ import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.EmployeeRepository;
 import ie.lyit.app.repository.FileRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.EmployeeQueryService;
+import ie.lyit.app.service.EmployeeService;
 import ie.lyit.app.service.aws.S3Service;
+import ie.lyit.app.service.criteria.EmployeeCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -56,16 +59,30 @@ public class EmployeeResource {
     private final S3Service s3Service;
     private final FileRepository fileRepository;
 
+    private final EmployeeService employeeService;
+    private final EmployeeQueryService employeeQueryService;
+
     /**
-     *
-     * @param employeeRepository -
-     * @param s3Service -
-     * @param fileRepository -
+     * 
+     * @param employeeRepository
+     * @param s3Service
+     * @param fileRepository
+     * @param employeeService
+     * @param employeeQueryService
      */
-    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service, FileRepository fileRepository) {
+
+    public EmployeeResource(
+        EmployeeRepository employeeRepository,
+        S3Service s3Service,
+        FileRepository fileRepository,
+        EmployeeService employeeService,
+        EmployeeQueryService employeeQueryService
+    ) {
         this.employeeRepository = employeeRepository;
         this.s3Service = s3Service;
         this.fileRepository = fileRepository;
+        this.employeeService = employeeService;
+        this.employeeQueryService = employeeQueryService;
     }
 
     /**
@@ -154,27 +171,7 @@ public class EmployeeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Employee> result = employeeRepository
-            .findById(employee.getId())
-            .map(
-                existingEmployee -> {
-                    if (employee.getFirstName() != null) {
-                        existingEmployee.setFirstName(employee.getFirstName());
-                    }
-                    if (employee.getLastName() != null) {
-                        existingEmployee.setLastName(employee.getLastName());
-                    }
-                    if (employee.getEmail() != null) {
-                        existingEmployee.setEmail(employee.getEmail());
-                    }
-                    if (employee.gets3ImageKey() != null) {
-                        existingEmployee.sets3ImageKey(employee.gets3ImageKey());
-                    }
-
-                    return existingEmployee;
-                }
-            )
-            .map(employeeRepository::save);
+        Optional<Employee> result = employeeService.partialUpdate(employee);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -186,15 +183,28 @@ public class EmployeeResource {
      * {@code GET  /employees} : get all the employees.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
     @ApiOperation(value = "Retrieve all employees", notes = "Allows you to retrieve all employees on the system")
-    public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
-        log.debug("REST request to get a page of Employees");
-        Page<Employee> page = employeeRepository.findAll(pageable);
+    public ResponseEntity<List<Employee>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Employees by criteria: {}", criteria);
+        Page<Employee> page = employeeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /employees/count} : count all the employees.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/employees/count")
+    public ResponseEntity<Long> countEmployees(EmployeeCriteria criteria) {
+        log.debug("REST request to count Employees by criteria: {}", criteria);
+        return ResponseEntity.ok().body(employeeQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -222,7 +232,7 @@ public class EmployeeResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
-        employeeRepository.deleteById(id);
+        employeeService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
