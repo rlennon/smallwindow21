@@ -50,12 +50,7 @@ public class SkillResource {
     private final SkillRepository skillRepository;
 
     private final SkillQueryService skillQueryService;
-    /**
-     * 
-     * @param skillService
-     * @param skillRepository
-     * @param skillQueryService
-     */
+
     public SkillResource(SkillService skillService, SkillRepository skillRepository, SkillQueryService skillQueryService) {
         this.skillService = skillService;
         this.skillRepository = skillRepository;
