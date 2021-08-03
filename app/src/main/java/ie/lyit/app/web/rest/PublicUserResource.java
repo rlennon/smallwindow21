@@ -2,9 +2,10 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.service.UserService;
 import ie.lyit.app.service.dto.UserDTO;
-import io.swagger.annotations.ApiOperation;
 import java.util.*;
 import java.util.Collections;
+
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
-/**
- *
- */
 @RestController
 @RequestMapping("/api")
 public class PublicUserResource {
@@ -32,10 +30,6 @@ public class PublicUserResource {
 
     private final UserService userService;
 
-    /**
-     * Constructor
-     * @param userService -
-     */
     public PublicUserResource(UserService userService) {
         this.userService = userService;
     }

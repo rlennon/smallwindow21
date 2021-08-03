@@ -36,6 +36,7 @@
           <th scope="col" jhiSortBy="firstName"><span>First Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="lastName"><span>Last Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span>Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="s3ImageKey"><span>S 3 Image Key</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,6 +48,7 @@
           <td>{{ employee.firstName }}</td>
           <td>{{ employee.lastName }}</td>
           <td>{{ employee.email }}</td>
+          <td>{{ employee.s3ImageKey }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

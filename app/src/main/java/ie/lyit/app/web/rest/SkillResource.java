@@ -3,14 +3,18 @@ package ie.lyit.app.web.rest;
 import ie.lyit.app.domain.Skill;
 import ie.lyit.app.repository.SkillRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.SkillQueryService;
+import ie.lyit.app.service.SkillService;
+import ie.lyit.app.service.criteria.SkillCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,14 +46,16 @@ public class SkillResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final SkillService skillService;
+
     private final SkillRepository skillRepository;
 
-    /**
-     * Constructor
-     * @param skillRepository -
-     */
-    public SkillResource(SkillRepository skillRepository) {
+    private final SkillQueryService skillQueryService;
+
+    public SkillResource(SkillService skillService, SkillRepository skillRepository, SkillQueryService skillQueryService) {
+        this.skillService = skillService;
         this.skillRepository = skillRepository;
+        this.skillQueryService = skillQueryService;
     }
 
     /**
@@ -86,10 +92,8 @@ public class SkillResource {
     @PutMapping("/skills/{id}")
     @ApiOperation(value = "Update existing skill", notes = "Allows you to update an existing skill on the system")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Skill> updateSkill(
-        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id,
-        @RequestBody Skill skill
-    ) throws URISyntaxException {
+	public ResponseEntity<Skill> updateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the skill to update") final Long id, @RequestBody Skill skill)
+        throws URISyntaxException {
         log.debug("REST request to update Skill : {}, {}", id, skill);
         if (skill.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -102,7 +106,7 @@ public class SkillResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Skill result = skillRepository.save(skill);
+        Skill result = skillService.save(skill);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, skill.getId().toString()))
@@ -122,10 +126,8 @@ public class SkillResource {
      */
     @PatchMapping(value = "/skills/{id}", consumes = "application/merge-patch+json")
     @ApiOperation(value = "Partially Update existing skill", notes = "Allows you to partially update an existing skill on the system")
-    public ResponseEntity<Skill> partialUpdateSkill(
-        @PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id,
-        @RequestBody Skill skill
-    ) throws URISyntaxException {
+    public ResponseEntity<Skill> partialUpdateSkill(@PathVariable(value = "id", required = false) @ApiParam(value = "Id of the file to partially update") final Long id, @RequestBody Skill skill)
+        throws URISyntaxException {
         log.debug("REST request to partial update Skill partially : {}, {}", id, skill);
         if (skill.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -138,21 +140,7 @@ public class SkillResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Skill> result = skillRepository
-            .findById(skill.getId())
-            .map(
-                existingSkill -> {
-                    if (skill.getTitle() != null) {
-                        existingSkill.setTitle(skill.getTitle());
-                    }
-                    if (skill.getDescription() != null) {
-                        existingSkill.setDescription(skill.getDescription());
-                    }
-
-                    return existingSkill;
-                }
-            )
-            .map(skillRepository::save);
+        Optional<Skill> result = skillService.partialUpdate(skill);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -164,24 +152,27 @@ public class SkillResource {
      * {@code GET  /skills} : get all the skills.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of skills in body.
      */
     @GetMapping("/skills")
-    @ApiOperation(value = "Retrieve all skills", notes = "Allows you to retrieve all skills on the system")
-    public ResponseEntity<List<Skill>> getAllSkills(
-        Pageable pageable,
-        @RequestParam(required = false, defaultValue = "false") boolean eagerload
-    ) {
-        log.debug("REST request to get a page of Skills");
-        Page<Skill> page;
-        if (eagerload) {
-            page = skillRepository.findAllWithEagerRelationships(pageable);
-        } else {
-            page = skillRepository.findAll(pageable);
-        }
+    public ResponseEntity<List<Skill>> getAllSkills(SkillCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Skills by criteria: {}", criteria);
+        Page<Skill> page = skillQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /skills/count} : count all the skills.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/skills/count")
+    public ResponseEntity<Long> countSkills(SkillCriteria criteria) {
+        log.debug("REST request to count Skills by criteria: {}", criteria);
+        return ResponseEntity.ok().body(skillQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -194,7 +185,7 @@ public class SkillResource {
     @ApiOperation(value = "Retrieve a skill", notes = "Allows you to retrieve a skill on the system based on id")
     public ResponseEntity<Skill> getSkill(@PathVariable @ApiParam(value = "Id of the skill to retrieve") Long id) {
         log.debug("REST request to get Skill : {}", id);
-        Optional<Skill> skill = skillRepository.findOneWithEagerRelationships(id);
+        Optional<Skill> skill = skillService.findOne(id);
         return ResponseUtil.wrapOrNotFound(skill);
     }
 
@@ -207,9 +198,9 @@ public class SkillResource {
     @DeleteMapping("/skills/{id}")
     @ApiOperation(value = "Delete a skill", notes = "Allows you to delete a skill on the system based on id")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
+	public ResponseEntity<Void> deleteSkill(@PathVariable @ApiParam(value = "Id of the skill to delete") Long id) {
         log.debug("REST request to delete Skill : {}", id);
-        skillRepository.deleteById(id);
+        skillService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
