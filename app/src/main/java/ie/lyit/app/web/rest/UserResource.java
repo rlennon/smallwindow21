@@ -10,15 +10,14 @@ import ie.lyit.app.service.dto.AdminUserDTO;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import ie.lyit.app.web.rest.errors.EmailAlreadyUsedException;
 import ie.lyit.app.web.rest.errors.LoginAlreadyUsedException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.Collections;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +77,12 @@ public class UserResource {
 
     private final MailService mailService;
 
+    /**
+     * Constructor
+     * @param userService -
+     * @param userRepository -
+     * @param mailService -
+     */
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
         this.userService = userService;
         this.userRepository = userRepository;
@@ -183,7 +188,9 @@ public class UserResource {
     @GetMapping("/users/{login}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @ApiOperation(value = "Retrieve a User", notes = "Allows you to retrieve a user on the system based on login")
-    public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to retrieve") String login) {
+    public ResponseEntity<AdminUserDTO> getUser(
+        @PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to retrieve") String login
+    ) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
     }
@@ -197,7 +204,9 @@ public class UserResource {
     @DeleteMapping("/users/{login}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     @ApiOperation(value = "Delete a User", notes = "Allows you to delete a user on the system based on login")
-    public ResponseEntity<Void> deleteUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to delete") String login) {
+    public ResponseEntity<Void> deleteUser(
+        @PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) @ApiParam(value = "Login of the user to delete") String login
+    ) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity

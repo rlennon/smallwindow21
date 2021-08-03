@@ -5,10 +5,7 @@ import ie.lyit.app.domain.File;
 import ie.lyit.app.repository.EmployeeRepository;
 import ie.lyit.app.repository.FileRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
-import ie.lyit.app.service.EmployeeQueryService;
-import ie.lyit.app.service.EmployeeService;
 import ie.lyit.app.service.aws.S3Service;
-import ie.lyit.app.service.criteria.EmployeeCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -59,26 +56,16 @@ public class EmployeeResource {
     private final S3Service s3Service;
     private final FileRepository fileRepository;
 
-    private final EmployeeService employeeService;
-    private final EmployeeQueryService employeeQueryService;
-
-    // public EmployeeResource(EmployeeService employeeService, EmployeeQueryService employeeQueryService) {
-    //     this.employeeService = employeeService;
-    //     this.employeeQueryService = employeeQueryService;
-    // }
-
-    public EmployeeResource(
-        EmployeeRepository employeeRepository,
-        S3Service s3Service,
-        FileRepository fileRepository,
-        EmployeeService employeeService,
-        EmployeeQueryService employeeQueryService
-    ) {
+    /**
+     *
+     * @param employeeRepository -
+     * @param s3Service -
+     * @param fileRepository -
+     */
+    public EmployeeResource(EmployeeRepository employeeRepository, S3Service s3Service, FileRepository fileRepository) {
         this.employeeRepository = employeeRepository;
         this.s3Service = s3Service;
         this.fileRepository = fileRepository;
-        this.employeeService = employeeService;
-        this.employeeQueryService = employeeQueryService;
     }
 
     /**
@@ -167,7 +154,27 @@ public class EmployeeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Employee> result = employeeService.partialUpdate(employee);
+        Optional<Employee> result = employeeRepository
+            .findById(employee.getId())
+            .map(
+                existingEmployee -> {
+                    if (employee.getFirstName() != null) {
+                        existingEmployee.setFirstName(employee.getFirstName());
+                    }
+                    if (employee.getLastName() != null) {
+                        existingEmployee.setLastName(employee.getLastName());
+                    }
+                    if (employee.getEmail() != null) {
+                        existingEmployee.setEmail(employee.getEmail());
+                    }
+                    if (employee.gets3ImageKey() != null) {
+                        existingEmployee.sets3ImageKey(employee.gets3ImageKey());
+                    }
+
+                    return existingEmployee;
+                }
+            )
+            .map(employeeRepository::save);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -179,28 +186,15 @@ public class EmployeeResource {
      * {@code GET  /employees} : get all the employees.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of employees in body.
      */
     @GetMapping("/employees")
     @ApiOperation(value = "Retrieve all employees", notes = "Allows you to retrieve all employees on the system")
-    public ResponseEntity<List<Employee>> getAllEmployees(EmployeeCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Employees by criteria: {}", criteria);
-        Page<Employee> page = employeeQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
+        log.debug("REST request to get a page of Employees");
+        Page<Employee> page = employeeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /employees/count} : count all the employees.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/employees/count")
-    public ResponseEntity<Long> countEmployees(EmployeeCriteria criteria) {
-        log.debug("REST request to count Employees by criteria: {}", criteria);
-        return ResponseEntity.ok().body(employeeQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -228,7 +222,7 @@ public class EmployeeResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteEmployee(@PathVariable @ApiParam(value = "Id of the employee to delete") Long id) {
         log.debug("REST request to delete Employee : {}", id);
-        employeeService.delete(id);
+        employeeRepository.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
@@ -238,8 +232,9 @@ public class EmployeeResource {
     /**
      * Method to upload a profile image
      *
-     * @param profile image file to upload
-     * @return
+     * @param file image file to upload
+     * @param filename name of uploaded file
+     * @return -
      */
     @PostMapping("/employees/profileImage/{filename:.+}")
     @ApiOperation(value = "Upload the users profile image", notes = "Allows you to upload a users profile image to S3")
@@ -258,8 +253,8 @@ public class EmployeeResource {
     /**
      * Method to download a profile image and serve it
      *
-     * @param filename
-     * @return
+     * @param filename -
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @GetMapping("/employees/profileImage/{filename:.+}")
@@ -280,7 +275,7 @@ public class EmployeeResource {
      * Method to delete a profile image
      *
      * @param id - the id of the employee to delete the profile image for
-     * @return
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/employees/profileImage/{id}")
@@ -308,7 +303,7 @@ public class EmployeeResource {
      * Method to get all files uploaded for an empoloyee
      *
      * @param id - the id of the employee to delete the profile image for
-     * @return
+     * @return -
      */
     @GetMapping("/employees/files/{id}")
     @ResponseBody
@@ -323,8 +318,9 @@ public class EmployeeResource {
     /**
      * Method to upload a file
      *
+     * @param file file to upload
      * @param id - the id of the employee to delete the profile image for
-     * @return
+     * @return -
      */
     @PostMapping("/employees/files/{id}")
     @ResponseBody
@@ -357,7 +353,7 @@ public class EmployeeResource {
      * Method to download a file
      *
      * @param id - the id of the file to download
-     * @return
+     * @return -
      */
     @GetMapping("/employees/files/download/{id}")
     @ResponseBody
@@ -377,7 +373,7 @@ public class EmployeeResource {
      * Method to delete a file based on id
      *
      * @param id - the id of the file to delete
-     * @return
+     * @return -
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/employees/files/{id}")

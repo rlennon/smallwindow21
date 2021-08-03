@@ -7,13 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ie.lyit.app.IntegrationTest;
 import ie.lyit.app.domain.Category;
-import ie.lyit.app.domain.Skill;
 import ie.lyit.app.repository.CategoryRepository;
-import ie.lyit.app.service.criteria.CategoryCriteria;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
+
+import ie.lyit.app.security.AuthoritiesConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class CategoryResourceIT {
 
     private static final String DEFAULT_CATEGORY_NAME = "AAAAAAAAAA";
@@ -157,159 +157,6 @@ class CategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(category.getId().intValue()))
             .andExpect(jsonPath("$.categoryName").value(DEFAULT_CATEGORY_NAME));
-    }
-
-    @Test
-    @Transactional
-    void getCategoriesByIdFiltering() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        Long id = category.getId();
-
-        defaultCategoryShouldBeFound("id.equals=" + id);
-        defaultCategoryShouldNotBeFound("id.notEquals=" + id);
-
-        defaultCategoryShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultCategoryShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultCategoryShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultCategoryShouldNotBeFound("id.lessThan=" + id);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameIsEqualToSomething() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName equals to DEFAULT_CATEGORY_NAME
-        defaultCategoryShouldBeFound("categoryName.equals=" + DEFAULT_CATEGORY_NAME);
-
-        // Get all the categoryList where categoryName equals to UPDATED_CATEGORY_NAME
-        defaultCategoryShouldNotBeFound("categoryName.equals=" + UPDATED_CATEGORY_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName not equals to DEFAULT_CATEGORY_NAME
-        defaultCategoryShouldNotBeFound("categoryName.notEquals=" + DEFAULT_CATEGORY_NAME);
-
-        // Get all the categoryList where categoryName not equals to UPDATED_CATEGORY_NAME
-        defaultCategoryShouldBeFound("categoryName.notEquals=" + UPDATED_CATEGORY_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameIsInShouldWork() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName in DEFAULT_CATEGORY_NAME or UPDATED_CATEGORY_NAME
-        defaultCategoryShouldBeFound("categoryName.in=" + DEFAULT_CATEGORY_NAME + "," + UPDATED_CATEGORY_NAME);
-
-        // Get all the categoryList where categoryName equals to UPDATED_CATEGORY_NAME
-        defaultCategoryShouldNotBeFound("categoryName.in=" + UPDATED_CATEGORY_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName is not null
-        defaultCategoryShouldBeFound("categoryName.specified=true");
-
-        // Get all the categoryList where categoryName is null
-        defaultCategoryShouldNotBeFound("categoryName.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameContainsSomething() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName contains DEFAULT_CATEGORY_NAME
-        defaultCategoryShouldBeFound("categoryName.contains=" + DEFAULT_CATEGORY_NAME);
-
-        // Get all the categoryList where categoryName contains UPDATED_CATEGORY_NAME
-        defaultCategoryShouldNotBeFound("categoryName.contains=" + UPDATED_CATEGORY_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesByCategoryNameNotContainsSomething() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-
-        // Get all the categoryList where categoryName does not contain DEFAULT_CATEGORY_NAME
-        defaultCategoryShouldNotBeFound("categoryName.doesNotContain=" + DEFAULT_CATEGORY_NAME);
-
-        // Get all the categoryList where categoryName does not contain UPDATED_CATEGORY_NAME
-        defaultCategoryShouldBeFound("categoryName.doesNotContain=" + UPDATED_CATEGORY_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllCategoriesBySkillIsEqualToSomething() throws Exception {
-        // Initialize the database
-        categoryRepository.saveAndFlush(category);
-        Skill skill = SkillResourceIT.createEntity(em);
-        em.persist(skill);
-        em.flush();
-        category.addSkill(skill);
-        categoryRepository.saveAndFlush(category);
-        Long skillId = skill.getId();
-
-        // Get all the categoryList where skill equals to skillId
-        defaultCategoryShouldBeFound("skillId.equals=" + skillId);
-
-        // Get all the categoryList where skill equals to (skillId + 1)
-        defaultCategoryShouldNotBeFound("skillId.equals=" + (skillId + 1));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultCategoryShouldBeFound(String filter) throws Exception {
-        restCategoryMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
-            .andExpect(jsonPath("$.[*].categoryName").value(hasItem(DEFAULT_CATEGORY_NAME)));
-
-        // Check, that the count call also returns 1
-        restCategoryMockMvc
-            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultCategoryShouldNotBeFound(String filter) throws Exception {
-        restCategoryMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restCategoryMockMvc
-            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
     }
 
     @Test

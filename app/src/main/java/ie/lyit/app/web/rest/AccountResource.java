@@ -2,6 +2,7 @@ package ie.lyit.app.web.rest;
 
 import ie.lyit.app.domain.User;
 import ie.lyit.app.repository.UserRepository;
+import ie.lyit.app.security.AuthoritiesConstants;
 import ie.lyit.app.security.SecurityUtils;
 import ie.lyit.app.service.MailService;
 import ie.lyit.app.service.UserService;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,8 +32,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AccountResource {
 
+    /**
+     * Private nested exception class
+     */
     private static class AccountResourceException extends RuntimeException {
 
+        /**
+         * Constructor
+         */
         private AccountResourceException(String message) {
             super(message);
         }
@@ -45,6 +53,12 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    /**
+     * Constructor
+     * @param userRepository -
+     * @param userService -
+     * @param mailService -
+     */
     public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -62,12 +76,13 @@ public class AccountResource {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Register a new user", notes = "Allows you to register a user on the system")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        // mailService.sendActivationEmail(user);
     }
 
     /**
