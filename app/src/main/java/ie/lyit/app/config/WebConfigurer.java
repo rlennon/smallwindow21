@@ -36,21 +36,11 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     private final JHipsterProperties jHipsterProperties;
 
-    /**
-     * Class constructor
-     * @param env -
-     * @param jHipsterProperties -
-     */
     public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
         this.env = env;
         this.jHipsterProperties = jHipsterProperties;
     }
 
-    /**
-     * Startup method
-     * @param servletContext -
-     * @throws ServletException -
-     */
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         if (env.getActiveProfiles().length != 0) {
@@ -62,7 +52,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     /**
      * Customize the Servlet engine: Mime types, the document root, the cache.
-     * @param server -
      */
     @Override
     public void customize(WebServerFactory server) {
@@ -102,10 +91,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         return extractedPath.substring(0, extractionEndIndex);
     }
 
-    /**
-     * Cors Filter
-     * @return CorsFilter instance
-     */
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

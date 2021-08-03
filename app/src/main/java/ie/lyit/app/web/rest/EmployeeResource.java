@@ -62,14 +62,10 @@ public class EmployeeResource {
     private final EmployeeService employeeService;
     private final EmployeeQueryService employeeQueryService;
 
-    /**
-     * 
-     * @param employeeRepository
-     * @param s3Service
-     * @param fileRepository
-     * @param employeeService
-     * @param employeeQueryService
-     */
+    // public EmployeeResource(EmployeeService employeeService, EmployeeQueryService employeeQueryService) {
+    //     this.employeeService = employeeService;
+    //     this.employeeQueryService = employeeQueryService;
+    // }
 
     public EmployeeResource(
         EmployeeRepository employeeRepository,
@@ -242,9 +238,8 @@ public class EmployeeResource {
     /**
      * Method to upload a profile image
      *
-     * @param file image file to upload
-     * @param filename name of uploaded file
-     * @return -
+     * @param profile image file to upload
+     * @return
      */
     @PostMapping("/employees/profileImage/{filename:.+}")
     @ApiOperation(value = "Upload the users profile image", notes = "Allows you to upload a users profile image to S3")
@@ -263,8 +258,8 @@ public class EmployeeResource {
     /**
      * Method to download a profile image and serve it
      *
-     * @param filename -
-     * @return -
+     * @param filename
+     * @return
      */
     // See https://spring.io/guides/gs/uploading-files/
     @GetMapping("/employees/profileImage/{filename:.+}")
@@ -285,7 +280,7 @@ public class EmployeeResource {
      * Method to delete a profile image
      *
      * @param id - the id of the employee to delete the profile image for
-     * @return -
+     * @return
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/employees/profileImage/{id}")
@@ -313,7 +308,7 @@ public class EmployeeResource {
      * Method to get all files uploaded for an empoloyee
      *
      * @param id - the id of the employee to delete the profile image for
-     * @return -
+     * @return
      */
     @GetMapping("/employees/files/{id}")
     @ResponseBody
@@ -328,9 +323,8 @@ public class EmployeeResource {
     /**
      * Method to upload a file
      *
-     * @param file file to upload
      * @param id - the id of the employee to delete the profile image for
-     * @return -
+     * @return
      */
     @PostMapping("/employees/files/{id}")
     @ResponseBody
@@ -363,7 +357,7 @@ public class EmployeeResource {
      * Method to download a file
      *
      * @param id - the id of the file to download
-     * @return -
+     * @return
      */
     @GetMapping("/employees/files/download/{id}")
     @ResponseBody
@@ -383,7 +377,7 @@ public class EmployeeResource {
      * Method to delete a file based on id
      *
      * @param id - the id of the file to delete
-     * @return -
+     * @return
      */
     // See https://spring.io/guides/gs/uploading-files/
     @DeleteMapping("/employees/files/{id}")
