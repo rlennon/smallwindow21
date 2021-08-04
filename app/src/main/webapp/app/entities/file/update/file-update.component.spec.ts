@@ -42,10 +42,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Employee query and add missing value', () => {
         const file: IFile = { id: 456 };
-        const employee: IEmployee = { id: 60113 };
+        const employee: IEmployee = { id: 80983 };
         file.employee = employee;
 
-        const employeeCollection: IEmployee[] = [{ id: 40170 }];
+        const employeeCollection: IEmployee[] = [{ id: 11898 }];
         spyOn(employeeService, 'query').and.returnValue(of(new HttpResponse({ body: employeeCollection })));
         const additionalEmployees = [employee];
         const expectedCollection: IEmployee[] = [...additionalEmployees, ...employeeCollection];
@@ -61,7 +61,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const file: IFile = { id: 456 };
-        const employee: IEmployee = { id: 71581 };
+        const employee: IEmployee = { id: 75660 };
         file.employee = employee;
 
         activatedRoute.data = of({ file });

@@ -8,11 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
-/**
- * Jackson config class
- *
- * @author smallwindow21 team
- */
 @Configuration
 public class JacksonConfiguration {
 
@@ -25,36 +20,29 @@ public class JacksonConfiguration {
         return new JavaTimeModule();
     }
 
-    /**
-     * Create a Jdk8Module instance
-     * @return Jdk8Module instance
-     */
     @Bean
     public Jdk8Module jdk8TimeModule() {
         return new Jdk8Module();
     }
 
-    /**
+    /*
      * Support for Hibernate types in Jackson.
-     * @return Hibernate5Module instance
      */
     @Bean
     public Hibernate5Module hibernate5Module() {
         return new Hibernate5Module();
     }
 
-    /**
+    /*
      * Module for serialization/deserialization of RFC7807 Problem.
-     * @return ProblemModule instance
      */
     @Bean
     public ProblemModule problemModule() {
         return new ProblemModule();
     }
 
-    /**
+    /*
      * Module for serialization/deserialization of ConstraintViolationProblem.
-     * @return ConstraintViolationProblemModule instance
      */
     @Bean
     public ConstraintViolationProblemModule constraintViolationProblemModule() {

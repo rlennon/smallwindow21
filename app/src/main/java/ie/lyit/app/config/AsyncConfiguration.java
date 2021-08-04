@@ -14,12 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import tech.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
 
-/**
- * AsyncConfiguration class
- *
- * @author smallwindow21 team
- *
- */
 @Configuration
 @EnableAsync
 @EnableScheduling
@@ -29,10 +23,6 @@ public class AsyncConfiguration implements AsyncConfigurer {
 
     private final TaskExecutionProperties taskExecutionProperties;
 
-    /**
-     * Class constructor
-     * @param taskExecutionProperties TaskExecutionProperties to use
-     */
     public AsyncConfiguration(TaskExecutionProperties taskExecutionProperties) {
         this.taskExecutionProperties = taskExecutionProperties;
     }

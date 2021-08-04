@@ -18,9 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import tech.jhipster.config.JHipsterProperties;
 
-/**
- *
- */
 @Component
 public class TokenProvider {
 
@@ -36,10 +33,6 @@ public class TokenProvider {
 
     private final long tokenValidityInMillisecondsForRememberMe;
 
-    /**
-     *
-     * @param jHipsterProperties -
-     */
     public TokenProvider(JHipsterProperties jHipsterProperties) {
         byte[] keyBytes;
         String secret = jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret();
@@ -60,12 +53,6 @@ public class TokenProvider {
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe();
     }
 
-    /**
-     *
-     * @param authentication -
-     * @param rememberMe -
-     * @return -
-     */
     public String createToken(Authentication authentication, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
@@ -86,11 +73,6 @@ public class TokenProvider {
             .compact();
     }
 
-    /**
-     *
-     * @param token -
-     * @return -
-     */
     public Authentication getAuthentication(String token) {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
@@ -105,11 +87,6 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    /**
-     *
-     * @param authToken -
-     * @return -
-     */
     public boolean validateToken(String authToken) {
         try {
             jwtParser.parseClaimsJws(authToken);
