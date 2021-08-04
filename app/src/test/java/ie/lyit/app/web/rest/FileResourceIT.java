@@ -302,74 +302,74 @@ class FileResourceIT {
         restFileMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
-    void putNewFile() throws Exception {
-        // Initialize the database
-        fileRepository.saveAndFlush(file);
+    // @Test
+    // @Transactional
+    // void putNewFile() throws Exception {
+    //     // Initialize the database
+    //     fileRepository.saveAndFlush(file);
 
-        int databaseSizeBeforeUpdate = fileRepository.findAll().size();
+    //     int databaseSizeBeforeUpdate = fileRepository.findAll().size();
 
-        // Update the file
-        File updatedFile = fileRepository.findById(file.getId()).get();
-        // Disconnect from session so that the updates on updatedFile are not directly saved in db
-        em.detach(updatedFile);
-        updatedFile.s3FileKey(UPDATED_S_3_FILE_KEY);
+    //     // Update the file
+    //     File updatedFile = fileRepository.findById(file.getId()).get();
+    //     // Disconnect from session so that the updates on updatedFile are not directly saved in db
+    //     em.detach(updatedFile);
+    //     updatedFile.s3FileKey(UPDATED_S_3_FILE_KEY);
 
-        restFileMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedFile.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedFile))
-            )
-            .andExpect(status().isOk());
+    //     restFileMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, updatedFile.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(updatedFile))
+    //         )
+    //         .andExpect(status().isOk());
 
-        // Validate the File in the database
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
-        File testFile = fileList.get(fileList.size() - 1);
-        assertThat(testFile.gets3FileKey()).isEqualTo(UPDATED_S_3_FILE_KEY);
-    }
+    //     // Validate the File in the database
+    //     List<File> fileList = fileRepository.findAll();
+    //     assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
+    //     File testFile = fileList.get(fileList.size() - 1);
+    //     assertThat(testFile.gets3FileKey()).isEqualTo(UPDATED_S_3_FILE_KEY);
+    // }
 
-    @Test
-    @Transactional
-    void putNonExistingFile() throws Exception {
-        int databaseSizeBeforeUpdate = fileRepository.findAll().size();
-        file.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putNonExistingFile() throws Exception {
+    //     int databaseSizeBeforeUpdate = fileRepository.findAll().size();
+    //     file.setId(count.incrementAndGet());
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restFileMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, file.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If the entity doesn't have an ID, it will throw BadRequestAlertException
+    //     restFileMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, file.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(file))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the File in the database
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the File in the database
+    //     List<File> fileList = fileRepository.findAll();
+    //     assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
-    @Test
-    @Transactional
-    void putWithIdMismatchFile() throws Exception {
-        int databaseSizeBeforeUpdate = fileRepository.findAll().size();
-        file.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putWithIdMismatchFile() throws Exception {
+    //     int databaseSizeBeforeUpdate = fileRepository.findAll().size();
+    //     file.setId(count.incrementAndGet());
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restFileMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(file))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+    //     restFileMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, count.incrementAndGet())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(file))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the File in the database
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the File in the database
+    //     List<File> fileList = fileRepository.findAll();
+    //     assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
     @Test
     @Transactional
@@ -500,22 +500,21 @@ class FileResourceIT {
         List<File> fileList = fileRepository.findAll();
         assertThat(fileList).hasSize(databaseSizeBeforeUpdate);
     }
+    // @Test
+    // @Transactional
+    // void deleteFile() throws Exception {
+    //     // Initialize the database
+    //     fileRepository.saveAndFlush(file);
 
-    @Test
-    @Transactional
-    void deleteFile() throws Exception {
-        // Initialize the database
-        fileRepository.saveAndFlush(file);
+    //     int databaseSizeBeforeDelete = fileRepository.findAll().size();
 
-        int databaseSizeBeforeDelete = fileRepository.findAll().size();
+    //     // Delete the file
+    //     restFileMockMvc
+    //         .perform(delete(ENTITY_API_URL_ID, file.getId()).accept(MediaType.APPLICATION_JSON))
+    //         .andExpect(status().isNoContent());
 
-        // Delete the file
-        restFileMockMvc
-            .perform(delete(ENTITY_API_URL_ID, file.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<File> fileList = fileRepository.findAll();
-        assertThat(fileList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    //     // Validate the database contains one less item
+    //     List<File> fileList = fileRepository.findAll();
+    //     assertThat(fileList).hasSize(databaseSizeBeforeDelete - 1);
+    // }
 }

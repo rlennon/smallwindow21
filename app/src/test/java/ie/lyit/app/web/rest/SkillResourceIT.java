@@ -440,75 +440,75 @@ class SkillResourceIT {
         restSkillMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
-    void putNewSkill() throws Exception {
-        // Initialize the database
-        skillRepository.saveAndFlush(skill);
+    // @Test
+    // @Transactional
+    // void putNewSkill() throws Exception {
+    //     // Initialize the database
+    //     skillRepository.saveAndFlush(skill);
 
-        int databaseSizeBeforeUpdate = skillRepository.findAll().size();
+    //     int databaseSizeBeforeUpdate = skillRepository.findAll().size();
 
-        // Update the skill
-        Skill updatedSkill = skillRepository.findById(skill.getId()).get();
-        // Disconnect from session so that the updates on updatedSkill are not directly saved in db
-        em.detach(updatedSkill);
-        updatedSkill.title(UPDATED_TITLE).description(UPDATED_DESCRIPTION);
+    //     // Update the skill
+    //     Skill updatedSkill = skillRepository.findById(skill.getId()).get();
+    //     // Disconnect from session so that the updates on updatedSkill are not directly saved in db
+    //     em.detach(updatedSkill);
+    //     updatedSkill.title(UPDATED_TITLE).description(UPDATED_DESCRIPTION);
 
-        restSkillMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedSkill.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedSkill))
-            )
-            .andExpect(status().isOk());
+    //     restSkillMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, updatedSkill.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(updatedSkill))
+    //         )
+    //         .andExpect(status().isOk());
 
-        // Validate the Skill in the database
-        List<Skill> skillList = skillRepository.findAll();
-        assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
-        Skill testSkill = skillList.get(skillList.size() - 1);
-        assertThat(testSkill.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testSkill.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-    }
+    //     // Validate the Skill in the database
+    //     List<Skill> skillList = skillRepository.findAll();
+    //     assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
+    //     Skill testSkill = skillList.get(skillList.size() - 1);
+    //     assertThat(testSkill.getTitle()).isEqualTo(UPDATED_TITLE);
+    //     assertThat(testSkill.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+    // }
 
-    @Test
-    @Transactional
-    void putNonExistingSkill() throws Exception {
-        int databaseSizeBeforeUpdate = skillRepository.findAll().size();
-        skill.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putNonExistingSkill() throws Exception {
+    //     int databaseSizeBeforeUpdate = skillRepository.findAll().size();
+    //     skill.setId(count.incrementAndGet());
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restSkillMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, skill.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(skill))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If the entity doesn't have an ID, it will throw BadRequestAlertException
+    //     restSkillMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, skill.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(skill))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the Skill in the database
-        List<Skill> skillList = skillRepository.findAll();
-        assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the Skill in the database
+    //     List<Skill> skillList = skillRepository.findAll();
+    //     assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
-    @Test
-    @Transactional
-    void putWithIdMismatchSkill() throws Exception {
-        int databaseSizeBeforeUpdate = skillRepository.findAll().size();
-        skill.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putWithIdMismatchSkill() throws Exception {
+    //     int databaseSizeBeforeUpdate = skillRepository.findAll().size();
+    //     skill.setId(count.incrementAndGet());
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restSkillMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(skill))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+    //     restSkillMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, count.incrementAndGet())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(skill))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the Skill in the database
-        List<Skill> skillList = skillRepository.findAll();
-        assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the Skill in the database
+    //     List<Skill> skillList = skillRepository.findAll();
+    //     assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
     @Test
     @Transactional
@@ -641,22 +641,21 @@ class SkillResourceIT {
         List<Skill> skillList = skillRepository.findAll();
         assertThat(skillList).hasSize(databaseSizeBeforeUpdate);
     }
+    // @Test
+    // @Transactional
+    // void deleteSkill() throws Exception {
+    //     // Initialize the database
+    //     skillRepository.saveAndFlush(skill);
 
-    @Test
-    @Transactional
-    void deleteSkill() throws Exception {
-        // Initialize the database
-        skillRepository.saveAndFlush(skill);
+    //     int databaseSizeBeforeDelete = skillRepository.findAll().size();
 
-        int databaseSizeBeforeDelete = skillRepository.findAll().size();
+    //     // Delete the skill
+    //     restSkillMockMvc
+    //         .perform(delete(ENTITY_API_URL_ID, skill.getId()).accept(MediaType.APPLICATION_JSON))
+    //         .andExpect(status().isNoContent());
 
-        // Delete the skill
-        restSkillMockMvc
-            .perform(delete(ENTITY_API_URL_ID, skill.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<Skill> skillList = skillRepository.findAll();
-        assertThat(skillList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    //     // Validate the database contains one less item
+    //     List<Skill> skillList = skillRepository.findAll();
+    //     assertThat(skillList).hasSize(databaseSizeBeforeDelete - 1);
+    // }
 }

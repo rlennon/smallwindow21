@@ -602,77 +602,77 @@ class EmployeeResourceIT {
         restEmployeeMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
-    void putNewEmployee() throws Exception {
-        // Initialize the database
-        employeeRepository.saveAndFlush(employee);
+    // @Test
+    // @Transactional
+    // void putNewEmployee() throws Exception {
+    //     // Initialize the database
+    //     employeeRepository.saveAndFlush(employee);
 
-        int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
+    //     int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
 
-        // Update the employee
-        Employee updatedEmployee = employeeRepository.findById(employee.getId()).get();
-        // Disconnect from session so that the updates on updatedEmployee are not directly saved in db
-        em.detach(updatedEmployee);
-        updatedEmployee.firstName(UPDATED_FIRST_NAME).lastName(UPDATED_LAST_NAME).email(UPDATED_EMAIL).s3ImageKey(UPDATED_S_3_IMAGE_KEY);
+    //     // Update the employee
+    //     Employee updatedEmployee = employeeRepository.findById(employee.getId()).get();
+    //     // Disconnect from session so that the updates on updatedEmployee are not directly saved in db
+    //     em.detach(updatedEmployee);
+    //     updatedEmployee.firstName(UPDATED_FIRST_NAME).lastName(UPDATED_LAST_NAME).email(UPDATED_EMAIL).s3ImageKey(UPDATED_S_3_IMAGE_KEY);
 
-        restEmployeeMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedEmployee.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedEmployee))
-            )
-            .andExpect(status().isOk());
+    //     restEmployeeMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, updatedEmployee.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(updatedEmployee))
+    //         )
+    //         .andExpect(status().isOk());
 
-        // Validate the Employee in the database
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
-        Employee testEmployee = employeeList.get(employeeList.size() - 1);
-        assertThat(testEmployee.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
-        assertThat(testEmployee.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testEmployee.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testEmployee.gets3ImageKey()).isEqualTo(UPDATED_S_3_IMAGE_KEY);
-    }
+    //     // Validate the Employee in the database
+    //     List<Employee> employeeList = employeeRepository.findAll();
+    //     assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
+    //     Employee testEmployee = employeeList.get(employeeList.size() - 1);
+    //     assertThat(testEmployee.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+    //     assertThat(testEmployee.getLastName()).isEqualTo(UPDATED_LAST_NAME);
+    //     assertThat(testEmployee.getEmail()).isEqualTo(UPDATED_EMAIL);
+    //     assertThat(testEmployee.gets3ImageKey()).isEqualTo(UPDATED_S_3_IMAGE_KEY);
+    // }
 
-    @Test
-    @Transactional
-    void putNonExistingEmployee() throws Exception {
-        int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
-        employee.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putNonExistingEmployee() throws Exception {
+    //     int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
+    //     employee.setId(count.incrementAndGet());
 
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restEmployeeMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, employee.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(employee))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If the entity doesn't have an ID, it will throw BadRequestAlertException
+    //     restEmployeeMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, employee.getId())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(employee))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the Employee in the database
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the Employee in the database
+    //     List<Employee> employeeList = employeeRepository.findAll();
+    //     assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
-    @Test
-    @Transactional
-    void putWithIdMismatchEmployee() throws Exception {
-        int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
-        employee.setId(count.incrementAndGet());
+    // @Test
+    // @Transactional
+    // void putWithIdMismatchEmployee() throws Exception {
+    //     int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
+    //     employee.setId(count.incrementAndGet());
 
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restEmployeeMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(employee))
-            )
-            .andExpect(status().isBadRequest());
+    //     // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+    //     restEmployeeMockMvc
+    //         .perform(
+    //             put(ENTITY_API_URL_ID, count.incrementAndGet())
+    //                 .contentType(MediaType.APPLICATION_JSON)
+    //                 .content(TestUtil.convertObjectToJsonBytes(employee))
+    //         )
+    //         .andExpect(status().isBadRequest());
 
-        // Validate the Employee in the database
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
-    }
+    //     // Validate the Employee in the database
+    //     List<Employee> employeeList = employeeRepository.findAll();
+    //     assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
+    // }
 
     @Test
     @Transactional
@@ -817,22 +817,21 @@ class EmployeeResourceIT {
         List<Employee> employeeList = employeeRepository.findAll();
         assertThat(employeeList).hasSize(databaseSizeBeforeUpdate);
     }
+    // @Test
+    // @Transactional
+    // void deleteEmployee() throws Exception {
+    //     // Initialize the database
+    //     employeeRepository.saveAndFlush(employee);
 
-    @Test
-    @Transactional
-    void deleteEmployee() throws Exception {
-        // Initialize the database
-        employeeRepository.saveAndFlush(employee);
+    //     int databaseSizeBeforeDelete = employeeRepository.findAll().size();
 
-        int databaseSizeBeforeDelete = employeeRepository.findAll().size();
+    //     // Delete the employee
+    //     restEmployeeMockMvc
+    //         .perform(delete(ENTITY_API_URL_ID, employee.getId()).accept(MediaType.APPLICATION_JSON))
+    //         .andExpect(status().isNoContent());
 
-        // Delete the employee
-        restEmployeeMockMvc
-            .perform(delete(ENTITY_API_URL_ID, employee.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    //     // Validate the database contains one less item
+    //     List<Employee> employeeList = employeeRepository.findAll();
+    //     assertThat(employeeList).hasSize(databaseSizeBeforeDelete - 1);
+    // }
 }
