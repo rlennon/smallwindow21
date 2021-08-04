@@ -117,7 +117,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterValid() throws Exception {
         ManagedUserVM validUser = new ManagedUserVM();
         validUser.setLogin("test-register-valid");
@@ -139,7 +138,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidLogin() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("funky-log(n"); // <-- invalid
@@ -162,7 +160,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidEmail() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -185,7 +182,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterInvalidPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -208,7 +204,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterNullPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
@@ -231,7 +226,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterDuplicateLogin() throws Exception {
         // First registration
         ManagedUserVM firstUser = new ManagedUserVM();
@@ -262,15 +256,17 @@ class AccountResourceIT {
         // First user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(firstUser)))
-            .andExpect(status().is2xxSuccessful());
+            .andExpect(status().isCreated());
 
         // Second (non activated) user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(secondUser)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().isCreated());
 
         Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
-        assertThat(testUser).isNotPresent();
+        assertThat(testUser).isPresent();
+        testUser.get().setActivated(true);
+        userRepository.save(testUser.get());
 
         // Second (already activated) user
         restAccountMockMvc
@@ -280,7 +276,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterDuplicateEmail() throws Exception {
         // First user
         ManagedUserVM firstUser = new ManagedUserVM();
@@ -296,7 +291,7 @@ class AccountResourceIT {
         // Register first user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(firstUser)))
-            .andExpect(status().is2xxSuccessful());
+            .andExpect(status().isCreated());
 
         Optional<User> testUser1 = userRepository.findOneByLogin("test-register-duplicate-email");
         assertThat(testUser1).isPresent();
@@ -315,13 +310,13 @@ class AccountResourceIT {
         // Register second (non activated) user
         restAccountMockMvc
             .perform(post("/api/register").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(secondUser)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().isCreated());
 
         Optional<User> testUser2 = userRepository.findOneByLogin("test-register-duplicate-email");
-        assertThat(testUser2).isNotEmpty();
+        assertThat(testUser2).isEmpty();
 
         Optional<User> testUser3 = userRepository.findOneByLogin("test-register-duplicate-email-2");
-        assertThat(testUser3).isNotPresent();
+        assertThat(testUser3).isPresent();
 
         // Duplicate email - with uppercase email address
         ManagedUserVM userWithUpperCaseEmail = new ManagedUserVM();
@@ -342,10 +337,14 @@ class AccountResourceIT {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail))
             )
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().isCreated());
 
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
-        assertThat(testUser4).isNotPresent();
+        assertThat(testUser4).isPresent();
+        assertThat(testUser4.get().getEmail()).isEqualTo("test-register-duplicate-email@example.com");
+
+        testUser4.get().setActivated(true);
+        userService.updateUser((new AdminUserDTO(testUser4.get())));
 
         // Register 4th (already activated) user
         restAccountMockMvc
@@ -355,7 +354,6 @@ class AccountResourceIT {
 
     @Test
     @Transactional
-    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     void testRegisterAdminIsIgnored() throws Exception {
         ManagedUserVM validUser = new ManagedUserVM();
         validUser.setLogin("badguy");

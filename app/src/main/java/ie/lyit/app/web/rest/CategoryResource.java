@@ -1,9 +1,10 @@
 package ie.lyit.app.web.rest;
-
 import ie.lyit.app.domain.Category;
 import ie.lyit.app.repository.CategoryRepository;
 import ie.lyit.app.security.AuthoritiesConstants;
+import ie.lyit.app.service.CategoryQueryService;
 import ie.lyit.app.service.CategoryService;
+import ie.lyit.app.service.criteria.CategoryCriteria;
 import ie.lyit.app.web.rest.errors.BadRequestAlertException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,40 +18,39 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
-
 /**
  * REST controller for managing {@link ie.lyit.app.domain.Category}.
  */
 @RestController
 @RequestMapping("/api")
 public class CategoryResource {
-
     private final Logger log = LoggerFactory.getLogger(CategoryResource.class);
-
     private static final String ENTITY_NAME = "category";
-
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
     private final CategoryService categoryService;
-
     private final CategoryRepository categoryRepository;
-
-    /**
-     * Constructor
-     * @param categoryService -
-     * @param categoryRepository -
-     */
-    public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository) {
+    private final CategoryQueryService categoryQueryService;
+    public CategoryResource(
+        CategoryService categoryService,
+        CategoryRepository categoryRepository,
+        CategoryQueryService categoryQueryService
+    ) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
+        this.categoryQueryService = categoryQueryService;
     }
-
     /**
      * {@code POST  /categories} : Create a new category.
      *
@@ -71,7 +71,6 @@ public class CategoryResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
     /**
      * {@code PUT  /categories/:id} : Updates an existing category.
      *
@@ -96,18 +95,15 @@ public class CategoryResource {
         if (!Objects.equals(id, category.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
         if (!categoryRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         Category result = categoryService.save(category);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, category.getId().toString()))
             .body(result);
     }
-
     /**
      * {@code PATCH  /categories/:id} : Partial updates given fields of an existing category, field will ignore if it is null
      *
@@ -132,13 +128,10 @@ public class CategoryResource {
         if (!Objects.equals(id, category.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
         if (!categoryRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         Optional<Category> result = categoryService.partialUpdate(category);
-
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, category.getId().toString())
@@ -146,17 +139,21 @@ public class CategoryResource {
     }
 
     /**
+     * {@code GET  /categories} : get all the skills.
      * {@code GET  /categories} : get all the categories.
      *
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of skills in body.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */
     @GetMapping("/categories")
-    @ApiOperation(value = "Retrieve all categories", notes = "Allows you to retrieve all categories on the system")
-    public List<Category> getAllCategories() {
-        log.debug("REST request to get all Categories");
-        return categoryService.findAll();
+    public ResponseEntity<List<Category>> getAllCategories(CategoryCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Categories by criteria: {}", criteria);
+        Page<Category> page = categoryQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
     /**
      * {@code GET  /categories/:id} : get the "id" category.
      *
@@ -170,7 +167,6 @@ public class CategoryResource {
         Optional<Category> category = categoryService.findOne(id);
         return ResponseUtil.wrapOrNotFound(category);
     }
-
     /**
      * {@code DELETE  /categories/:id} : delete the "id" category.
      *

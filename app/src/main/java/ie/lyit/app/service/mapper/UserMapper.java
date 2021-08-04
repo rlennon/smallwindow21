@@ -20,56 +20,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMapper {
 
-    /**
-     *
-     * @param users -
-     * @return -
-     */
     public List<UserDTO> usersToUserDTOs(List<User> users) {
         return users.stream().filter(Objects::nonNull).map(this::userToUserDTO).collect(Collectors.toList());
     }
 
-    /**
-     *
-     * @param user -
-     * @return -
-     */
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
     }
 
-    /**
-     *
-     * @param users -
-     * @return -
-     */
     public List<AdminUserDTO> usersToAdminUserDTOs(List<User> users) {
         return users.stream().filter(Objects::nonNull).map(this::userToAdminUserDTO).collect(Collectors.toList());
     }
 
-    /**
-     *
-     * @param user -
-     * @return -
-     */
     public AdminUserDTO userToAdminUserDTO(User user) {
         return new AdminUserDTO(user);
     }
 
-    /**
-     *
-     * @param userDTOs -
-     * @return -
-     */
     public List<User> userDTOsToUsers(List<AdminUserDTO> userDTOs) {
         return userDTOs.stream().filter(Objects::nonNull).map(this::userDTOToUser).collect(Collectors.toList());
     }
 
-    /**
-     *
-     * @param userDTO -
-     * @return -
-     */
     public User userDTOToUser(AdminUserDTO userDTO) {
         if (userDTO == null) {
             return null;
@@ -109,11 +79,6 @@ public class UserMapper {
         return authorities;
     }
 
-    /**
-     *
-     * @param id -
-     * @return -
-     */
     public User userFromId(Long id) {
         if (id == null) {
             return null;
@@ -123,11 +88,6 @@ public class UserMapper {
         return user;
     }
 
-    /**
-     *
-     * @param user -
-     * @return -
-     */
     @Named("id")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
@@ -140,11 +100,6 @@ public class UserMapper {
         return userDto;
     }
 
-    /**
-     *
-     * @param users -
-     * @return -
-     */
     @Named("idSet")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
@@ -161,11 +116,6 @@ public class UserMapper {
         return userSet;
     }
 
-    /**
-     *
-     * @param user -
-     * @return -
-     */
     @Named("login")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
@@ -180,11 +130,6 @@ public class UserMapper {
         return userDto;
     }
 
-    /**
-     *
-     * @param users -
-     * @return -
-     */
     @Named("loginSet")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
